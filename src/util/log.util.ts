@@ -1,13 +1,16 @@
 const _log = require("log-beautify");
 
-const __debug = _log.debug;
-const __info = _log.info;
-const __log = _log.debug;
-const __error = _log.error;
-const __warning = _log.warn;
-const __success = _log.success;
+const __debug = _log.debug.bind(_log);
+const __info = _log.info.bind(_log);
+const __log = _log.debug.bind(_log);
+const __error = _log.error.bind(_log);
+const __warning = _log.warn.bind(_log);
+const __success = _log.success.bind(_log);
 
-const __show = _log.show;
+const __show = _log.show.bind(_log);
+
+// _log.trace('Trace');//change the level to use trace
+// __log.bind(_log)("_log : ", _log);
 
 export default class _d {
 
@@ -29,7 +32,8 @@ export default class _d {
   
     static prefix()
     {
-      const d = new Date().toISOString().split(/[T.]/);
+      let _d = new Date();
+      const d = new Date(_d.getTime() - _d.getTimezoneOffset()*60*1000).toISOString().split(/[T.]/);
       const date = d[0].replace(/-/g, '');
       const time = d[1].replace(/:/g, '');
     //   return `[${time} ${process.pid}|${getTraceId()}]`;

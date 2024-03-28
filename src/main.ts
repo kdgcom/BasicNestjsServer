@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MyConst } from './const/MyConst';
+import { warn } from 'console';
+import _d from './util/log.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -16,7 +18,8 @@ async function bootstrap() {
   const port = process.env.LISTEN_PORT || MyConst.LISTEN_PORT;
   await app.listen(port, ()=>
   {
-    console.log("LISTEN port : ", port);
+    _d.info("LISTEN port : ", port);
+    
   });
 }
 bootstrap();
