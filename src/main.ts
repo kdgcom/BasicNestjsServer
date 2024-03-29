@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MyConst } from './const/MyConst';
 import { warn } from 'console';
-import _d from './util/log.util';
+import _l from './util/logger/log.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -18,8 +18,7 @@ async function bootstrap() {
   const port = process.env.LISTEN_PORT || MyConst.LISTEN_PORT;
   await app.listen(port, ()=>
   {
-    _d.info("LISTEN port : ", port);
-    
+    _l.info("LISTEN port : ", port);
   });
 }
 bootstrap();
