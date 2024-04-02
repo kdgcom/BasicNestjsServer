@@ -7,6 +7,9 @@ import { ConstModule } from './const/const.module';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import _l from './util/logger/log.util';
 import { ConfigModule } from '@nestjs/config';
+import { DataSource } from 'typeorm';
+import { Member } from './VSTS/entity/member.entity';
+import { VSTSModule } from './VSTS/VSTS.module';
 
 const get_oracle_options = () => 
 {
@@ -15,17 +18,15 @@ const get_oracle_options = () =>
     type: 'oracle',
     host: process.env.ORACLE_HOST,
     port: process.env.ORACLE_PORT,
-    // sid: process.env.SID,
-    // serviceName: process.env.ORACLE_SERVICENAME,
-    // sid: process.env.ORACLE_SERVICENAME,
     database: process.env.ORACLE_DATABASE,
+    serviceName: process.env.ORACLE_DATABASE,
     username: process.env.ORACLE_USER,
     password: process.env.ORACLE_PW,
-    // role: process.env.ORACLE_ROLE,
-    entities: [],
+    entities: [Member],
     dropSchema: false,
     synchronize: false,
     keepConnectionAlive: true,
+    logging: true,
 
   }
   _l.debug("Oracle Options : ", oracle_options );
@@ -40,6 +41,7 @@ const imports = [
   ),
   AuthModule, 
   ConstModule,
+  VSTSModule,
   TypeOrmModule.forRootAsync(
     {
       name: 'default',
@@ -56,4 +58,7 @@ const imports = [
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule 
+{
+  constructor( private dataSource: DataSource ) {}
+}
