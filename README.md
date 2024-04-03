@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <p align="center">
   <center>
     <H1> VSTS Server v0.1.0 </H1>
@@ -59,10 +58,3 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 - ORACLE 19에서는 serviceName이 들어가 있어야 접속이 됨
 - ORACEL 23에서는 serviceName 없이 database만 있어도 접속이 됐음.
 - app.module.ts에서 logging 옵션을 true로 두면 모든 query에 대해 sql을 찍어볼 수 있다.
-=======
-# BasicNestjsServer
-
-BasicNestjsServer
-
-for hangil
->>>>>>> 1894cff374424c436b566888ee6b9ed54cae1a69
