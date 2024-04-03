@@ -53,13 +53,23 @@ export default class _l {
     static log(...args) {
       this._common(__log, false, false, ...args);
     }
+    static logp(...args) {
+      this._common(__log, true, false, ...args);
+    }
   
+    /**
+     * 인수가 object일 경우 자세한 내용을 보고 싶을 때 
+     */
     static log_detail(...args) {
       this._common(__log, false, true, ...args);
     }
   
     static debug(...args) {
       this._common(__debug, false, false, ...args);
+    }
+    
+    static debug_prefix(...args) {
+      this._common(__debug, true, false, ...args);
     }
 
     static info(...args) {
@@ -91,7 +101,7 @@ export default class _l {
     static _common(_func, flagUsePrefix, flagPrintDetail, ...args)
     {
       let contents = [...args];
-      if ( flagPrintDetail )
+      if ( flagPrintDetail ) // 자세한 내용을 보고 싶을 때
         contents = [...args].map( i=>JSON.stringify(i, null, 2));
         
 
@@ -99,13 +109,15 @@ export default class _l {
         {
             if ( flagUsePrefix )
             {
-                _log.useLabels = false;
-                _log.useSymbols = false;
-                _func(_l.prefix());
-                _log.useLabels = true;
-                _log.useSymbols = true;
+                // _log.useLabels = false;
+                // _log.useSymbols = false;
+                // _func(_l.prefix());
+                // _log.useLabels = true;
+                // _log.useSymbols = true;
+              _func(_l.prefix(), ...contents);
             }
-            _func(...contents);
+            else
+              _func(...contents);
         }
         else
             __log(...contents);

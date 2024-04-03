@@ -17,4 +17,16 @@ export class MemberRepository
     {
         return await this.memberRepository.find();
     }
+
+    async findOneByArmycode(sARMY_CODE: string)
+    {
+        return await this.memberRepository.find({
+            select: {
+                sNAME: true,
+            },
+            where: {
+                "sARMY_CODE": sARMY_CODE
+            }
+        })
+    }
 }

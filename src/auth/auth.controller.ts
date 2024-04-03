@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import BasicResponse from 'src/util/response/BasicResponse';
 
@@ -12,8 +12,8 @@ export class AuthController {
   }
 
   @Get('/user/:armyCode')
-  async getUserByArmyCode(): Promise<BasicResponse>
+  async getUserByArmyCode(@Param('armycode') armycode: string): Promise<BasicResponse>
   {
-    return await this.authService.getUser();
+    return await this.authService.getUser(armycode);
   }
 }

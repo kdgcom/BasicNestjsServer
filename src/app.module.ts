@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { Member } from './VSTS/entity/member.entity';
 import { VSTSModule } from './VSTS/VSTS.module';
+import { ReqResLoggerMiddleware } from './middleware/reqres_logger.mw';
 
 const get_oracle_options = () => 
 {
@@ -58,7 +59,14 @@ const imports = [
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule 
+export class AppModule implements NestModule
 {
   constructor( private dataSource: DataSource ) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(ReqResLoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+
 }
