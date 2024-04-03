@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import BasicResponse from 'src/util/response/BasicResponse';
+import _l from 'src/util/logger/log.util';
 
 @Controller('/auth')
 export class AuthController {
@@ -11,9 +12,10 @@ export class AuthController {
     return this.authService.authHello();
   }
 
-  @Get('/user/:armyCode')
-  async getUserByArmyCode(@Param('armycode') armycode: string): Promise<BasicResponse>
+  @Get('/user/:armycode')
+  async getUserByArmyCode(@Param() params: any): Promise<BasicResponse>
   {
-    return await this.authService.getUser(armycode);
+    _l.log("아미코드 : ", params);
+    return await this.authService.getUser(params.armycode);
   }
 }

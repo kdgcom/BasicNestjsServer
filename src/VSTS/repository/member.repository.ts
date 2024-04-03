@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 import { Member } from "../entity/member.entity";
+import _l from "src/util/logger/log.util";
 
 @Injectable()
 export class MemberRepository
@@ -20,6 +21,8 @@ export class MemberRepository
 
     async findOneByArmycode(sARMY_CODE: string)
     {
+
+        _l.log("armycode : ", sARMY_CODE);
         return await this.memberRepository.find({
             select: {
                 sNAME: true,

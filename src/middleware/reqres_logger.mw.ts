@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RouteInfo } from '@nestjs/common/interfaces';
 import { request } from 'http';
 import _l from 'src/util/logger/log.util';
+import { isEmpty } from 'src/util/common/text.util';
 
 /**
  * ReqResLoggerMiddleware
@@ -18,10 +19,9 @@ export class ReqResLoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     // Gets the request log
     _l.info('----------------- REQ START -----------------');
-    _l.logp({
-      headers: JSON.stringify(req.headers),
+    _l.logp(" >> Req", {
+      headers: JSON.stringify({originalUrl: req.originalUrl, ...req.headers}),
       body: req.body,
-      originalUrl: req.originalUrl,
     });
 
     // response를 처리할 수 있는 이벤트를 등록시켜
@@ -74,15 +74,14 @@ const getResponseLog = (res: Response) => {
     const data = bodyObject.data;
     delete bodyObject.data;
     const responseLog = {
-      response: {
-        // statusCode: res.statusCode,
-        result: JSON.stringify(bodyObject),
-        data,
-        // Returns a shallow copy of the current outgoing headers
-        headers: res.getHeaders(),
-      },
+      // statusCode: res.statusCode,
+      result: JSON.stringify(bodyObject),
+      data,
+      // Returns a shallow copy of the current outgoing headers
+      headers: JSON.stringify(res.getHeaders()),
     };
-    _l.logp('res: ', responseLog);
+    if ( isEmpty(data) ) delete responseLog.data;
+    _l.logp(' >> Res: ', responseLog);
     _l.info('----------------- RES END -----------------');
     rawResponseEnd.apply(res, resArgs);
     return responseLog as unknown as Response;
