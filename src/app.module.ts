@@ -11,6 +11,8 @@ import { DataSource } from 'typeorm';
 import { Member } from './VSTS/entity/member.entity';
 import { VSTSModule } from './VSTS/VSTS.module';
 import { ReqResLoggerMiddleware } from './middleware/reqres_logger.mw';
+import { TestService } from './test.service';
+import { TestController } from './test.controller';
 
 const get_oracle_options = () => 
 {
@@ -56,8 +58,8 @@ const imports = [
 
 @Module({
   imports,
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, TestController],
+  providers: [AppService, TestService],
 })
 export class AppModule implements NestModule
 {

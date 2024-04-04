@@ -21,8 +21,6 @@ export class MemberRepository
 
     async findOneByArmycode(sARMY_CODE: string)
     {
-
-        _l.log("armycode : ", sARMY_CODE);
         return await this.memberRepository.find({
             select: {
                 sNAME: true,
@@ -31,5 +29,14 @@ export class MemberRepository
                 "sARMY_CODE": sARMY_CODE
             }
         })
+    }
+
+    /**
+     * 
+     * @param info 어떤 정보를 update할 것인가? json형태
+     */
+    async updateMemberProfile(info: any)
+    {
+
     }
 }

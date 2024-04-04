@@ -8,6 +8,7 @@ import { HttpException } from '@nestjs/common';
 import { ErrorMessage, ResponseCode } from './responseCode';
 import * as ERROR from './Error.json';
 import { isEmpty } from '../common/text.util';
+import _l from '../logger/log.util';
 
 export default class BasicException extends HttpException {
   /**
@@ -46,6 +47,7 @@ export default class BasicException extends HttpException {
     }
     super(response, statusCode);
     // _l.warn(`-- Bexc ${JSON.stringify(this)}`)
+    _l.httpException(` ${JSON.stringify(this)}`)
     return this;
   }
 }

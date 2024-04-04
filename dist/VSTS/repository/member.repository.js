@@ -13,7 +13,6 @@ exports.MemberRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const member_entity_1 = require("../entity/member.entity");
-const log_util_1 = require("../../util/logger/log.util");
 let MemberRepository = class MemberRepository {
     constructor(dataSource) {
         this.dataSource = dataSource;
@@ -23,7 +22,6 @@ let MemberRepository = class MemberRepository {
         return await this.memberRepository.find();
     }
     async findOneByArmycode(sARMY_CODE) {
-        log_util_1.default.log("armycode : ", sARMY_CODE);
         return await this.memberRepository.find({
             select: {
                 sNAME: true,
@@ -32,6 +30,8 @@ let MemberRepository = class MemberRepository {
                 "sARMY_CODE": sARMY_CODE
             }
         });
+    }
+    async updateMemberProfile(info) {
     }
 };
 exports.MemberRepository = MemberRepository;

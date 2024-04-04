@@ -5,10 +5,15 @@
  */
 
 export enum ResponseCode {
+  // 200대는 정상 리턴
   OK                     = 200,
   CREATED                = 201,
   ACCEPTED               = 202,
   NO_CONTENT             = 204,
+
+  // 300 대는 redirect
+
+  // 400 이후는 오류
   BAD_REQUEST            = 400,
   UNAUTHORIZED           = 401,   // 로그인 정보가 없음
   FORBIDDEN              = 403,   // 계정이 유효하지 않음
@@ -18,6 +23,8 @@ export enum ResponseCode {
   ENTITIY_TOO_LONG       = 413,
   UNSUPPORTED_MEDIA_TYPE = 415,
   INTERNAL_SERVER_ERROR  = 500,
+
+
   // 이하 특별 케이스의 오류를 추가로 등록해 관리한다.
 }
 

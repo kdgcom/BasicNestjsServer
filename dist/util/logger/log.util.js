@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _log = require("log-beautify");
+_log.setColors({ httpError: "magenta", httpError_: "magenta" });
+_log.setSymbols({ httpError: "❌" });
+_log.setLabels({ httpError: "HTTP Exception!!" });
+_log.setTextColors({ httpError_: "pink" });
 const __show = _log.show.bind(_log);
 const __debug = _log.debug.bind(_log);
 const __info = _log.info.bind(_log);
@@ -8,6 +12,7 @@ const __log = __show;
 const __error = _log.error.bind(_log);
 const __warning = _log.warn.bind(_log);
 const __success = _log.success.bind(_log);
+const __httpError = _log.httpError.bind(_log);
 _log.trace('Trace');
 class _l {
     constructor() { }
@@ -54,6 +59,13 @@ class _l {
     }
     static success(...args) {
         this._common(__success, true, false, ...args);
+    }
+    static httpException(...args) {
+        _log.useLabels = true;
+        _log.useSymbols = true;
+        this._common(__httpError, true, false, ...args);
+        _log.useSymbols = false;
+        _log.useLabels = false;
     }
     static _common(_func, flagUsePrefix, flagPrintDetail, ...args) {
         let contents = [...args];

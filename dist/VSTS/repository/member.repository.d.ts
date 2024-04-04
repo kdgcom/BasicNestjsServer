@@ -6,4 +6,5 @@ export declare class MemberRepository {
     constructor(dataSource: DataSource);
     memberList(): Promise<Member[]>;
     findOneByArmycode(sARMY_CODE: string): Promise<Member[]>;
+    updateMemberProfile(info: any): Promise<void>;
 }

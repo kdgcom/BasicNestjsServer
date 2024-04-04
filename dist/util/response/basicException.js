@@ -4,6 +4,7 @@ const common_1 = require("@nestjs/common");
 const responseCode_1 = require("./responseCode");
 const ERROR = require("./Error.json");
 const text_util_1 = require("../common/text.util");
+const log_util_1 = require("../logger/log.util");
 class BasicException extends common_1.HttpException {
     constructor(statusCode = responseCode_1.ResponseCode.INTERNAL_SERVER_ERROR, message, data, errorAlias) {
         let response = {
@@ -26,6 +27,7 @@ class BasicException extends common_1.HttpException {
             response.error = errorData;
         }
         super(response, statusCode);
+        log_util_1.default.httpException(` ${JSON.stringify(this)}`);
         return this;
     }
 }

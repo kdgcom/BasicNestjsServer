@@ -1,7 +1,5 @@
 /**
  * @file          text(string) 관련 함수 모음
- * @author        Jasmin <jasmin@netstream.co.kr>
- * @description   2022.01.14
  */
 
 import { v4 as uuidv4 } from 'uuid';

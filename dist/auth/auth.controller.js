@@ -15,17 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const log_util_1 = require("../util/logger/log.util");
+const updateMemberProfile_dto_1 = require("./dto/updateMemberProfile.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    getHello() {
-        return this.authService.authHello();
+    async getHello() {
+        return await this.authService.sample(null);
     }
     async getUserByArmyCode(params) {
-        log_util_1.default.log("아미코드 : ", params);
         return await this.authService.getUser(params.armycode);
+    }
+    async updateUser(profile) {
+        return await this.authService.updateUser(profile);
     }
 };
 exports.AuthController = AuthController;
@@ -33,7 +35,7 @@ __decorate([
     (0, common_1.Get)('/'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getHello", null);
 __decorate([
     (0, common_1.Get)('/user/:armycode'),
@@ -42,6 +44,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUserByArmyCode", null);
+__decorate([
+    (0, common_1.Patch)('/user'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updateMemberProfile_dto_1.UpdateMemberProfileDTO]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "updateUser", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('/auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

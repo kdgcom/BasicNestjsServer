@@ -12,18 +12,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const member_repository_1 = require("../VSTS/repository/member.repository");
+const text_util_1 = require("../util/common/text.util");
 const BasicResponse_1 = require("../util/response/BasicResponse");
 const basicException_1 = require("../util/response/basicException");
 let AuthService = class AuthService {
     constructor(memberRepository) {
         this.memberRepository = memberRepository;
     }
-    authHello() {
-        return 'Auth Hello!';
+    async sample(profile) {
+        return new BasicResponse_1.default(200);
     }
     async getUser(armycode) {
-        throw new basicException_1.default(470);
         const mem = await this.memberRepository.findOneByArmycode(armycode);
+        if ((0, text_util_1.isEmpty)(mem))
+            throw new basicException_1.default();
+        return new BasicResponse_1.default(200);
+    }
+    async updateUser(profile) {
         return new BasicResponse_1.default(200);
     }
 };

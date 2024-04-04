@@ -17,16 +17,17 @@ import { isEmpty } from 'src/util/common/text.util';
 @Injectable()
 export class ReqResLoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
+    const clientIP = require('request-ip').getClientIp(req);
     // Gets the request log
-    _l.info('----------------- REQ START -----------------');
-    _l.logp(" >> Req", {
-      headers: JSON.stringify({originalUrl: req.originalUrl, ...req.headers}),
+    _l.info(`------- REQ START [ ${clientIP } ] --> [ ${req.originalUrl} ] ------- `);
+    _l.logp(" >>>> Req", {
+      headers: JSON.stringify({...req.headers}),
       body: req.body,
     });
 
     // response를 처리할 수 있는 이벤트를 등록시켜
     // 답변을 발송하고 나면 자동으로 res의 내용이 찍히도록 한다.
-    getResponseLog(res);
+    getResponseLog(res, req, clientIP);
 
     // Ends middleware function execution, hence allowing to move on 
     if (next) {
@@ -41,7 +42,7 @@ export class ReqResLoggerMiddleware implements NestMiddleware {
  * 
  * @param res 
  */
-const getResponseLog = (res: Response) => {
+const getResponseLog = (res: Response, req:Request, ip: string) => {
   const rawResponse = res.write;
   const rawResponseEnd = res.end;
   const chunkBuffers = [];
@@ -70,19 +71,28 @@ const getResponseLog = (res: Response) => {
     }
     const body = Buffer.concat(chunkBuffers).toString('utf8');
     res.setHeader('origin', 'restjs-req-res-logging-repo');
-    const bodyObject = JSON.parse(body);
-    const data = bodyObject.data;
-    delete bodyObject.data;
-    const responseLog = {
-      // statusCode: res.statusCode,
-      result: JSON.stringify(bodyObject),
-      data,
-      // Returns a shallow copy of the current outgoing headers
-      headers: JSON.stringify(res.getHeaders()),
-    };
-    if ( isEmpty(data) ) delete responseLog.data;
-    _l.logp(' >> Res: ', responseLog);
-    _l.info('----------------- RES END -----------------');
+    let responseLog = null;
+    try
+    {
+      const bodyObject = JSON.parse(body);
+      const data = bodyObject.data;
+      delete bodyObject.data;
+      const responseLog = {
+        // Returns a shallow copy of the current outgoing headers
+        headers: JSON.stringify(res.getHeaders()),
+        // statusCode: res.statusCode,
+        result: JSON.stringify(bodyObject),
+        data,
+      };
+      if ( isEmpty(data) ) delete responseLog.data;
+    }
+    catch(e)
+    {
+      responseLog = body;
+    }
+
+    _l.logp(' <<<< Res: ', responseLog);
+    _l.info(`------- RES END [ ${ip } ] --> [ ${req.originalUrl} ] ------- `);
     rawResponseEnd.apply(res, resArgs);
     return responseLog as unknown as Response;
   };

@@ -22,6 +22,8 @@ const typeorm_2 = require("typeorm");
 const member_entity_1 = require("./VSTS/entity/member.entity");
 const VSTS_module_1 = require("./VSTS/VSTS.module");
 const reqres_logger_mw_1 = require("./middleware/reqres_logger.mw");
+const test_service_1 = require("./test.service");
+const test_controller_1 = require("./test.controller");
 const get_oracle_options = () => {
     const oracle_options = {
         type: 'oracle',
@@ -69,8 +71,8 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports,
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        controllers: [app_controller_1.AppController, test_controller_1.TestController],
+        providers: [app_service_1.AppService, test_service_1.TestService],
     }),
     __metadata("design:paramtypes", [typeorm_2.DataSource])
 ], AppModule);

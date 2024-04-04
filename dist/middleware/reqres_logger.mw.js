@@ -12,12 +12,13 @@ const log_util_1 = require("../util/logger/log.util");
 const text_util_1 = require("../util/common/text.util");
 let ReqResLoggerMiddleware = class ReqResLoggerMiddleware {
     use(req, res, next) {
-        log_util_1.default.info('----------------- REQ START -----------------');
-        log_util_1.default.logp(" >> Req", {
-            headers: JSON.stringify({ originalUrl: req.originalUrl, ...req.headers }),
+        const clientIP = require('request-ip').getClientIp(req);
+        log_util_1.default.info(`------- REQ START [ ${clientIP} ] --> [ ${req.originalUrl} ] ------- `);
+        log_util_1.default.logp(" >>>> Req", {
+            headers: JSON.stringify({ ...req.headers }),
             body: req.body,
         });
-        getResponseLog(res);
+        getResponseLog(res, req, clientIP);
         if (next) {
             next();
         }
@@ -27,7 +28,7 @@ exports.ReqResLoggerMiddleware = ReqResLoggerMiddleware;
 exports.ReqResLoggerMiddleware = ReqResLoggerMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], ReqResLoggerMiddleware);
-const getResponseLog = (res) => {
+const getResponseLog = (res, req, ip) => {
     const rawResponse = res.write;
     const rawResponseEnd = res.end;
     const chunkBuffers = [];
@@ -56,18 +57,24 @@ const getResponseLog = (res) => {
         }
         const body = Buffer.concat(chunkBuffers).toString('utf8');
         res.setHeader('origin', 'restjs-req-res-logging-repo');
-        const bodyObject = JSON.parse(body);
-        const data = bodyObject.data;
-        delete bodyObject.data;
-        const responseLog = {
-            result: JSON.stringify(bodyObject),
-            data,
-            headers: JSON.stringify(res.getHeaders()),
-        };
-        if ((0, text_util_1.isEmpty)(data))
-            delete responseLog.data;
-        log_util_1.default.logp(' >> Res: ', responseLog);
-        log_util_1.default.info('----------------- RES END -----------------');
+        let responseLog = null;
+        try {
+            const bodyObject = JSON.parse(body);
+            const data = bodyObject.data;
+            delete bodyObject.data;
+            const responseLog = {
+                headers: JSON.stringify(res.getHeaders()),
+                result: JSON.stringify(bodyObject),
+                data,
+            };
+            if ((0, text_util_1.isEmpty)(data))
+                delete responseLog.data;
+        }
+        catch (e) {
+            responseLog = body;
+        }
+        log_util_1.default.logp(' <<<< Res: ', responseLog);
+        log_util_1.default.info(`------- RES END [ ${ip} ] --> [ ${req.originalUrl} ] ------- `);
         rawResponseEnd.apply(res, resArgs);
         return responseLog;
     };
