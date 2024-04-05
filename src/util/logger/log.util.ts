@@ -59,6 +59,10 @@ export default class _l {
     static log(...args) {
       this._common(__log, false, false, ...args);
     }
+    /**
+     * prefix를 사용하는 log함수
+     * @param args 
+     */
     static logp(...args) {
       this._common(__log, true, false, ...args);
     }
@@ -97,6 +101,11 @@ export default class _l {
     static success(...args)
     {
       this._common(__success, true, false, ...args);
+    }
+
+    static success_detail(...args)
+    {
+      this._common(__success, true, true, ...args);
     }
 
     static httpException(...args) {

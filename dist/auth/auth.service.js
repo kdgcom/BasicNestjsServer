@@ -15,6 +15,8 @@ const member_repository_1 = require("../VSTS/repository/member.repository");
 const text_util_1 = require("../util/common/text.util");
 const BasicResponse_1 = require("../util/response/BasicResponse");
 const basicException_1 = require("../util/response/basicException");
+const responseCode_1 = require("../util/response/responseCode");
+const log_util_1 = require("../util/logger/log.util");
 let AuthService = class AuthService {
     constructor(memberRepository) {
         this.memberRepository = memberRepository;
@@ -29,7 +31,9 @@ let AuthService = class AuthService {
         return new BasicResponse_1.default(200);
     }
     async updateUser(profile) {
-        return new BasicResponse_1.default(200);
+        const res = await this.memberRepository.updateMemberProfile(profile.toEntity());
+        log_util_1.default.success_detail("res : ", res);
+        return new BasicResponse_1.default(responseCode_1.ResponseCode.ACCEPTED);
     }
 };
 exports.AuthService = AuthService;

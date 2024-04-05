@@ -60,6 +60,9 @@ class _l {
     static success(...args) {
         this._common(__success, true, false, ...args);
     }
+    static success_detail(...args) {
+        this._common(__success, true, true, ...args);
+    }
     static httpException(...args) {
         _log.useLabels = true;
         _log.useSymbols = true;

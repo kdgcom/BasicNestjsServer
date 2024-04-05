@@ -45,12 +45,19 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
   저작권은 (주)한길씨앤씨에 있습니다.
 
-
-### 개발 관련 사항
+<br>
+<p align="center">
+<center>
+<H2>개발 관련 사항</H2>
+</center>
+</p>
 
 ## curl
 ```sh
-curl -X POST -H 'Content-Type: application/json' -d '{"nam":"bb"}' http://192.168.0.7:4000/test
+# sample
+curl -X POST -H 'Content-Type: application/json' -d '{"name":"bb"}' http://192.168.0.7:4000/test
+# update member info
+curl -X PATCH -H 'Content-Type: application/json' -d '{"armyCode":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/user
 ```
 
 ## class transform, class validator
@@ -59,9 +66,22 @@ npm install class-validator --save
 npm install class-transformer --save
 npm install reflect-metadata --save
 ```
+- entity 정의 : EntityDefinition을 extend - toPlain() 함수가 들어 있음
+```javascript
+@Entity('T_MEMBER')
+export class MemberEntity extends EntityDefinition
+{
+  @PrimaryColumn() // auto generated number일 경우 PrimaryGeneratedColumn
+  sID: string;
+
+  @Column()
+  sNAME: string;
+}
+
+```
 - dto - entity 변환시 dto에 대한 validation은 class validator로 수행 ( https://github.com/typestack/class-validator )
 ```javascript
-export class Post {
+export class PostDTO {
   @Length(10, 20)
   title: string;
 
@@ -89,16 +109,30 @@ export class Post {
   createDate: Date;
 }
 ```
-- dto가 valid 하다면 규칙에 따라 class transform에 의해 자동으로 entity로 변환되어 ORM에서 사용됨
-- entity - dto 변환시 class tramsform에 의해 transform 됨
-  - plainToClass 함수
+- dto가 valid 하다면 필요에 따라 DTO class 안에 toEntity 함수를 정의해 Entity로 전환한다.
+  - DTO내 함수 정의
+  ```javascript
+  // DTODefinition은 DTO 선언용 추상 함수. toEntity를 구현해 줘야 함.
+  export class PostDTO extends DTODefinition {
+    toEntity(): PostEntity
+    {
+      const pe = new PostEntity();
+      if ( this.nID ) pe.nID = this.nID;    // update할 때 필요 없는 필드를 넣지 않기 위함
+      ...
+
+      return pe;
+    }
+  }
+  ```
+- class tramsform으로 json - class object간 변환
+  - plainToClass 함수 (nestjs에서 외부 API를 콜하고 json형태로 받은 답을 object로 변환할 때 사용)
   ```javascript
   ifetch('users.json').then((users: Object[]) => {
     const realUsers = plainToClass(User, users);
     // now each user in realUsers is an instance of User class
   });
   ```
-  - classToPlain 함수
+  - classToPlain 함수 (내부 클래스를 외부로 전달할 json으로 전환할 때 새용)
   ```javascript
   let photo = classToPlain(photo);
   ```
@@ -109,16 +143,28 @@ export class Post {
 
   - 
 
+## DB query 관련
+- update
+  - repository.update는 인수로 ({where에 들어갈 변수를 위한 json}, object) 형태로 넣어야 함
+  ```typescript
+  ```
+  - 
+
 ## Validation Pipe
-  - DTO를 이용해 Rest 요청시 자동 DTO validation 진행
+  - DTO를 이용해 Rest 요청이 들어올 때 자동 DTO validation 진행
+  - main.ts에서 global pipe를 세팅하고
   ```javascript
   // in main.ts (bootstrap())
   app.useGlobalPipes(new ValidationPipe());
+  ```
 
+  - 컨트롤러에서는 json형태의 인수를 받을 때 DTO형태로 미리 정의해둔 형태로 json을 받는다.
+  ```javascript
   // in any controller
   @Post()
   create(@Body() createUserDto: CreateUserDto) { return 'This action adds a new user'; }
   ```
+  - 요건에 맞지 않으면 로직에 들어가지 않고 바로 리턴시킨다.
 ## auth
 
 - 기본 auth 관련 함수들은 src/auth에 정의됨

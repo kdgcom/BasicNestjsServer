@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { HttpCode, Injectable } from '@nestjs/common';
 import { MemberRepository } from 'src/VSTS/repository/member.repository';
 import { isEmpty } from 'src/util/common/text.util';
 import BasicResponse from 'src/util/response/BasicResponse';
 import BasicException from 'src/util/response/basicException';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
+import { MemberEntity } from 'src/VSTS/entity/member.entity';
+import { ResponseCode } from 'src/util/response/responseCode';
+import _l from 'src/util/logger/log.util';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +29,8 @@ export class AuthService {
 
   async updateUser(profile: UpdateMemberProfileDTO): Promise<BasicResponse>
   {
-    return new BasicResponse(200);
+    const res = await this.memberRepository.updateMemberProfile(profile.toEntity());
+    _l.success_detail("res : ", res);
+    return new BasicResponse(ResponseCode.ACCEPTED);
   }
 }

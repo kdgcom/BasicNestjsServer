@@ -16,7 +16,7 @@ const member_entity_1 = require("../entity/member.entity");
 let MemberRepository = class MemberRepository {
     constructor(dataSource) {
         this.dataSource = dataSource;
-        this.memberRepository = dataSource.getRepository(member_entity_1.Member);
+        this.memberRepository = dataSource.getRepository(member_entity_1.MemberEntity);
     }
     async memberList() {
         return await this.memberRepository.find();
@@ -31,7 +31,8 @@ let MemberRepository = class MemberRepository {
             }
         });
     }
-    async updateMemberProfile(info) {
+    async updateMemberProfile(profile) {
+        return await this.memberRepository.update({ "sARMY_CODE": profile.sARMY_CODE }, profile);
     }
 };
 exports.MemberRepository = MemberRepository;

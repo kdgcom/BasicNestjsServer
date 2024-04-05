@@ -9,72 +9,73 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Member = void 0;
+exports.MemberEntity = void 0;
+const entity_definition_1 = require("../../definition/entity.definition");
 const typeorm_1 = require("typeorm");
-let Member = class Member {
+let MemberEntity = class MemberEntity extends entity_definition_1.default {
 };
-exports.Member = Member;
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Member.prototype, "nMEM_ID", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "sUSER_ID", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "sARMY_CODE", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "sNAME", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "cRANK", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "cROLE", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "dCREATE", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "dUPDATE", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "sPASSWORD", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "sMEMO", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Member.prototype, "cSHIP_TYPE", void 0);
+exports.MemberEntity = MemberEntity;
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Member.prototype, "nDEP_ID", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Member.prototype, "nUNIT_ID", void 0);
+], MemberEntity.prototype, "nMEM_ID", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Member.prototype, "tSEARCH", void 0);
+], MemberEntity.prototype, "sUSER_ID", void 0);
+__decorate([
+    (0, typeorm_1.PrimaryColumn)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sARMY_CODE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sNAME", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "cRANK", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "cROLE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "dCREATE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "dUPDATE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sPASSWORD", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sMEMO", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "cSHIP_TYPE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], MemberEntity.prototype, "nDEP_ID", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], MemberEntity.prototype, "nUNIT_ID", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "tSEARCH", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
-    __metadata("design:type", String)
-], Member.prototype, "bACTIVE", void 0);
-exports.Member = Member = __decorate([
+    __metadata("design:type", Number)
+], MemberEntity.prototype, "bACTIVE", void 0);
+exports.MemberEntity = MemberEntity = __decorate([
     (0, typeorm_1.Entity)('T_MEMBER')
-], Member);
+], MemberEntity);
 //# sourceMappingURL=member.entity.js.map

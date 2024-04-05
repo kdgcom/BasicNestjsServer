@@ -33,7 +33,7 @@ const get_oracle_options = () => {
         serviceName: process.env.ORACLE_DATABASE,
         username: process.env.ORACLE_USER,
         password: process.env.ORACLE_PW,
-        entities: [member_entity_1.Member],
+        entities: [member_entity_1.MemberEntity],
         dropSchema: false,
         synchronize: false,
         keepConnectionAlive: true,

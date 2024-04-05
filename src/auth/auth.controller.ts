@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import BasicResponse from 'src/util/response/BasicResponse';
 import _l from 'src/util/logger/log.util';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
+import { plainToClass } from 'class-transformer';
 
 @Controller('/auth')
 export class AuthController {
@@ -22,6 +23,7 @@ export class AuthController {
   @Patch('/user')
   async updateUser(@Body() profile: UpdateMemberProfileDTO): Promise<BasicResponse>
   {
-    return await this.authService.updateUser(profile);
+    const dto = plainToClass(UpdateMemberProfileDTO, profile);
+    return await this.authService.updateUser(dto);
   }
 }

@@ -1,10 +1,10 @@
 import { DataSource } from "typeorm";
-import { Member } from "../entity/member.entity";
+import { MemberEntity } from "../entity/member.entity";
 export declare class MemberRepository {
     private readonly dataSource;
     private memberRepository;
     constructor(dataSource: DataSource);
-    memberList(): Promise<Member[]>;
-    findOneByArmycode(sARMY_CODE: string): Promise<Member[]>;
-    updateMemberProfile(info: any): Promise<void>;
+    memberList(): Promise<MemberEntity[]>;
+    findOneByArmycode(sARMY_CODE: string): Promise<MemberEntity[]>;
+    updateMemberProfile(profile: MemberEntity): Promise<import("typeorm").UpdateResult>;
 }

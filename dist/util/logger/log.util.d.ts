@@ -13,6 +13,7 @@ export default class _l {
     static warn(...args: any[]): void;
     static error(...args: any[]): void;
     static success(...args: any[]): void;
+    static success_detail(...args: any[]): void;
     static httpException(...args: any[]): void;
     static _common(_func: any, flagUsePrefix: any, flagPrintDetail: any, ...args: any[]): void;
 }

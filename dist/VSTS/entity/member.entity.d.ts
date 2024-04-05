@@ -1,4 +1,5 @@
-export declare class Member {
+import EntityDefinition from "src/definition/entity.definition";
+export declare class MemberEntity extends EntityDefinition {
     nMEM_ID: number;
     sUSER_ID: string;
     sARMY_CODE: string;
@@ -13,5 +14,5 @@ export declare class Member {
     nDEP_ID: number;
     nUNIT_ID: number;
     tSEARCH: string;
-    bACTIVE: string;
+    bACTIVE: number;
 }

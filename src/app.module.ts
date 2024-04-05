@@ -8,7 +8,7 @@ import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import _l from './util/logger/log.util';
 import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { Member } from './VSTS/entity/member.entity';
+import { MemberEntity } from './VSTS/entity/member.entity';
 import { VSTSModule } from './VSTS/VSTS.module';
 import { ReqResLoggerMiddleware } from './middleware/reqres_logger.mw';
 import { TestService } from './test.service';
@@ -25,7 +25,7 @@ const get_oracle_options = () =>
     serviceName: process.env.ORACLE_DATABASE,
     username: process.env.ORACLE_USER,
     password: process.env.ORACLE_PW,
-    entities: [Member],
+    entities: [MemberEntity],
     dropSchema: false,
     synchronize: false,
     keepConnectionAlive: true,

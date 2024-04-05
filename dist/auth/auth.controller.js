@@ -16,6 +16,7 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const updateMemberProfile_dto_1 = require("./dto/updateMemberProfile.dto");
+const class_transformer_1 = require("class-transformer");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -27,7 +28,8 @@ let AuthController = class AuthController {
         return await this.authService.getUser(params.armycode);
     }
     async updateUser(profile) {
-        return await this.authService.updateUser(profile);
+        const dto = (0, class_transformer_1.plainToClass)(updateMemberProfile_dto_1.UpdateMemberProfileDTO, profile);
+        return await this.authService.updateUser(dto);
     }
 };
 exports.AuthController = AuthController;

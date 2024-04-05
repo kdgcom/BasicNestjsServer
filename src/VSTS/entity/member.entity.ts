@@ -1,15 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import EntityDefinition from "src/definition/entity.definition";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('T_MEMBER')
-export class Member
+export class MemberEntity extends EntityDefinition
 {
-    @PrimaryGeneratedColumn()
+//    @PrimaryGeneratedColumn()
+    @Column()
     nMEM_ID: number;
 
     @Column()
     sUSER_ID: string;
 
-    @Column()
+    @PrimaryColumn()
     sARMY_CODE: string;
 
     @Column()
@@ -46,5 +48,5 @@ export class Member
     tSEARCH: string;
 
     @Column( {default: false} )
-    bACTIVE: string;
+    bACTIVE: number;
 }

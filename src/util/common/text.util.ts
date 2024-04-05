@@ -318,7 +318,7 @@ const dataTypeRoles = ['b', 'c', 'd', 'n', 's', 't', 'f']
  * nMEM_ID -> memId
  * @param text          변수명
  * @param useDataType   데이터 타입 명시하는지 여부
- * @returns MEM_ID => memId
+ * @returns nMEM_ID => memId
  */
 export function snakeTextToCamel(text: string, useDataType: boolean = true) {
   if (!text) return;
