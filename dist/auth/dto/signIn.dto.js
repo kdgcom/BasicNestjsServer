@@ -9,26 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppController = void 0;
-const common_1 = require("@nestjs/common");
-const app_service_1 = require("./app.service");
-let AppController = class AppController {
-    constructor(appService) {
-        this.appService = appService;
+exports.SignInDTO = void 0;
+const class_validator_1 = require("class-validator");
+const dto_definition_1 = require("../../definition/dto.definition");
+class SignInDTO extends dto_definition_1.default {
+    toEntity() {
+        return null;
     }
-    getHello() {
-        return this.appService.getHello();
-    }
-};
-exports.AppController = AppController;
+}
+exports.SignInDTO = SignInDTO;
 __decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getHello", null);
-exports.AppController = AppController = __decorate([
-    (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
-], AppController);
-//# sourceMappingURL=app.controller%20copy.js.map
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], SignInDTO.prototype, "userID", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(8),
+    __metadata("design:type", String)
+], SignInDTO.prototype, "passwd", void 0);
+//# sourceMappingURL=signIn.dto.js.map

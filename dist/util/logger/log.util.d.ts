@@ -4,6 +4,7 @@ export default class _l {
     static setLevel(str: any): void;
     static getDiffTime(): string;
     static prefix(): string;
+    static hl(...args: any[]): void;
     static log(...args: any[]): void;
     static logp(...args: any[]): void;
     static log_detail(...args: any[]): void;

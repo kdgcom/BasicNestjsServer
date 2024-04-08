@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.replaceAll = exports.snakeTextToCamel = exports.snakeObjectToCamelObject = exports.snakeToCamel = exports.camelTextToSnake = exports.camelObjectToSnakeObject = exports.camelToSnake = exports.getRandomPassword = exports.generateRandomNum = exports.isNotEmptyBoolan = exports.isString = exports.isEmpty = exports.createUUID = exports.getArrayToString = exports.getStringToArray = exports.getNicknameFromEmail = exports.findDuplicateFieldsFromMany = exports.findDuplicateFields = exports.convertObjectToJsonString = exports.convertStringToJson = void 0;
+exports.replaceAll = exports.snakeTextToCamel = exports.snakeObjectToCamelObject = exports.snakeToCamel = exports.camelTextToSnake = exports.camelObjectToSnakeObject = exports.camelToSnake = exports.passwordCompare = exports.passwordEncrypt = exports.getRandomPassword = exports.generateRandomNum = exports.isNotEmptyBoolan = exports.isString = exports.isEmpty = exports.createUUID = exports.getArrayToString = exports.getStringToArray = exports.getNicknameFromEmail = exports.findDuplicateFieldsFromMany = exports.findDuplicateFields = exports.convertObjectToJsonString = exports.convertStringToJson = void 0;
 const uuid_1 = require("uuid");
 const log_util_1 = require("../logger/log.util");
+const bcrypt_1 = require("bcrypt");
 function convertStringToJson(value) {
     try {
         if (isEmpty(value))
@@ -157,6 +158,18 @@ function getRandomPassword() {
     return ranPw;
 }
 exports.getRandomPassword = getRandomPassword;
+function passwordEncrypt(passwd) {
+    const saltRounds = process.env.PW_SALT_NROUND || 10;
+    const salt = (0, bcrypt_1.genSaltSync)(saltRounds);
+    const hash = (0, bcrypt_1.hashSync)(passwd, salt);
+    return hash;
+}
+exports.passwordEncrypt = passwordEncrypt;
+function passwordCompare(inPassword, passwordHash) {
+    log_util_1.default.info("Password Compare : ", inPassword, passwordHash);
+    return (0, bcrypt_1.compareSync)(inPassword, passwordHash);
+}
+exports.passwordCompare = passwordCompare;
 function camelToSnake(data, upper = true) {
     log_util_1.default.log('start camelToSnake...');
     let result = null;
@@ -240,6 +253,7 @@ function snakeTextToCamel(text, useDataType = true) {
         return text;
     text = text.substring(1);
     text = text.replace(dataTypeReg, g => g[1]);
+    text = text.replace(/_ID$/, "_I_D");
     let result = text.toLowerCase().replace(/([-_]\w)/g, g => g[1].toUpperCase());
     if (typeFlag === 'd') {
         result += "Date";

@@ -7,6 +7,7 @@ exports.MyConst = MyConst;
 MyConst.LISTEN_PORT = 40000;
 MyConst.MODE_DEV = 0;
 MyConst.MODE_PRODUCTION = 1;
+MyConst.PW_SALT_NROUND = 10;
 MyConst.checkMode = () => {
     if (process.env.NODE_ENV == "production" ||
         process.env.NODE_ENV == "prod")

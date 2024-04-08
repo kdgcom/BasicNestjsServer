@@ -4,6 +4,9 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import _l from '../logger/log.util';
+import BasicException from '../response/basicException';
+import { ResponseCode } from '../response/responseCode';
+import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
 
 export function convertStringToJson(value: any): any {
@@ -199,6 +202,35 @@ export function getRandomPassword() {
 }
 
 /**
+ * password를 bcrypt를 이용해 hash로 변환한다.
+ * 
+ * @param passwd plain password
+ */
+export function passwordEncrypt(passwd)
+{
+  const saltRounds = process.env.PW_SALT_NROUND || 10;
+
+  const salt = genSaltSync(saltRounds);
+  const hash = hashSync( passwd, salt );
+
+  return hash;
+}
+
+/**
+ * 유저 로그인시 패스워드가 맞는지 체크
+ * 
+ * @param inPassword 로그인시 입력 받은 패스워드
+ * @param passwordHash DB에 저장된 패스워드 해쉬
+ * @returns 
+ */
+export function passwordCompare(inPassword, passwordHash)
+{
+  _l.info("Password Compare : ", inPassword, passwordHash);
+  return compareSync(inPassword, passwordHash);
+}
+
+
+/**
  * 카멜 형식의 데이터를 snake 형식 데이터로 바꿔줌
  * memId => MEM_ID
  * @param data  {Object||Object[]}
@@ -334,6 +366,8 @@ export function snakeTextToCamel(text: string, useDataType: boolean = true) {
 
   text = text.substring(1);
   text = text.replace(dataTypeReg, g => g[1]);
+  // ID는 대문자로 출력되도록 한다.
+  text = text.replace(/_ID$/, "_I_D");
   let result = text.toLowerCase().replace(/([-_]\w)/g, g => g[1].toUpperCase())
 
   if (typeFlag === 'd') {

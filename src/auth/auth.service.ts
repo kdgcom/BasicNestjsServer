@@ -1,6 +1,6 @@
-import { HttpCode, Injectable } from '@nestjs/common';
+import { HttpCode, Injectable, UnauthorizedException } from '@nestjs/common';
 import { MemberRepository } from 'src/VSTS/repository/member.repository';
-import { isEmpty } from 'src/util/common/text.util';
+import { isEmpty, passwordCompare } from 'src/util/common/text.util';
 import BasicResponse from 'src/util/response/BasicResponse';
 import BasicException from 'src/util/response/basicException';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
@@ -8,6 +8,7 @@ import { MemberEntity } from 'src/VSTS/entity/member.entity';
 import { ResponseCode } from 'src/util/response/responseCode';
 import _l from 'src/util/logger/log.util';
 import { plainToClass } from 'class-transformer';
+import { SignInDTO } from './dto/signIn.dto';
 
 @Injectable()
 export class AuthService {
@@ -23,14 +24,56 @@ export class AuthService {
   {
     const mem = await this.memberRepository.findOneByArmycode(armycode);
     if ( isEmpty(mem) )
-      throw new BasicException();
-    return new BasicResponse(200);
+      throw new BasicException(ResponseCode.INTERNAL_SERVER_ERROR);
+    return new BasicResponse(ResponseCode.OK).data(mem);
   }
 
+  /**
+   * 
+   * @param armycode 
+   * @returns 
+   */
+  async getUser2(armycode: string): Promise<BasicResponse>
+  {
+    const memPlain = await this.memberRepository.findOneByArmycode2(armycode);
+    if ( isEmpty(memPlain) )
+      throw new BasicException(ResponseCode.NOT_FOUND);
+    const mem = plainToClass(MemberEntity, memPlain);
+    _l.log(mem);
+    return new BasicResponse(ResponseCode.OK).data(mem.toPlain());
+  }
+
+  /**
+   * 유저 정보 update
+   * 
+   * @param profile UpdateMemberProfileDTO 형식의 유저 profile
+   * @returns 
+   */
   async updateUser(profile: UpdateMemberProfileDTO): Promise<BasicResponse>
   {
-    const res = await this.memberRepository.updateMemberProfile(profile.toEntity());
+    const res = await this.memberRepository.updateMemberProfile(profile);
     _l.success_detail("res : ", res);
     return new BasicResponse(ResponseCode.ACCEPTED);
+  }
+
+  /**
+   * 유저를 로그인 시킴
+   * 
+   * @param id 
+   * @param pw 
+   */
+  async signIn(sidto: SignInDTO)
+  {
+    let me: MemberEntity = null;
+    if ( !(me = await this.memberRepository.findOneByArmycode(sidto.userID)) ) // 유저가 없을 경우
+      // throw new UnauthorizedException();
+      throw new BasicException(ResponseCode.NOT_FOUND);
+    const member = me.toPlain();
+    if ( !passwordCompare(sidto.passwd, member.password) ) // 패스워드가 틀릴 경우 Forbidden
+      // throw new UnauthorizedException();
+      throw new BasicException(ResponseCode.UNAUTHORIZED);
+
+    return new BasicResponse(ResponseCode.OK);
+
   }
 }

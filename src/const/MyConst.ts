@@ -5,6 +5,8 @@ export class MyConst
   static MODE_DEV = 0;
   static MODE_PRODUCTION = 1;
 
+  static PW_SALT_NROUND = 10;
+
   static checkMode = () =>
   {
     if ( 

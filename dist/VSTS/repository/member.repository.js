@@ -13,26 +13,35 @@ exports.MemberRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const member_entity_1 = require("../entity/member.entity");
-let MemberRepository = class MemberRepository {
+const master_repository_1 = require("./master.repository");
+const text_util_1 = require("../../util/common/text.util");
+let MemberRepository = class MemberRepository extends master_repository_1.default {
     constructor(dataSource) {
+        super(dataSource);
         this.dataSource = dataSource;
-        this.memberRepository = dataSource.getRepository(member_entity_1.MemberEntity);
+        this.repository = this.dataSource.getRepository(member_entity_1.MemberEntity);
     }
     async memberList() {
-        return await this.memberRepository.find();
+        return await this.repository.find();
     }
     async findOneByArmycode(sARMY_CODE) {
-        return await this.memberRepository.find({
-            select: {
-                sNAME: true,
-            },
+        return (await this.repository.find({
             where: {
                 "sARMY_CODE": sARMY_CODE
             }
-        });
+        }))[0];
     }
     async updateMemberProfile(profile) {
-        return await this.memberRepository.update({ "sARMY_CODE": profile.sARMY_CODE }, profile);
+        if (profile.passwd)
+            profile.passwd = (0, text_util_1.passwordEncrypt)(profile.passwd);
+        const entity = profile.toEntity();
+        return await this.repository.update({ "sARMY_CODE": entity.sARMY_CODE }, entity);
+    }
+    async findOneByArmycode2(armyCode) {
+        const sql = `
+        SELECT * FROM T_MEMBER where "sARMY_CODE"=:armyCode
+        `;
+        return (await this.doRawQuery(sql, { armyCode }, {}))[0];
     }
 };
 exports.MemberRepository = MemberRepository;

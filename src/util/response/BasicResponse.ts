@@ -84,7 +84,7 @@ export default class BasicResponse {
 
     return {
       success: this._success,
-      status: this._status,
+      statusCode: this._status,
       message: this._message,
       error: this._error,
       data: this._data,

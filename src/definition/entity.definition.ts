@@ -3,7 +3,7 @@ import { Entity } from "typeorm";
 
 export default class EntityDefinition 
 {
-    toPlain(): any
+    public toPlain(): any
     {
         const ret = snakeObjectToCamelObject(this);
 

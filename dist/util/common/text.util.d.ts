@@ -11,6 +11,8 @@ export declare function isString(value: any): boolean;
 export declare function isNotEmptyBoolan(value: any): boolean;
 export declare function generateRandomNum(strNum?: number, endNum?: number): number;
 export declare function getRandomPassword(): string;
+export declare function passwordEncrypt(passwd: any): any;
+export declare function passwordCompare(inPassword: any, passwordHash: any): any;
 export declare function camelToSnake(data: Object | Object[], upper?: boolean): any;
 export declare function camelObjectToSnakeObject(obj: Object, upper?: boolean): {};
 export declare function camelTextToSnake(text: string, upper?: boolean): string | null;

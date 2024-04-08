@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _log = require("log-beautify");
-_log.setColors({ httpError: "magenta", httpError_: "magenta" });
-_log.setSymbols({ httpError: "❌" });
-_log.setLabels({ httpError: "HTTP Exception!!" });
-_log.setTextColors({ httpError_: "pink" });
+_log.setColors({ httpError: "magenta", httpError_: "magenta", highlight: "yellow", highlight_: "yellow" });
+_log.setSymbols({ httpError: "❌", highlight: '🌈🌈🌈' });
+_log.setLabels({ httpError: "HTTP Exception!!", highlight: "Check!! : " });
+_log.setTextColors({ httpError_: "pink", highlight_: "yellow" });
 const __show = _log.show.bind(_log);
 const __debug = _log.debug.bind(_log);
 const __info = _log.info.bind(_log);
@@ -13,6 +13,7 @@ const __error = _log.error.bind(_log);
 const __warning = _log.warn.bind(_log);
 const __success = _log.success.bind(_log);
 const __httpError = _log.httpError.bind(_log);
+const __hl = _log.highlight.bind(_log);
 _log.trace('Trace');
 class _l {
     constructor() { }
@@ -32,6 +33,9 @@ class _l {
         const date = d[0].replace(/-/g, '');
         const time = d[1].replace(/:/g, '');
         return `[${time} ${process.pid}]`;
+    }
+    static hl(...args) {
+        this._common(__hl, false, true, ...args);
     }
     static log(...args) {
         this._common(__log, false, false, ...args);

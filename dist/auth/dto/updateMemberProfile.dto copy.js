@@ -35,34 +35,7 @@ class UpdateMemberProfileDTO extends dto_definition_1.default {
 }
 exports.UpdateMemberProfileDTO = UpdateMemberProfileDTO;
 __decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateMemberProfileDTO.prototype, "name", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateMemberProfileDTO.prototype, "userID", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MinLength)(8),
-    __metadata("design:type", String)
-], UpdateMemberProfileDTO.prototype, "passwd", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], UpdateMemberProfileDTO.prototype, "depID", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateMemberProfileDTO.prototype, "rankCode", void 0);
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], UpdateMemberProfileDTO.prototype, "isActive", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdateMemberProfileDTO.prototype, "armyCode", void 0);
-//# sourceMappingURL=updateMemberProfile.dto.js.map
+//# sourceMappingURL=updateMemberProfile.dto%20copy.js.map

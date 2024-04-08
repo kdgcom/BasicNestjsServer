@@ -1,17 +1,31 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
 import { MemberEntity } from "src/VSTS/entity/member.entity";
 import DTODefinition from "src/definition/dto.definition";
 import { isEmpty } from "src/util/common/text.util";
 
 export class UpdateMemberProfileDTO extends DTODefinition
 {
+    @IsString()
     name: string;
+
+    @IsString()
     userID: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(8)
     passwd: string;
+
+    @IsNumber()
     depID: number;      // 부서ID
+
+    @IsString()
     rankCode: string;   // 계급 코드
+
+    @IsNumber()
     isActive: number;   // 활성화여부. 1/0
     
+    @IsString()
     @IsNotEmpty()
     armyCode: string;
 
