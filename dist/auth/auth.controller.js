@@ -19,6 +19,7 @@ const log_util_1 = require("../util/logger/log.util");
 const updateMemberProfile_dto_1 = require("./dto/updateMemberProfile.dto");
 const class_transformer_1 = require("class-transformer");
 const signIn_dto_1 = require("./dto/signIn.dto");
+const auth_guard_1 = require("./guard/auth.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -57,6 +58,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUserByArmyCode", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('/user2/:armycode'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),

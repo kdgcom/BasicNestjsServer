@@ -9,10 +9,14 @@ import { ResponseCode } from 'src/util/response/responseCode';
 import _l from 'src/util/logger/log.util';
 import { plainToClass } from 'class-transformer';
 import { SignInDTO } from './dto/signIn.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly memberRepository: MemberRepository) {}
+  constructor(
+    private readonly memberRepository: MemberRepository,
+    private jwtService: JwtService
+  ) {}
 
   async sample(profile: UpdateMemberProfileDTO): Promise<BasicResponse>
   {
@@ -68,12 +72,14 @@ export class AuthService {
     if ( !(me = await this.memberRepository.findOneByArmycode(sidto.userID)) ) // 유저가 없을 경우
       // throw new UnauthorizedException();
       throw new BasicException(ResponseCode.NOT_FOUND);
-    const member = me.toPlain();
-    if ( !passwordCompare(sidto.passwd, member.password) ) // 패스워드가 틀릴 경우 Forbidden
+    const user = me.toPlain();
+    if ( !passwordCompare(sidto.passwd, user.password) ) // 패스워드가 틀릴 경우 Forbidden
       // throw new UnauthorizedException();
       throw new BasicException(ResponseCode.UNAUTHORIZED);
-
-    return new BasicResponse(ResponseCode.OK);
+    
+    const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
+    const ret = { access_token: await this.jwtService.signAsync(payload) };
+    return new BasicResponse(ResponseCode.OK).data(ret);
 
   }
 }

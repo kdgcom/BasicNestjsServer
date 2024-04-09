@@ -6,6 +6,7 @@ export class MyConst
   static MODE_PRODUCTION = 1;
 
   static PW_SALT_NROUND = 10;
+  static JWT_SECRET = process.env.JWT_SECRET || "-temp_jwt_secret-.,-";
 
   static checkMode = () =>
   {

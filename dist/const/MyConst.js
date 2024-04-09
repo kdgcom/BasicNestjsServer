@@ -8,6 +8,7 @@ MyConst.LISTEN_PORT = 40000;
 MyConst.MODE_DEV = 0;
 MyConst.MODE_PRODUCTION = 1;
 MyConst.PW_SALT_NROUND = 10;
+MyConst.JWT_SECRET = process.env.JWT_SECRET || "-temp_jwt_secret-.,-";
 MyConst.checkMode = () => {
     if (process.env.NODE_ENV == "production" ||
         process.env.NODE_ENV == "prod")

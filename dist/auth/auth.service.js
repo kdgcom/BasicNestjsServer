@@ -19,9 +19,11 @@ const member_entity_1 = require("../VSTS/entity/member.entity");
 const responseCode_1 = require("../util/response/responseCode");
 const log_util_1 = require("../util/logger/log.util");
 const class_transformer_1 = require("class-transformer");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(memberRepository) {
+    constructor(memberRepository, jwtService) {
         this.memberRepository = memberRepository;
+        this.jwtService = jwtService;
     }
     async sample(profile) {
         return new BasicResponse_1.default(200);
@@ -49,15 +51,18 @@ let AuthService = class AuthService {
         let me = null;
         if (!(me = await this.memberRepository.findOneByArmycode(sidto.userID)))
             throw new basicException_1.default(responseCode_1.ResponseCode.NOT_FOUND);
-        const member = me.toPlain();
-        if (!(0, text_util_1.passwordCompare)(sidto.passwd, member.password))
+        const user = me.toPlain();
+        if (!(0, text_util_1.passwordCompare)(sidto.passwd, user.password))
             throw new basicException_1.default(responseCode_1.ResponseCode.UNAUTHORIZED);
-        return new BasicResponse_1.default(responseCode_1.ResponseCode.OK);
+        const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
+        const ret = { access_token: await this.jwtService.signAsync(payload) };
+        return new BasicResponse_1.default(responseCode_1.ResponseCode.OK).data(ret);
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [member_repository_1.MemberRepository])
+    __metadata("design:paramtypes", [member_repository_1.MemberRepository,
+        jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
