@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BasicRedirection = void 0;
 const text_util_1 = require("../../util/common/text.util");
-const log_util_1 = require("../logger/log.util");
+const log_util_1 = __importDefault(require("../logger/log.util"));
 class BasicResponse {
     constructor(status) {
         this._success = false;

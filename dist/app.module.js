@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
@@ -16,7 +19,7 @@ const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const const_module_1 = require("./const/const.module");
 const typeorm_1 = require("@nestjs/typeorm");
-const log_util_1 = require("./util/logger/log.util");
+const log_util_1 = __importDefault(require("./util/logger/log.util"));
 const config_1 = require("@nestjs/config");
 const typeorm_2 = require("typeorm");
 const member_entity_1 = require("./VSTS/entity/member.entity");

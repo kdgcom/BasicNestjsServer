@@ -8,11 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateMemberProfileDTO = void 0;
 const class_validator_1 = require("class-validator");
 const member_entity_1 = require("../../VSTS/entity/member.entity");
-const dto_definition_1 = require("../../definition/dto.definition");
+const dto_definition_1 = __importDefault(require("../../definition/dto.definition"));
 const text_util_1 = require("../../util/common/text.util");
 class UpdateMemberProfileDTO extends dto_definition_1.default {
     toEntity() {
@@ -30,6 +33,10 @@ class UpdateMemberProfileDTO extends dto_definition_1.default {
             member.cRANK = this.rankCode;
         if (!(0, text_util_1.isEmpty)(this.isActive))
             member.bACTIVE = this.isActive;
+        if (!(0, text_util_1.isEmpty)(this.accessToken))
+            member.sACCESS_TOKEN = this.accessToken;
+        if (!(0, text_util_1.isEmpty)(this.refreshToken))
+            member.sREFRESH_TOKEN = this.refreshToken;
         return member;
     }
 }
@@ -44,7 +51,6 @@ __decorate([
 ], UpdateMemberProfileDTO.prototype, "userID", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(8),
     __metadata("design:type", String)
 ], UpdateMemberProfileDTO.prototype, "passwd", void 0);
@@ -65,4 +71,12 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdateMemberProfileDTO.prototype, "armyCode", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UpdateMemberProfileDTO.prototype, "accessToken", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UpdateMemberProfileDTO.prototype, "refreshToken", void 0);
 //# sourceMappingURL=updateMemberProfile.dto.js.map

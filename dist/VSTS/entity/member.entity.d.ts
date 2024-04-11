@@ -15,4 +15,6 @@ export declare class MemberEntity extends EntityDefinition {
     nUNIT_ID: number;
     tSEARCH: string;
     bACTIVE: number;
+    sACCESS_TOKEN: string;
+    sREFRESH_TOKEN: string;
 }

@@ -49,4 +49,10 @@ export class MemberEntity extends EntityDefinition
 
     @Column( {default: false} )
     bACTIVE: number;
+
+    @Column()
+    sACCESS_TOKEN: string;
+
+    @Column()
+    sREFRESH_TOKEN: string;
 }

@@ -11,15 +11,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const log_util_1 = require("../util/logger/log.util");
+const log_util_1 = __importDefault(require("../util/logger/log.util"));
 const updateMemberProfile_dto_1 = require("./dto/updateMemberProfile.dto");
 const class_transformer_1 = require("class-transformer");
 const signIn_dto_1 = require("./dto/signIn.dto");
 const auth_guard_1 = require("./guard/auth.guard");
+const MyConst_1 = require("../const/MyConst");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -38,9 +42,15 @@ let AuthController = class AuthController {
         const dto = (0, class_transformer_1.plainToClass)(updateMemberProfile_dto_1.UpdateMemberProfileDTO, profile);
         return await this.authService.updateUser(dto);
     }
-    async signIn(body) {
-        log_util_1.default.info("user2 controller");
-        return await this.authService.signIn(body);
+    async signIn(body, response) {
+        const { ret, refreshToken } = await this.authService.signIn(body);
+        response.cookie('refresh_token', refreshToken, {
+            secure: true,
+            sameSite: false,
+            httpOnly: true,
+            domain: MyConst_1.MyConst.COOKIE_ALLOWED_DOMAIN
+        });
+        return ret;
     }
 };
 exports.AuthController = AuthController;
@@ -75,8 +85,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/signin'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [signIn_dto_1.SignInDTO]),
+    __metadata("design:paramtypes", [signIn_dto_1.SignInDTO, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 exports.AuthController = AuthController = __decorate([

@@ -54,6 +54,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## curl
 ```sh
+# sample
 + curl -X POST -H 'Content-Type: application/json' -d '{"name":"bb"}' http://192.168.0.7:4000/test
 # login
 curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!!"}' http://192.168.0.7:4000/auth/signin

@@ -13,16 +13,18 @@ const auth_service_1 = require("./auth.service");
 const member_repository_1 = require("../VSTS/repository/member.repository");
 const jwt_1 = require("@nestjs/jwt");
 const MyConst_1 = require("../const/MyConst");
+const config_1 = require("@nestjs/config");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
             jwt_1.JwtModule.register({
                 global: true,
                 secret: MyConst_1.MyConst.JWT_SECRET,
-                signOptions: { expiresIn: process.env.JWT_EXPIREIN },
+                signOptions: { expiresIn: MyConst_1.MyConst.JWT_AT_EXPIREIN },
             })
         ],
         controllers: [auth_controller_1.AuthController],

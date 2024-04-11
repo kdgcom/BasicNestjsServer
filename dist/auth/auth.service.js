@@ -8,18 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const member_repository_1 = require("../VSTS/repository/member.repository");
 const text_util_1 = require("../util/common/text.util");
-const BasicResponse_1 = require("../util/response/BasicResponse");
-const basicException_1 = require("../util/response/basicException");
+const BasicResponse_1 = __importDefault(require("../util/response/BasicResponse"));
+const basicException_1 = __importDefault(require("../util/response/basicException"));
+const updateMemberProfile_dto_1 = require("./dto/updateMemberProfile.dto");
 const member_entity_1 = require("../VSTS/entity/member.entity");
 const responseCode_1 = require("../util/response/responseCode");
-const log_util_1 = require("../util/logger/log.util");
+const log_util_1 = __importDefault(require("../util/logger/log.util"));
 const class_transformer_1 = require("class-transformer");
 const jwt_1 = require("@nestjs/jwt");
+const payload_jwt_1 = require("./guard/payload.jwt");
 let AuthService = class AuthService {
     constructor(memberRepository, jwtService) {
         this.memberRepository = memberRepository;
@@ -54,9 +59,17 @@ let AuthService = class AuthService {
         const user = me.toPlain();
         if (!(0, text_util_1.passwordCompare)(sidto.passwd, user.password))
             throw new basicException_1.default(responseCode_1.ResponseCode.UNAUTHORIZED);
-        const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
-        const ret = { access_token: await this.jwtService.signAsync(payload) };
-        return new BasicResponse_1.default(responseCode_1.ResponseCode.OK).data(ret);
+        const payload = new payload_jwt_1.JWTPayload(user.armyCode, user.name, user.rank, user.memID);
+        const data = {
+            accessToken: await payload.toJWTAT(),
+            refreshToken: await payload.toJWTRT(),
+        };
+        const member = new updateMemberProfile_dto_1.UpdateMemberProfileDTO();
+        member.armyCode = sidto.userID;
+        member.accessToken = data.accessToken;
+        member.refreshToken = data.refreshToken;
+        this.memberRepository.updateMemberProfile(member);
+        return { ret: new BasicResponse_1.default(responseCode_1.ResponseCode.OK).data(data), refreshToken: data.refreshToken };
     }
 };
 exports.AuthService = AuthService;

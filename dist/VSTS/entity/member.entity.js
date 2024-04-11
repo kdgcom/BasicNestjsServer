@@ -8,9 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemberEntity = void 0;
-const entity_definition_1 = require("../../definition/entity.definition");
+const entity_definition_1 = __importDefault(require("../../definition/entity.definition"));
 const typeorm_1 = require("typeorm");
 let MemberEntity = class MemberEntity extends entity_definition_1.default {
 };
@@ -75,6 +78,14 @@ __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Number)
 ], MemberEntity.prototype, "bACTIVE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sACCESS_TOKEN", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sREFRESH_TOKEN", void 0);
 exports.MemberEntity = MemberEntity = __decorate([
     (0, typeorm_1.Entity)('T_MEMBER')
 ], MemberEntity);

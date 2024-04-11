@@ -6,6 +6,7 @@ import _l from './util/logger/log.util';
 import 'reflect-metadata';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -16,6 +17,9 @@ async function bootstrap() {
       : ['error', 'warn', 'log', 'verbose', 'debug']
     }
   );
+
+  // 쿠기 사용 설정
+  app.use(cookieParser());
 
   // Set validation pipe for DTO
   app.useGlobalPipes(new ValidationPipe(

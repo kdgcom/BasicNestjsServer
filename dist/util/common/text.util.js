@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceAll = exports.snakeTextToCamel = exports.snakeObjectToCamelObject = exports.snakeToCamel = exports.camelTextToSnake = exports.camelObjectToSnakeObject = exports.camelToSnake = exports.passwordCompare = exports.passwordEncrypt = exports.getRandomPassword = exports.generateRandomNum = exports.isNotEmptyBoolan = exports.isString = exports.isEmpty = exports.createUUID = exports.getArrayToString = exports.getStringToArray = exports.getNicknameFromEmail = exports.findDuplicateFieldsFromMany = exports.findDuplicateFields = exports.convertObjectToJsonString = exports.convertStringToJson = void 0;
 const uuid_1 = require("uuid");
-const log_util_1 = require("../logger/log.util");
+const log_util_1 = __importDefault(require("../logger/log.util"));
 const bcrypt_1 = require("bcrypt");
 function convertStringToJson(value) {
     try {

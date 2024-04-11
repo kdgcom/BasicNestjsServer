@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import BasicResponse from 'src/util/response/BasicResponse';
 import _l from 'src/util/logger/log.util';
@@ -6,6 +6,8 @@ import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
 import { plainToClass } from 'class-transformer';
 import { SignInDTO } from './dto/signIn.dto';
 import { AuthGuard } from './guard/auth.guard';
+import { Response } from 'express';
+import { MyConst } from 'src/const/MyConst';
 
 @Controller('/auth')
 export class AuthController {
@@ -37,11 +39,33 @@ export class AuthController {
     return await this.authService.updateUser(dto);
   }
   
+  /**
+   * 유저의 일반적인 로그인. SignInDTO를 통해 ID/PW를 받아 처리
+   * @param body 
+   * @returns 
+   */
   @Post('/signin')
-  async signIn(@Body() body: SignInDTO): Promise<BasicResponse>
+  async signIn(
+    @Body() body: SignInDTO, 
+    @Res({passthrough: true}) response: Response
+  ): Promise<any>
   {
-    _l.info("user2 controller");
-    return await this.authService.signIn(body);
+    const { ret, refreshToken } = await this.authService.signIn(body);
+    // 쿠키에 refresh_token을 세팅한다.
+    response.cookie( 'refresh_token', refreshToken, 
+      {
+        secure: true,
+        sameSite: false,
+        httpOnly: true, 
+        domain: MyConst.COOKIE_ALLOWED_DOMAIN
+      });
+    return ret;
   }
+
+  // @Post('signinRT')
+  // async signInRT(): Promise<BasicResponse>
+  // {
+
+  // }
 
 }

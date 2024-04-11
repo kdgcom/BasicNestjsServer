@@ -8,12 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemberRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const member_entity_1 = require("../entity/member.entity");
-const master_repository_1 = require("./master.repository");
+const master_repository_1 = __importDefault(require("./master.repository"));
 const text_util_1 = require("../../util/common/text.util");
 let MemberRepository = class MemberRepository extends master_repository_1.default {
     constructor(dataSource) {

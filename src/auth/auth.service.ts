@@ -10,6 +10,7 @@ import _l from 'src/util/logger/log.util';
 import { plainToClass } from 'class-transformer';
 import { SignInDTO } from './dto/signIn.dto';
 import { JwtService } from '@nestjs/jwt';
+import { JWTPayload } from './guard/payload.jwt';
 
 @Injectable()
 export class AuthService {
@@ -61,25 +62,43 @@ export class AuthService {
   }
 
   /**
-   * 유저를 로그인 시킴
+   * 유저를 로그인 시킴 by ID/PW
+   * 사용자에게 access_token을 전달하고, 
+   * refresh_token은 cookie set 되도록 한다.(httpOnly 로)
    * 
    * @param id 
    * @param pw 
+   * @return {BasicResponse, refresh_token} : controller에서 RT를 쿠키로 보내기 위함
    */
-  async signIn(sidto: SignInDTO)
+  async signIn(sidto: SignInDTO): Promise<any>
   {
     let me: MemberEntity = null;
+    // DB에서 유저 확인
     if ( !(me = await this.memberRepository.findOneByArmycode(sidto.userID)) ) // 유저가 없을 경우
-      // throw new UnauthorizedException();
       throw new BasicException(ResponseCode.NOT_FOUND);
+    // DB 결과물을 plain json으로 변환
     const user = me.toPlain();
     if ( !passwordCompare(sidto.passwd, user.password) ) // 패스워드가 틀릴 경우 Forbidden
-      // throw new UnauthorizedException();
       throw new BasicException(ResponseCode.UNAUTHORIZED);
     
-    const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
-    const ret = { access_token: await this.jwtService.signAsync(payload) };
-    return new BasicResponse(ResponseCode.OK).data(ret);
+    // payload에 탑재하여 jwt로 변환 및 클라이언트로 리턴
+    // const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
+    const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID);
+    const data = 
+    { 
+      // access_token: await this.jwtService.signAsync(payload) ,
+      accessToken: await payload.toJWTAT(),
+      refreshToken: await payload.toJWTRT(),
+    };
 
+    // AT 및 RT 업데이트
+    const member = new UpdateMemberProfileDTO();
+    member.armyCode = sidto.userID;
+    member.accessToken = data.accessToken;
+    member.refreshToken = data.refreshToken;
+    this.memberRepository.updateMemberProfile(member);
+    return { ret: new BasicResponse(ResponseCode.OK).data(data), refreshToken: data.refreshToken };
   }
+
+  // async signInRT()
 }

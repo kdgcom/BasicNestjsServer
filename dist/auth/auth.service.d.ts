@@ -11,5 +11,5 @@ export declare class AuthService {
     getUser(armycode: string): Promise<BasicResponse>;
     getUser2(armycode: string): Promise<BasicResponse>;
     updateUser(profile: UpdateMemberProfileDTO): Promise<BasicResponse>;
-    signIn(sidto: SignInDTO): Promise<BasicResponse>;
+    signIn(sidto: SignInDTO): Promise<any>;
 }

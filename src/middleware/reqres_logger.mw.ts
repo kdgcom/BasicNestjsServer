@@ -1,3 +1,6 @@
+/**
+ * @Author DG Kim
+ */
 import { Injectable, NestMiddleware, RequestMethod } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { RouteInfo } from '@nestjs/common/interfaces';
@@ -77,7 +80,7 @@ const getResponseLog = (res: Response, req:Request, ip: string) => {
       const bodyObject = JSON.parse(body);
       const data = bodyObject.data;
       delete bodyObject.data;
-      const responseLog = {
+      responseLog = {
         // Returns a shallow copy of the current outgoing headers
         headers: JSON.stringify(res.getHeaders()),
         // statusCode: res.statusCode,

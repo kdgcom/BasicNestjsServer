@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 import { MemberEntity } from "src/VSTS/entity/member.entity";
 import DTODefinition from "src/definition/dto.definition";
 import { isEmpty } from "src/util/common/text.util";
@@ -12,7 +12,6 @@ export class UpdateMemberProfileDTO extends DTODefinition
     userID: string;
 
     @IsString()
-    @IsNotEmpty()
     @MinLength(8)
     passwd: string;
 
@@ -29,6 +28,12 @@ export class UpdateMemberProfileDTO extends DTODefinition
     @IsNotEmpty()
     armyCode: string;
 
+    @IsOptional()
+    accessToken: string;
+
+    @IsOptional()
+    refreshToken: string;
+
     public toEntity(): MemberEntity 
     {
         const member = new MemberEntity();
@@ -39,6 +44,8 @@ export class UpdateMemberProfileDTO extends DTODefinition
         if ( this.depID ) member.nDEP_ID = this.depID;
         if ( this.rankCode ) member.cRANK = this.rankCode;
         if ( !isEmpty(this.isActive) ) member.bACTIVE = this.isActive;
+        if ( !isEmpty(this.accessToken) ) member.sACCESS_TOKEN = this.accessToken;
+        if ( !isEmpty(this.refreshToken) ) member.sREFRESH_TOKEN = this.refreshToken;
 
         return member;
     }
