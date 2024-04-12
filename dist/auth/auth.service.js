@@ -25,6 +25,7 @@ const log_util_1 = __importDefault(require("../util/logger/log.util"));
 const class_transformer_1 = require("class-transformer");
 const jwt_1 = require("@nestjs/jwt");
 const payload_jwt_1 = require("./guard/payload.jwt");
+const MyConst_1 = require("../const/MyConst");
 let AuthService = class AuthService {
     constructor(memberRepository, jwtService) {
         this.memberRepository = memberRepository;
@@ -59,17 +60,30 @@ let AuthService = class AuthService {
         const user = me.toPlain();
         if (!(0, text_util_1.passwordCompare)(sidto.passwd, user.password))
             throw new basicException_1.default(responseCode_1.ResponseCode.UNAUTHORIZED);
-        const payload = new payload_jwt_1.JWTPayload(user.armyCode, user.name, user.rank, user.memID);
+        const payload = new payload_jwt_1.JWTPayload(user.armyCode, user.name, user.rank, user.memID, user.level);
         const data = {
             accessToken: await payload.toJWTAT(),
             refreshToken: await payload.toJWTRT(),
         };
         const member = new updateMemberProfile_dto_1.UpdateMemberProfileDTO();
-        member.armyCode = sidto.userID;
+        member.userID = sidto.userID;
         member.accessToken = data.accessToken;
         member.refreshToken = data.refreshToken;
         this.memberRepository.updateMemberProfile(member);
         return { ret: new BasicResponse_1.default(responseCode_1.ResponseCode.OK).data(data), refreshToken: data.refreshToken };
+    }
+    async tokenRefresh(rt) {
+        let refreshToken = "";
+        try {
+            const payload = await this.jwtService.verifyAsync(rt, {
+                secret: MyConst_1.MyConst.JWT_SECRET
+            });
+            this.memberRepository.findOneByMemID(payload.memID);
+        }
+        catch {
+            throw new basicException_1.default(responseCode_1.ResponseCode.UNAUTHORIZED);
+        }
+        return { res: new BasicResponse_1.default(responseCode_1.ResponseCode.OK), refreshToken };
     }
 };
 exports.AuthService = AuthService;

@@ -1,8 +1,9 @@
+/// <reference types="cookie-parser" />
 import { AuthService } from './auth.service';
 import BasicResponse from 'src/util/response/BasicResponse';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
 import { SignInDTO } from './dto/signIn.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -11,4 +12,5 @@ export declare class AuthController {
     getUserByArmyCode2(params: any): Promise<BasicResponse>;
     updateUser(profile: UpdateMemberProfileDTO): Promise<BasicResponse>;
     signIn(body: SignInDTO, response: Response): Promise<any>;
+    signInRT(req: Request): Promise<any>;
 }

@@ -5,8 +5,19 @@
 </p>
 
 <p align="center">
-  VSTS 잠수함 가상 훈련 시스템 HTTP 서버
+  VSTS 잠수함 가상 훈련 시스템 Rest API 서버
 </p>
+
+<style>
+red { color: Red }
+orange { color: Orange }
+green { color: Green }
+blue { color: Blue }
+pink { color: Pink }
+magenta { color: Magenta }
+cyan { color: Cyan }
+yellow { color: Yellow }
+</style>
 
 ## Description
 
@@ -59,11 +70,15 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 # login
 curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!!"}' http://192.168.0.7:4000/auth/signin
 curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/signin
+# refresh token
+curl -X POST -H 'Content-Type: application/json' --cookie "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxMjg5ODkyOCwiZXhwIjoxNzEyODk4OTg4fQ.VurKRhFVNTqTtrAaE-Yd6DHcxMlNGDZg9FTcZv-kROU" http://192.168.0.7:4000/auth/regenerate
+
 # Get user by armycode
 curl -X GET http://192.168.0.7:4000/auth/user/00-00000
 curl -X GET http://192.168.0.7:4000/auth/user2/00-00000
 # update member info
 curl -X PATCH -H 'Content-Type: application/json' -d '{"armyCode":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/user
+#
 ```
 
 ## class transform, class validator
@@ -155,6 +170,37 @@ export class PostDTO {
   ```typescript
   ```
   - 
+- transaction - (MemberRepository의 update함수 참조)
+```javascript
+// transaction START
+// connection을 새로 받음
+const newQR = await this.dataSource.createQueryRunner();
+await newQR.connect();
+await newQR.startTransaction();
+try
+{
+    this.setQueryRunner(newQR);
+    await this.repository.update(where, entity);
+    await newQR.commitTransaction();
+}
+catch(e)
+{
+    await newQR.rollbackTransaction();
+}
+finally
+{
+    await newQR.release();
+}
+// transaction END
+```
+- insert시 시퀀스 넘버 필드 auto_increment
+  - oracle의 경우 sequence를 이용해 auto_increment 설정
+  ```sql
+  CREATE SEQUENCE temp_seq START WITH 1 INCREMENT BY 1 NOCACHE;
+
+  INSERT INTO T_MEMBER (id, str) values(tmp_seq.NEXTVAL, 'tmptmp');
+
+  ```
 
 ## Validation Pipe
   - DTO를 이용해 Rest 요청이 들어올 때 자동 DTO validation 진행
@@ -174,7 +220,32 @@ export class PostDTO {
 ## auth
 
 - 기본 auth 관련 함수들은 src/auth에 정의됨
-- auth에서 실제로 체크하는 DB에 관련된 guard 나 정책에 대한 정의는 
+- auth에서 실제로 체크하는 DB에 관련된 guard 나 정책에 대한 정의는 src/auth/아래에 guard, dto, entity 등에 정의됨
+- auth 기본 개념
+  * Authorization은 기본적으로 JWT 형식의 access_token(AT)을 통해 이뤄짐
+    + req header에서 "Authorization Bearer <access_token> "
+  * access_token의 exp time은 짧으므로 (1일 이하) 이후 자동으로 로그인되도록 하기 위해서는 refresh_token(RT)을 사용
+  * refresh_token(RT) - AT의 재발행시 권한 체크용
+    + 발행
+      - <magenta>시점 1</magenta> : 최초 로그인시 AT이 return될 때 발행
+      - <magenta>시점 2</magenta> : AT이 만료되어 RT을 이용해 AT를 재발할 때 RT도 다시 재발행
+      - cookie에 set하는 방식으로 발행. httpOnly, secure를 이용하여 외부의 접근을 불허
+    + <orange>RT를 이용한 AT의 재발급 과정</orange>
+      - 만료된 AT를 이용한 api요청이 들어온다. (c-->s)
+      - Unauthorized 오류가 리턴된다. (s-->c)
+      - 클라이언트는 자동으로 RT를 cookie에 태워 재발급 API를 요청한다. (c-->s)
+      - 서버는 새 AT와 새 RT를 발급해 AT는 data로, RT는 쿠키에 set하여 답변한다. ( s-->c )
+      - 이후 클라는 새 AT를 이용해 API통신
+    + <orange>재발급을 위한 클라이언트의 의무</orange>
+      - auth gruard가 세팅된 API 요청시 (즉 AT가 필요한 요청) 모든 요청 정보를 모아 어딘가에 저장
+        * 저장 정보 : method, url, data, param, callback, fail callback등 통신을 위한 정보 일체
+        * localStorage나 SPA일 경우 내부 변수 등에 저장
+        * AT를 재발급 받은 후 다시 API를 수행하고 콜백을 실행해야 하기 때문.
+      - AT가 재발급 되고 나면 저장해 둔 정보에 기반해 API call을 재수행
+  * <u>RT를 이용한 AT 재발행의 의무가 AT에게 있는 이유</u>
+    + 여러 목적의 API를 같은 AT를 통해 사용할 때 모든 API가 auth권한이 있는건 아니기 때문
+    + AT가 만료되면 클라이언트는 auth가 가능한 API에 RT를 이용하여 AT를 취득
+
 
 ## DB 관련
 

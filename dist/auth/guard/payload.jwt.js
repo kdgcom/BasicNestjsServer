@@ -5,11 +5,14 @@ const jwt_1 = require("@nestjs/jwt");
 const class_transformer_1 = require("class-transformer");
 const MyConst_1 = require("../../const/MyConst");
 class JWTPayload {
-    constructor(id, name, rank, memID, iat, exp) {
+    constructor(id, name, rank, memID, level, role, iat, exp) {
         this.id = id;
         this.username = name;
         this.rank = rank;
         this.memID = memID;
+        this.level = level;
+        if (role)
+            this.role = role;
         if (iat)
             this.iat = iat;
         if (exp)
@@ -17,9 +20,9 @@ class JWTPayload {
     }
     static fromObj(obj) {
         if (obj.iat && obj.exp)
-            return new JWTPayload(obj.id, obj.name, obj.rank, obj.memID, obj.iat, obj.exp);
+            return new JWTPayload(obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role, obj.iat, obj.exp);
         else
-            return new JWTPayload(obj.id, obj.name, obj.rank, obj.memID);
+            return new JWTPayload(obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role || "");
     }
     static async fromJWT(jwt) {
         return JWTPayload.fromObj(await new jwt_1.JwtService().verifyAsync(jwt, {
@@ -66,7 +69,7 @@ class JWTPayload {
         if (isAT)
             return { ...json, iat, exp };
         else
-            return { type: "refresh_token", iat, exp };
+            return { type: "refresh_token", iat, exp, memID: this.memID };
     }
 }
 exports.JWTPayload = JWTPayload;

@@ -44,13 +44,17 @@ let AuthController = class AuthController {
     }
     async signIn(body, response) {
         const { ret, refreshToken } = await this.authService.signIn(body);
-        response.cookie('refresh_token', refreshToken, {
+        response.cookie(MyConst_1.MyConst.COOKIE_REFRESH_TOKEN, refreshToken, {
             secure: true,
             sameSite: false,
             httpOnly: true,
             domain: MyConst_1.MyConst.COOKIE_ALLOWED_DOMAIN
         });
         return ret;
+    }
+    async signInRT(req) {
+        const rt = MyConst_1.MyConst.COOKIE_REFRESH_TOKEN;
+        const { res, refreshToken } = await this.authService.tokenRefresh(rt);
     }
 };
 exports.AuthController = AuthController;
@@ -90,6 +94,13 @@ __decorate([
     __metadata("design:paramtypes", [signIn_dto_1.SignInDTO, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
+__decorate([
+    (0, common_1.Post)('/regenerate'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "signInRT", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('/auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

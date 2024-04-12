@@ -7,8 +7,9 @@ export declare class UpdateMemberProfileDTO extends DTODefinition {
     depID: number;
     rankCode: string;
     isActive: number;
-    armyCode: string;
     accessToken: string;
     refreshToken: string;
+    level: number;
+    role: string;
     toEntity(): MemberEntity;
 }

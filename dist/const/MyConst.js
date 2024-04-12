@@ -9,6 +9,7 @@ _a = MyConst;
 MyConst.LISTEN_PORT = process.env.LISTEN_PORT || 40000;
 MyConst.MODE_DEV = 0;
 MyConst.MODE_PRODUCTION = 1;
+MyConst.DB_MODE_ORACLE = true;
 MyConst.PW_SALT_NROUND = 10;
 MyConst.JWT_SECRET = process.env.JWT_SECRET || "-temp_jwt_secret-.,-";
 MyConst.JWT_AT_EXPIREIN = process.env.JWT_AT_EXPIREIN || '30s';
@@ -22,4 +23,7 @@ MyConst.checkMode = () => {
         return _a.MODE_DEV;
 };
 MyConst.mode = _a.checkMode();
+MyConst.COOKIE_REFRESH_TOKEN = "refreshToken";
+MyConst.DB_FIELD_MEM_UNIQUE = "sARMY_CODE";
+MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
 //# sourceMappingURL=MyConst.js.map

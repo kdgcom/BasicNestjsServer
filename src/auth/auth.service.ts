@@ -11,6 +11,7 @@ import { plainToClass } from 'class-transformer';
 import { SignInDTO } from './dto/signIn.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JWTPayload } from './guard/payload.jwt';
+import { MyConst } from 'src/const/MyConst';
 
 @Injectable()
 export class AuthService {
@@ -83,7 +84,7 @@ export class AuthService {
     
     // payload에 탑재하여 jwt로 변환 및 클라이언트로 리턴
     // const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
-    const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID);
+    const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID, user.level);
     const data = 
     { 
       // access_token: await this.jwtService.signAsync(payload) ,
@@ -93,12 +94,32 @@ export class AuthService {
 
     // AT 및 RT 업데이트
     const member = new UpdateMemberProfileDTO();
-    member.armyCode = sidto.userID;
+    member.userID = sidto.userID;
     member.accessToken = data.accessToken;
     member.refreshToken = data.refreshToken;
     this.memberRepository.updateMemberProfile(member);
     return { ret: new BasicResponse(ResponseCode.OK).data(data), refreshToken: data.refreshToken };
   }
 
-  // async signInRT()
+  async tokenRefresh(rt: string): Promise<any>
+  {
+    let refreshToken = "";
+    try {
+        // JWT 토큰에서 payload를 뽑아냄
+        const payload = await this.jwtService.verifyAsync(
+          rt,
+          {
+            secret: MyConst.JWT_SECRET
+          }
+        );
+        // 여기에 오면 valid 한 rt
+        // DB의 값과 확인
+        this.memberRepository.findOneByMemID(payload.memID)
+
+      } catch {
+        throw new BasicException(ResponseCode.UNAUTHORIZED);
+      }
+    return {res:new BasicResponse(ResponseCode.OK), refreshToken};
+
+  }
 }

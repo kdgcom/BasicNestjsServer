@@ -18,8 +18,6 @@ async function bootstrap() {
     }
   );
 
-  // 쿠기 사용 설정
-  app.use(cookieParser());
 
   // Set validation pipe for DTO
   app.useGlobalPipes(new ValidationPipe(
@@ -32,8 +30,11 @@ async function bootstrap() {
       
     }));
   
+  // 쿠기 사용 설정
+  app.use(cookieParser());
+
   /** Listen **/
-  const port = process.env.LISTEN_PORT || MyConst.LISTEN_PORT;
+  const port = MyConst.LISTEN_PORT = process.env.LISTEN_PORT || MyConst.LISTEN_PORT;
   await app.listen(port, ()=>
   {
     _l.info("LISTEN port : ", port);

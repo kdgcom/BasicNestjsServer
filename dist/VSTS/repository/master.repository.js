@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const log_util_1 = __importDefault(require("../../util/logger/log.util"));
 const basicException_1 = __importDefault(require("../../util/response/basicException"));
 const responseCode_1 = require("../../util/response/responseCode");
-class MasterRepository {
-    constructor(dataSource) {
-        this.dataSource = dataSource;
-        this.queryRunner = this.dataSource.createQueryRunner();
+const typeorm_1 = require("typeorm");
+class MasterRepository extends typeorm_1.Repository {
+    constructor(target, dataSoruce) {
+        super(target, dataSoruce.createEntityManager(), dataSoruce.createQueryRunner());
     }
     async doRawQuery(sql, params, options) {
         log_util_1.default.log("doRawQuery : ", sql, params, options);

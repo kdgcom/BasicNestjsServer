@@ -8,43 +8,53 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MemberRepository = void 0;
+exports.MemberRoleRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const member_entity_1 = require("../entity/member.entity");
 const master_repository_1 = __importDefault(require("./master.repository"));
 const text_util_1 = require("../../util/common/text.util");
 const MyConst_1 = require("../../const/MyConst");
-const typeorm_2 = require("@nestjs/typeorm");
-const memberRole_repository_1 = require("./memberRole.repository");
-let MemberRepository = class MemberRepository extends master_repository_1.default {
-    constructor(dataSource, memberRoleRepository) {
-        super(member_entity_1.MemberEntity, dataSource);
+const role_entity_1 = require("../entity/role.entity");
+let MemberRoleRepository = class MemberRoleRepository extends master_repository_1.default {
+    constructor(dataSource) {
+        super(role_entity_1.MemberRoleEntity, dataSource);
         this.dataSource = dataSource;
-        this.memberRoleRepository = memberRoleRepository;
-    }
-    async memberList() {
-        return await this.find();
     }
     async findOneByMemID(id) {
         const where = {};
         where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = id;
         return await this.find({ where })[0];
     }
-    async findOneByID(id) {
+    async deleteMemberRole(memID) {
         const where = {};
-        where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = id;
-        return await this.find({ where })[0];
+        where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = memID;
+        const deleteRes = await this.delete(where);
+        return deleteRes;
     }
-    async findOneByArmycode(sARMY_CODE) {
-        return await this.findOneByID(sARMY_CODE);
+    async insertMemberRole(memID, roleCode) {
+        const mre = new role_entity_1.MemberRoleEntity();
+        mre.nMEM_ID = memID;
+        mre.cROLE = roleCode;
+        if (MyConst_1.MyConst.DB_MODE_ORACLE) {
+            const sql = `
+INSERT INTO VSTS.T_MEMBER_ROLE ("nMEM_ROLE_ID", "cROLE", "nMEM_ID")
+VALUES(:seq, :roleCode, :memID);
+            `;
+            const params = {
+                nMEM_ROLE_ID: () => "T_MEMBER_ROLE_SEQ.NEXTVAL",
+                memID,
+                roleCode
+            };
+            return await this.doRawQuery(sql, params, {});
+        }
+        else {
+            return await this.insert(mre);
+        }
     }
     async updateMemberProfile(profile) {
         if (profile.passwd)
@@ -52,30 +62,26 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         const entity = profile.toEntity();
         const where = {};
         where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
-        const qr = this.queryRunner;
-        await qr.startTransaction();
+        const newQR = await this.dataSource.createQueryRunner();
+        await newQR.connect();
+        await newQR.startTransaction();
+        const manager = newQR.manager;
         try {
+            await manager.getRepository(member_entity_1.MemberEntity).update(where, entity);
+            await newQR.commitTransaction();
         }
         catch (e) {
-            await qr.rollbackTransaction();
+            await newQR.rollbackTransaction();
         }
         finally {
-            await qr.release();
+            await newQR.release();
         }
         return;
     }
-    async findOneByArmycode2(id) {
-        const sql = `
-        SELECT * FROM T_MEMBER where "${MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE}"=:id
-        `;
-        return (await this.doRawQuery(sql, { id }, {}))[0];
-    }
 };
-exports.MemberRepository = MemberRepository;
-exports.MemberRepository = MemberRepository = __decorate([
+exports.MemberRoleRepository = MemberRoleRepository;
+exports.MemberRoleRepository = MemberRoleRepository = __decorate([
     (0, common_1.Injectable)(),
-    __param(1, (0, typeorm_2.InjectRepository)(memberRole_repository_1.MemberRoleRepository)),
-    __metadata("design:paramtypes", [typeorm_1.DataSource,
-        memberRole_repository_1.MemberRoleRepository])
-], MemberRepository);
-//# sourceMappingURL=member.repository.js.map
+    __metadata("design:paramtypes", [typeorm_1.DataSource])
+], MemberRoleRepository);
+//# sourceMappingURL=memberRole.repository.js.map

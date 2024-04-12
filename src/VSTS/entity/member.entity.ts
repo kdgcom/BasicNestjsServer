@@ -55,4 +55,10 @@ export class MemberEntity extends EntityDefinition
 
     @Column()
     sREFRESH_TOKEN: string;
+
+    @Column()
+    nLEVEL: number;
+
+    @Column()
+    sROLE: string;
 }

@@ -5,6 +5,8 @@ export class MyConst
   static MODE_DEV = 0;
   static MODE_PRODUCTION = 1;
 
+  static DB_MODE_ORACLE = true;
+
   static PW_SALT_NROUND = 10;
   static JWT_SECRET = process.env.JWT_SECRET || "-temp_jwt_secret-.,-";
   static JWT_AT_EXPIREIN = process.env.JWT_AT_EXPIREIN || '30s'; // access_token expires in
@@ -25,4 +27,9 @@ export class MyConst
   }
 
   static mode = MyConst.checkMode();
+
+  static COOKIE_REFRESH_TOKEN = "refreshToken";
+
+  static DB_FIELD_MEM_UNIQUE = "sARMY_CODE";
+  static DB_FIELD_MEM_ID = "nMEM_ID";
 }

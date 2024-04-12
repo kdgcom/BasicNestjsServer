@@ -12,13 +12,17 @@ export class JWTPayload
     public memID: number;
     public iat: number;
     public exp: number;
+    public level: number;
+    public role: string;
 
-    constructor( id, name, rank, memID, iat?: number, exp?: number)
+    constructor( id, name, rank, memID, level, role?, iat?: number, exp?: number)
     {
         this.id = id;
         this.username = name;
         this.rank = rank;
         this.memID = memID;
+        this.level = level;
+        if ( role ) this.role = role;
         if ( iat ) this.iat = iat;
         if ( exp ) this.exp = exp;
     }
@@ -26,9 +30,11 @@ export class JWTPayload
     static fromObj( obj )
     {
         if ( obj.iat && obj.exp )
-            return new JWTPayload( obj.id, obj.name, obj.rank, obj.memID, obj.iat, obj.exp );
+            return new JWTPayload( 
+                obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role, obj.iat, obj.exp 
+            );
         else
-            return new JWTPayload( obj.id, obj.name, obj.rank, obj.memID );
+            return new JWTPayload( obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role || "" );
     }
     static async fromJWT(jwt)
     {
@@ -98,6 +104,6 @@ export class JWTPayload
         if ( isAT )
             return {...json, iat, exp}
         else    // refresh_token일 경우 사용자의 자료를 가지고 있으면 안됨
-            return { type:"refresh_token", iat, exp }
+            return { type:"refresh_token", iat, exp, memID: this.memID }
     }
 }

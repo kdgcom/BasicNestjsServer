@@ -97,4 +97,4 @@ __decorate([
 exports.MemberEntity = MemberEntity = __decorate([
     (0, typeorm_1.Entity)('T_MEMBER')
 ], MemberEntity);
-//# sourceMappingURL=member.entity.js.map
+//# sourceMappingURL=member.entity%20copy.js.map

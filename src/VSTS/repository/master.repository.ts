@@ -1,20 +1,49 @@
 import _l from "src/util/logger/log.util";
 import BasicException from "src/util/response/basicException";
 import { ResponseCode } from "src/util/response/responseCode";
-import { DataSource, QueryRunner, Repository, getConnection } from "typeorm";
+import { DataSource, EntityTarget, QueryRunner, Repository, getConnection } from "typeorm";
 
 /**
  * T 는 특정 table의 Entity를 칭하는 template임.
  */
-export default abstract class MasterRepository
+export default abstract class MasterRepository<T> extends Repository<T>
 {
-    protected queryRunner: QueryRunner;
+    // protected queryRunner: QueryRunner;
+    public queryRunnerBackup: QueryRunner;
     // protected dataSource: DataSource;
 
-    constructor(protected readonly dataSource: DataSource)
+    constructor(target: EntityTarget<T>, dataSoruce: DataSource)
+    // constructor(protected readonly dataSource: DataSource)
     {
-        this.queryRunner = this.dataSource.createQueryRunner();
+        super(
+            target, 
+            dataSoruce.createEntityManager(), 
+            dataSoruce.createQueryRunner()
+        );
+        // this.queryRunner = this.dataSource.createQueryRunner();
     }
+
+    /**
+     * transaction을 이용하기 위해 Repository의 Runner를 바꾸는 용도
+     * @param qr 
+     */
+    // public setQueryRunner(qr)
+    // {
+    //     this.queryRunnerBackup = this.queryRunner;
+    //     this.queryRunner = qr;
+    // }
+
+    /**
+     * transaction을 이용하기 위해 바꾼 Runner를 되돌리는
+     */
+    // public returnOriginalQueryRunner()
+    // {
+    //     if ( this.queryRunnerBackup )
+    //     {
+    //         this.queryRunner = this.queryRunnerBackup;
+    //         this.queryRunnerBackup = null;
+    //     }
+    // }
 
     /**
      * escape가 가능한 raw sql query 실행
