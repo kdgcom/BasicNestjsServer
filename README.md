@@ -183,6 +183,7 @@ export class PostDTO {
   ```
   - 
 - transaction - (MemberRepository의 update함수 참조)
+  * 참고 링크 ([typeorm - manager](https://orkhan.gitbook.io/typeorm/docs/entity-manager-api))
 ```javascript
 // transaction START
 // connection을 새로 받음
@@ -191,8 +192,23 @@ await newQR.connect();
 await newQR.startTransaction();
 try
 {
-    this.setQueryRunner(newQR);
-    await this.repository.update(where, entity);
+    // 두가지 옵션이 있음
+    // 1. transaction은 insert와 update, delete에 대해서만 일어남
+      await newQR.manager.getRepository<>
+      await newQR.manager.save(ENTITY1, { /*data1*/ })
+      await newQR.manager.insert(ENTITY2, { /*data2*/ })
+      await newQR.manager.query("RAW QUERY");
+      await newQR.manager.createQueryBuilder(). ...
+      await newQR.manager.remove(INSTANCE_OF_AN_ENTITY); // 즉, User가 아니라 user
+      await newQR.manager.remove([instance1, instance2, instance3]);
+      await newQR.manager.update(User, {age: 18 }, { category: "ADULT" });
+      await newQR.manager.update(User, 1, { firstName: "Rizzrak" }); // id==1인 raw에 대해 udpate
+
+
+    2. manager.withRepository 함수 이용
+      newQR.manager.withRepository(this.repository).FUNCTION_NAME()
+    // this.setQueryRunner(newQR);
+    // await this.repository.update(where, entity);
     await newQR.commitTransaction();
 }
 catch(e)
