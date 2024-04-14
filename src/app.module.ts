@@ -8,23 +8,23 @@ import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import _l from './util/logger/log.util';
 import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { MemberEntity } from './VSTS/entity/member.entity';
+import { MemberEntity } from './auth/entity/member.entity';
 import { VSTSModule } from './VSTS/VSTS.module';
 import { ReqResLoggerMiddleware } from './middleware/reqres_logger.mw';
 import { TestService } from './test.service';
 import { TestController } from './test.controller';
 
-const get_oracle_options = () => 
+const get_db_options = () => 
 {
-  const oracle_options = 
+  const db_options = 
   {
-    type: 'oracle',
-    host: process.env.ORACLE_HOST,
-    port: process.env.ORACLE_PORT,
-    database: process.env.ORACLE_DATABASE,
-    serviceName: process.env.ORACLE_DATABASE,
-    username: process.env.ORACLE_USER,
-    password: process.env.ORACLE_PW,
+    type: process.env.DB_TYPE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_DATABASE,
+    serviceName: process.env.DB_DATABASE,
+    username: process.env.DB_USER,
+    password: process.env.DB_PW,
     entities: [MemberEntity],
     dropSchema: false,
     synchronize: false,
@@ -32,8 +32,8 @@ const get_oracle_options = () =>
     logging: true,
 
   }
-  _l.debug("Oracle Options : ", oracle_options );
-  return oracle_options;
+  _l.debug("DB Options : ", db_options );
+  return db_options;
 }
 
 const imports = [
@@ -48,9 +48,9 @@ const imports = [
   TypeOrmModule.forRootAsync(
     {
       name: 'default',
-      type: 'oracle',
+      type: 'db',
       useFactory: async () => {
-        return get_oracle_options()
+        return get_db_options()
       },
     } as TypeOrmModuleAsyncOptions
   )

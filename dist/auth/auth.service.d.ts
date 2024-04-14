@@ -1,4 +1,4 @@
-import { MemberRepository } from 'src/VSTS/repository/member.repository';
+import { MemberRepository } from 'src/auth/repository/member.repository';
 import BasicResponse from 'src/util/response/BasicResponse';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
 import { SignInDTO } from './dto/signIn.dto';

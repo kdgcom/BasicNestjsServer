@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { MemberRepository } from 'src/VSTS/repository/member.repository';
+import { MemberRepository } from 'src/auth/repository/member.repository';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { MyConst } from 'src/const/MyConst';
 import { ConfigModule } from '@nestjs/config';
+import { MemberRoleRepository } from 'src/auth/repository/memberRole.repository';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AuthController],
   providers: [
     AuthService,
-    MemberRepository
+    MemberRepository,
+    MemberRoleRepository
   ],
 })
 export class AuthModule {}

@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIService = void 0;
 const common_1 = require("@nestjs/common");
 const BasicResponse_1 = __importDefault(require("../../util/response/BasicResponse"));
-const member_repository_1 = require("../repository/member.repository");
+const member_repository_1 = require("../../auth/repository/member.repository");
 let APIService = class APIService {
     constructor(memberRepository) {
         this.memberRepository = memberRepository;

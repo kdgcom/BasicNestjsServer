@@ -1,6 +1,6 @@
 import { Controller, Injectable } from "@nestjs/common";
 import BasicResponse from "src/util/response/BasicResponse";
-import { MemberRepository } from "../repository/member.repository";
+import { MemberRepository } from "../../auth/repository/member.repository";
 
 @Injectable()
 export class APIService

@@ -10,8 +10,8 @@ exports.VSTSModule = void 0;
 const common_1 = require("@nestjs/common");
 const api_service_1 = require("./api/api.service");
 const api_controller_1 = require("./api/api.controller");
-const member_repository_1 = require("./repository/member.repository");
-const memberRole_repository_1 = require("./repository/memberRole.repository");
+const member_repository_1 = require("../auth/repository/member.repository");
+const memberRole_repository_1 = require("../auth/repository/memberRole.repository");
 let VSTSModule = class VSTSModule {
 };
 exports.VSTSModule = VSTSModule;

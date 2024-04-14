@@ -81,6 +81,16 @@ curl -X PATCH -H 'Content-Type: application/json' -d '{"armyCode":"00-00000", "p
 #
 ```
 
+## .env 사용
+- .env.xx 파일 사용
+  * env-cmd
+  ```sh
+  npx env-cmd -f .env.xx <나머지 실행 명령>
+
+  # example
+  npx env-cmd -f .env.local nest start --watch
+  ```
+
 ## class transform, class validator
 ```shell
 npm install class-validator --save
@@ -164,6 +174,8 @@ export class PostDTO {
 
   - 
 
+## DB 기본 세팅(mysql)
+- 
 ## DB query 관련
 - update
   - repository.update는 인수로 ({where에 들어갈 변수를 위한 json}, object) 형태로 넣어야 함

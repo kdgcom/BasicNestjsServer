@@ -30,6 +30,7 @@ export class MyConst
 
   static COOKIE_REFRESH_TOKEN = "refreshToken";
 
-  static DB_FIELD_MEM_UNIQUE = "sARMY_CODE";
+  // static DB_FIELD_MEM_UNIQUE = "sARMY_CODE";
+  static DB_FIELD_MEM_UNIQUE = "sEMAIL";
   static DB_FIELD_MEM_ID = "nMEM_ID";
 }

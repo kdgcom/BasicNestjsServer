@@ -10,10 +10,11 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
-const member_repository_1 = require("../VSTS/repository/member.repository");
+const member_repository_1 = require("./repository/member.repository");
 const jwt_1 = require("@nestjs/jwt");
 const MyConst_1 = require("../const/MyConst");
 const config_1 = require("@nestjs/config");
+const memberRole_repository_1 = require("./repository/memberRole.repository");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -30,7 +31,8 @@ exports.AuthModule = AuthModule = __decorate([
         controllers: [auth_controller_1.AuthController],
         providers: [
             auth_service_1.AuthService,
-            member_repository_1.MemberRepository
+            member_repository_1.MemberRepository,
+            memberRole_repository_1.MemberRoleRepository
         ],
     })
 ], AuthModule);

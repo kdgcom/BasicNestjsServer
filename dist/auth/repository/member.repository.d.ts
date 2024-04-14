@@ -1,11 +1,12 @@
 import { DataSource } from "typeorm";
 import { MemberEntity } from "../entity/member.entity";
-import MasterRepository from "./master.repository";
+import MasterRepository from "../../repository/master.repository";
 import { UpdateMemberProfileDTO } from "src/auth/dto/updateMemberProfile.dto";
-export declare class MemberRepository extends MasterRepository {
+import { MemberRoleRepository } from "./memberRole.repository";
+export declare class MemberRepository extends MasterRepository<MemberEntity> {
     protected readonly dataSource: DataSource;
-    private repository;
-    constructor(dataSource: DataSource);
+    private memberRoleRepository;
+    constructor(dataSource: DataSource, memberRoleRepository: MemberRoleRepository);
     memberList(): Promise<MemberEntity[]>;
     findOneByMemID(id: number): Promise<any>;
     findOneByID(id: string): Promise<any>;

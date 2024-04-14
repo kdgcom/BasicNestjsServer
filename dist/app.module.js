@@ -22,28 +22,28 @@ const typeorm_1 = require("@nestjs/typeorm");
 const log_util_1 = __importDefault(require("./util/logger/log.util"));
 const config_1 = require("@nestjs/config");
 const typeorm_2 = require("typeorm");
-const member_entity_1 = require("./VSTS/entity/member.entity");
+const member_entity_1 = require("./auth/entity/member.entity");
 const VSTS_module_1 = require("./VSTS/VSTS.module");
 const reqres_logger_mw_1 = require("./middleware/reqres_logger.mw");
 const test_service_1 = require("./test.service");
 const test_controller_1 = require("./test.controller");
-const get_oracle_options = () => {
-    const oracle_options = {
-        type: 'oracle',
-        host: process.env.ORACLE_HOST,
-        port: process.env.ORACLE_PORT,
-        database: process.env.ORACLE_DATABASE,
-        serviceName: process.env.ORACLE_DATABASE,
-        username: process.env.ORACLE_USER,
-        password: process.env.ORACLE_PW,
+const get_db_options = () => {
+    const db_options = {
+        type: process.env.DB_TYPE,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        database: process.env.DB_DATABASE,
+        serviceName: process.env.DB_DATABASE,
+        username: process.env.DB_USER,
+        password: process.env.DB_PW,
         entities: [member_entity_1.MemberEntity],
         dropSchema: false,
         synchronize: false,
         keepConnectionAlive: true,
         logging: true,
     };
-    log_util_1.default.debug("Oracle Options : ", oracle_options);
-    return oracle_options;
+    log_util_1.default.debug("DB Options : ", db_options);
+    return db_options;
 };
 const imports = [
     config_1.ConfigModule.forRoot({
@@ -54,9 +54,9 @@ const imports = [
     VSTS_module_1.VSTSModule,
     typeorm_1.TypeOrmModule.forRootAsync({
         name: 'default',
-        type: 'oracle',
+        type: 'db',
         useFactory: async () => {
-            return get_oracle_options();
+            return get_db_options();
         },
     })
 ];

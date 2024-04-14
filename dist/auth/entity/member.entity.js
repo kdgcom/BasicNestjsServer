@@ -27,17 +27,9 @@ __decorate([
     __metadata("design:type", String)
 ], MemberEntity.prototype, "sUSER_ID", void 0);
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
-], MemberEntity.prototype, "sARMY_CODE", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], MemberEntity.prototype, "sNAME", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], MemberEntity.prototype, "cRANK", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -58,18 +50,6 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], MemberEntity.prototype, "sMEMO", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], MemberEntity.prototype, "cSHIP_TYPE", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], MemberEntity.prototype, "nDEP_ID", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], MemberEntity.prototype, "nUNIT_ID", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -94,6 +74,30 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], MemberEntity.prototype, "sROLE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sEMAIL", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "cRANK", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "cSHIP_TYPE", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], MemberEntity.prototype, "nDEP_ID", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], MemberEntity.prototype, "nUNIT_ID", void 0);
+__decorate([
+    (0, typeorm_1.PrimaryColumn)(),
+    __metadata("design:type", String)
+], MemberEntity.prototype, "sARMY_CODE", void 0);
 exports.MemberEntity = MemberEntity = __decorate([
     (0, typeorm_1.Entity)('T_MEMBER')
 ], MemberEntity);

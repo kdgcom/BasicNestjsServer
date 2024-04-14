@@ -24,6 +24,6 @@ MyConst.checkMode = () => {
 };
 MyConst.mode = _a.checkMode();
 MyConst.COOKIE_REFRESH_TOKEN = "refreshToken";
-MyConst.DB_FIELD_MEM_UNIQUE = "sARMY_CODE";
+MyConst.DB_FIELD_MEM_UNIQUE = "sEMAIL";
 MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
 //# sourceMappingURL=MyConst.js.map

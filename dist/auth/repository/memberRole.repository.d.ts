@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import MasterRepository from "./master.repository";
+import MasterRepository from "../../repository/master.repository";
 import { UpdateMemberProfileDTO } from "src/auth/dto/updateMemberProfile.dto";
 import { MemberRoleEntity } from "../entity/role.entity";
 export declare class MemberRoleRepository extends MasterRepository<MemberRoleEntity> {

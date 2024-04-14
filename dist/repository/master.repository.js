@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const log_util_1 = __importDefault(require("../../util/logger/log.util"));
-const basicException_1 = __importDefault(require("../../util/response/basicException"));
-const responseCode_1 = require("../../util/response/responseCode");
+const log_util_1 = __importDefault(require("../util/logger/log.util"));
+const basicException_1 = __importDefault(require("../util/response/basicException"));
+const responseCode_1 = require("../util/response/responseCode");
 const typeorm_1 = require("typeorm");
 class MasterRepository extends typeorm_1.Repository {
     constructor(target, dataSoruce) {

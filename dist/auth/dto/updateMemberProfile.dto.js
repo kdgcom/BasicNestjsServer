@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateMemberProfileDTO = void 0;
 const class_validator_1 = require("class-validator");
-const member_entity_1 = require("../../VSTS/entity/member.entity");
+const member_entity_1 = require("../entity/member.entity");
 const MyConst_1 = require("../../const/MyConst");
 const dto_definition_1 = __importDefault(require("../../definition/dto.definition"));
 const text_util_1 = require("../../util/common/text.util");

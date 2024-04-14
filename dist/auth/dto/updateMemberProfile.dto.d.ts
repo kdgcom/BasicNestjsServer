@@ -1,4 +1,4 @@
-import { MemberEntity } from "src/VSTS/entity/member.entity";
+import { MemberEntity } from "src/auth/entity/member.entity";
 import DTODefinition from "src/definition/dto.definition";
 export declare class UpdateMemberProfileDTO extends DTODefinition {
     name: string;

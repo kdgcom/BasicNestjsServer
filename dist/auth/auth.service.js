@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const member_repository_1 = require("../VSTS/repository/member.repository");
+const member_repository_1 = require("./repository/member.repository");
 const text_util_1 = require("../util/common/text.util");
 const BasicResponse_1 = __importDefault(require("../util/response/BasicResponse"));
 const basicException_1 = __importDefault(require("../util/response/basicException"));
 const updateMemberProfile_dto_1 = require("./dto/updateMemberProfile.dto");
-const member_entity_1 = require("../VSTS/entity/member.entity");
+const member_entity_1 = require("./entity/member.entity");
 const responseCode_1 = require("../util/response/responseCode");
 const log_util_1 = __importDefault(require("../util/logger/log.util"));
 const class_transformer_1 = require("class-transformer");

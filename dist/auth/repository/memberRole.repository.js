@@ -12,34 +12,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MemberRepository = void 0;
+exports.MemberRoleRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const member_entity_1 = require("../entity/member.entity");
-const master_repository_1 = __importDefault(require("./master.repository"));
+const master_repository_1 = __importDefault(require("../../repository/master.repository"));
 const text_util_1 = require("../../util/common/text.util");
 const MyConst_1 = require("../../const/MyConst");
-let MemberRepository = class MemberRepository extends master_repository_1.default {
+const role_entity_1 = require("../entity/role.entity");
+let MemberRoleRepository = class MemberRoleRepository extends master_repository_1.default {
     constructor(dataSource) {
-        super(dataSource);
+        super(role_entity_1.MemberRoleEntity, dataSource);
         this.dataSource = dataSource;
-        this.repository = this.dataSource.getRepository(member_entity_1.MemberEntity);
-    }
-    async memberList() {
-        return await this.repository.find();
     }
     async findOneByMemID(id) {
         const where = {};
         where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = id;
-        return await this.repository.find({ where })[0];
+        return await this.find({ where })[0];
     }
-    async findOneByID(id) {
+    async deleteMemberRole(memID) {
         const where = {};
-        where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = id;
-        return await this.repository.find({ where })[0];
+        where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = memID;
+        const deleteRes = await this.delete(where);
+        return deleteRes;
     }
-    async findOneByArmycode(sARMY_CODE) {
-        return await this.findOneByID(sARMY_CODE);
+    async insertMemberRole(memID, roleCode) {
+        const mre = new role_entity_1.MemberRoleEntity();
+        mre.nMEM_ID = memID;
+        mre.cROLE = roleCode;
+        if (MyConst_1.MyConst.DB_MODE_ORACLE) {
+            const sql = `
+INSERT INTO VSTS.T_MEMBER_ROLE ("nMEM_ROLE_ID", "cROLE", "nMEM_ID")
+VALUES(:seq, :roleCode, :memID);
+            `;
+            const params = {
+                nMEM_ROLE_ID: () => "T_MEMBER_ROLE_SEQ.NEXTVAL",
+                memID,
+                roleCode
+            };
+            return await this.doRawQuery(sql, params, {});
+        }
+        else {
+            return await this.insert(mre);
+        }
     }
     async updateMemberProfile(profile) {
         if (profile.passwd)
@@ -50,7 +65,6 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         const newQR = await this.dataSource.createQueryRunner();
         await newQR.connect();
         await newQR.startTransaction();
-        this.setQueryRunner(newQR);
         const manager = newQR.manager;
         try {
             await manager.getRepository(member_entity_1.MemberEntity).update(where, entity);
@@ -61,20 +75,13 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         }
         finally {
             await newQR.release();
-            this.returnOriginalQueryRunner();
         }
         return;
     }
-    async findOneByArmycode2(id) {
-        const sql = `
-        SELECT * FROM T_MEMBER where "${MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE}"=:id
-        `;
-        return (await this.doRawQuery(sql, { id }, {}))[0];
-    }
 };
-exports.MemberRepository = MemberRepository;
-exports.MemberRepository = MemberRepository = __decorate([
+exports.MemberRoleRepository = MemberRoleRepository;
+exports.MemberRoleRepository = MemberRoleRepository = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [typeorm_1.DataSource])
-], MemberRepository);
-//# sourceMappingURL=member.repository%20copy.js.map
+], MemberRoleRepository);
+//# sourceMappingURL=memberRole.repository.js.map
