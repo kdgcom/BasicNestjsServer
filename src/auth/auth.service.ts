@@ -20,7 +20,7 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async sample(profile: UpdateMemberProfileDTO): Promise<BasicResponse>
+  async sample(profile: UpdateMemberProfileDTO | null): Promise<BasicResponse>
   {
     // do something
     return new BasicResponse(200);
@@ -73,7 +73,7 @@ export class AuthService {
    */
   async signIn(sidto: SignInDTO): Promise<any>
   {
-    let me: MemberEntity = null;
+    let me: MemberEntity | null = null;
     // DB에서 유저 확인
     if ( !(me = await this.memberRepository.findOneByArmycode(sidto.userID)) ) // 유저가 없을 경우
       throw new BasicException(ResponseCode.NOT_FOUND);

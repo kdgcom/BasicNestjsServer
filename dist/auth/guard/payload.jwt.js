@@ -6,6 +6,9 @@ const class_transformer_1 = require("class-transformer");
 const MyConst_1 = require("../../const/MyConst");
 class JWTPayload {
     constructor(id, name, rank, memID, level, role, iat, exp) {
+        this.iat = 0;
+        this.exp = 0;
+        this.role = null;
         this.id = id;
         this.username = name;
         this.rank = rank;

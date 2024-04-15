@@ -12,6 +12,8 @@ class MasterRepository extends typeorm_1.Repository {
         super(target, dataSoruce.createEntityManager(), dataSoruce.createQueryRunner());
     }
     async doRawQuery(sql, params, options) {
+        if (!this.queryRunner)
+            throw new basicException_1.default(responseCode_1.ResponseCode.INTERNAL_SERVER_ERROR, `No query runner: doRawQuery(${sql})`);
         log_util_1.default.log("doRawQuery : ", sql, params, options);
         const connection = this.queryRunner.connection;
         if (!connection) {

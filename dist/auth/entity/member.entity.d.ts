@@ -13,8 +13,6 @@ export declare class MemberEntity extends EntityDefinition {
     sACCESS_TOKEN: string;
     sREFRESH_TOKEN: string;
     nLEVEL: number;
-    sROLE: string;
-    sEMAIL: string;
     cRANK: string;
     cSHIP_TYPE: string;
     nDEP_ID: number;

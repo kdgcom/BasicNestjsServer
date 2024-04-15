@@ -9,6 +9,8 @@ import { passwordEncrypt } from "src/util/common/text.util";
 import { MyConst } from "src/const/MyConst";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MemberRoleRepository } from "./memberRole.repository";
+import { MemberRoleEntity } from "../entity/role.entity";
+import BasicException from "src/util/response/basicException";
 
 @Injectable()
 export class MemberRepository extends MasterRepository<MemberEntity>
@@ -32,17 +34,31 @@ export class MemberRepository extends MasterRepository<MemberEntity>
 
     async findOneByMemID( id: number )
     {
-        const where = {};
-        where[MyConst.DB_FIELD_MEM_ID] = id;
-        return await this.find({ where })[0];
+        // const where: any = {};
+        // where[MyConst.DB_FIELD_MEM_ID] = id;
+        // const res = this.manager.findOneBy(MemberEntity, where);
+        // return res;
+        return await this.findOneByWhat(MyConst.DB_FIELD_MEM_ID, id);
     }
 
     async findOneByID(id: string)
     {
-        const where = {};
-        where[MyConst.DB_FIELD_MEM_UNIQUE] = id;
-        return await this.find({ where })[0];
+        // const where = {};
+        // where[MyConst.DB_FIELD_MEM_UNIQUE] = id;
+        // return await this.find({ where })[0];
+
+        return await this.findOneByWhat(MyConst.DB_FIELD_MEM_UNIQUE, id);
     }
+
+    async findOneByWhat(what: string, str: any)
+    {
+        if ( !this.queryRunner )
+            throw new BasicException(500);
+        const where: any = {};
+        where[what] = str;
+        return await this.queryRunner.manager.findOneBy(MemberEntity, where);
+    }
+
 
     async findOneByArmycode(sARMY_CODE: string)
     {
@@ -71,47 +87,45 @@ export class MemberRepository extends MasterRepository<MemberEntity>
             profile.passwd = passwordEncrypt(profile.passwd);
 
         const entity = profile.toEntity();
-        const where = {}
+        const where: any = {}
         where[MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
+
         // transaction START
-        // connection을 새로 받음
+        // queryRunner를 새로 받음
+        const newQR = this.dataSource.createQueryRunner();
+        await newQR.connect();
+        await newQR.startTransaction();
+        const manager = newQR.manager;
 
-        // const newQR = await this.dataSource.createQueryRunner();
-        // await newQR.connect();
-        // await newQR.startTransaction();
-        // this.setQueryRunner(newQR);
-        // const manager = newQR.manager;
-        // try
-        // {
-        //     await manager.getRepository(MemberRoleEntity).
-        //     await manager.getRepository(MemberEntity).update(where, entity);
-        //     await newQR.commitTransaction();
-        // }
-        // catch(e)
-        // {
-        //     await newQR.rollbackTransaction();
-        // }
-        // finally
-        // {
-        //     await newQR.release();
-        //     this.returnOriginalQueryRunner();
-        // }
+        // user의 memID를 확보 (슈퍼유저가 update하는 경우도 있으므로)
+        const user = await this.findOneByID(profile.userID);
+        if ( !user )
+            throw new BasicException(404);
 
-        const qr = this.queryRunner;
-        await qr.startTransaction();
         try
         {
+            if ( profile.role && profile.role.length>0 )
+            {
+                const roles = profile.role.split(';');
+                // await manager.getRepository(MemberRoleEntity).delete(where);
+                this.memberRoleRepository.deleteAllMemberRole(user.nMEM_ID);
+                this.memberRoleRepository.insertMemberRole(user.nMEM_ID, );
+            }
+            await manager.getRepository(MemberEntity).update(where, entity);
+            await newQR.commitTransaction();
         }
         catch(e)
         {
-            await qr.rollbackTransaction();
+            await newQR.rollbackTransaction();
         }
         finally
         {
-            await qr.release();
+            await newQR.release();
         }
+
         // transaction END
-        return 
+
+        return true;
 
 //        return await this.dataSource.createQueryBuilder().update(MemberEntity)
 //            .set( profile ).where("").execute();
@@ -123,6 +137,10 @@ export class MemberRepository extends MasterRepository<MemberEntity>
         `
         SELECT * FROM T_MEMBER where "${MyConst.DB_FIELD_MEM_UNIQUE}"=:id
         `
-        return (await this.doRawQuery(sql, {id}, {}))[0];
+        const res = await this.doRawQuery(sql, {id}, {});
+        if ( res && res.length>0 )
+            return res[0];
+        else
+            return null
     }
 }

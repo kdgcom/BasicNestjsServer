@@ -23,23 +23,22 @@ export class MemberRoleRepository extends MasterRepository<MemberRoleEntity>
 
     async findOneByMemID( id: number )
     {
-        const where = {};
+        const where: any = {};
         where[MyConst.DB_FIELD_MEM_ID] = id;
-        return await this.find({ where })[0];
+        return await this.manager.findOneBy(MemberRoleEntity, where);
     }
 
     // 특정 유저의 member role을 전부 지운다.
-    async deleteMemberRole( memID: number ) 
+    async deleteAllMemberRole( memID: number ) 
     {
-        const where = { };
+        const where: any = {};
         where[MyConst.DB_FIELD_MEM_ID] = memID;
         const deleteRes = await this.delete(where);
-
         return deleteRes;
     }
 
     // 특정 유저의 member role을 추가한다.
-    async insertMemberRole( memID, roleCode )
+    async insertMemberRole( memID: number, roleCode: string )
     {
         const mre = new MemberRoleEntity();
         mre.nMEM_ID = memID;
@@ -64,48 +63,4 @@ VALUES(:seq, :roleCode, :memID);
         }
     }
 
-    /**
-     * 유저의 정보를 update. info는 DTO --> DTO를 Entity형태로 전환하여 save를 수행.
-     * 이때 업데이트 키값 역시 DTO에 들어 있어야 한다.
-     * 
-     * role이 들어올 경우 DB에 role을 따로 저장해 줘야 함.
-     * 
-     * password의 경우 자동으로 bcrypt가 적용 되어 들어가게 된다.
-     * 
-     * @param info 어떤 정보를 update할 것인가? json형태의 DTO
-     */
-    async updateMemberProfile(profile: UpdateMemberProfileDTO)
-    {
-        if ( profile.passwd ) // 패스워드가 들어 왔다면 bcrypt를 이용한 해쉬를 이용
-            profile.passwd = passwordEncrypt(profile.passwd);
-
-        const entity = profile.toEntity();
-        const where = {}
-        where[MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
-        // transaction START
-        // connection을 새로 받음
-        const newQR = await this.dataSource.createQueryRunner();
-        await newQR.connect();
-        await newQR.startTransaction();
-        const manager = newQR.manager;
-        try
-        {
-            await manager.getRepository(MemberEntity).update(where, entity);
-            await newQR.commitTransaction();
-        }
-        catch(e)
-        {
-            await newQR.rollbackTransaction();
-        }
-        finally
-        {
-            await newQR.release();
-        }
-        // transaction END
-
-        return 
-
-//        return await this.dataSource.createQueryBuilder().update(MemberEntity)
-//            .set( profile ).where("").execute();
-    }
 }

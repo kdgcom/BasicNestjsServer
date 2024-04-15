@@ -39,7 +39,7 @@ class BasicException extends common_1.HttpException {
             message: message || '',
             data: data,
         };
-        if (!(0, text_util_1.isEmpty)(errorAlias)) {
+        if (!(0, text_util_1.isEmpty)(errorAlias) && errorAlias) {
             let nsError = ERROR[errorAlias];
             let errorData = {};
             if (!(0, text_util_1.isEmpty)(nsError)) {

@@ -4,6 +4,8 @@
  * 기본 오류사항 이외의 오류는 460 ~ 499 코드를 사용해 구분한다.
  */
 
+import { REPLCommand } from "repl";
+
 export enum ResponseCode {
   // 200대는 정상 리턴
   OK                     = 200,
@@ -28,7 +30,7 @@ export enum ResponseCode {
   // 이하 특별 케이스의 오류를 추가로 등록해 관리한다.
 }
 
-export const ErrorMessage = {
+export const ErrorMessage: Record<string | number, any> = {
   "204" : "No Content",
 
   "400" : "Bad Request",

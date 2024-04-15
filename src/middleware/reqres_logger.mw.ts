@@ -48,9 +48,9 @@ export class ReqResLoggerMiddleware implements NestMiddleware {
 const getResponseLog = (res: Response, req:Request, ip: string) => {
   const rawResponse = res.write;
   const rawResponseEnd = res.end;
-  const chunkBuffers = [];
+  const chunkBuffers: any[] = [];
   res.write = (...chunks) => {
-    const resArgs = [];
+    const resArgs: any[] = [];
     for (let i = 0; i < chunks.length; i++) {
       resArgs[i] = chunks[i];
       if (!resArgs[i]) {

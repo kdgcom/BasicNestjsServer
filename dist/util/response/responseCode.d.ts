@@ -13,15 +13,4 @@ export declare enum ResponseCode {
     UNSUPPORTED_MEDIA_TYPE = 415,
     INTERNAL_SERVER_ERROR = 500
 }
-export declare const ErrorMessage: {
-    "204": string;
-    "400": string;
-    "401": string;
-    "403": string;
-    "404": string;
-    "406": string;
-    "409": string;
-    "413": string;
-    "415": string;
-    "500": string;
-};
+export declare const ErrorMessage: Record<string | number, any>;

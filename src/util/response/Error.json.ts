@@ -1,4 +1,4 @@
-const __errors = {
+const __errors: Record<string|number, any> = {
   ERR_SOMETHING:
   {
     errorCode: 10000,

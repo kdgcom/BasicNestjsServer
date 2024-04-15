@@ -8,9 +8,10 @@ export declare class MemberRepository extends MasterRepository<MemberEntity> {
     private memberRoleRepository;
     constructor(dataSource: DataSource, memberRoleRepository: MemberRoleRepository);
     memberList(): Promise<MemberEntity[]>;
-    findOneByMemID(id: number): Promise<any>;
-    findOneByID(id: string): Promise<any>;
-    findOneByArmycode(sARMY_CODE: string): Promise<any>;
-    updateMemberProfile(profile: UpdateMemberProfileDTO): Promise<void>;
+    findOneByMemID(id: number): Promise<MemberEntity | null>;
+    findOneByID(id: string): Promise<MemberEntity | null>;
+    findOneByWhat(what: string, str: any): Promise<MemberEntity | null>;
+    findOneByArmycode(sARMY_CODE: string): Promise<MemberEntity | null>;
+    updateMemberProfile(profile: UpdateMemberProfileDTO): Promise<boolean>;
     findOneByArmycode2(id: string): Promise<any>;
 }

@@ -75,7 +75,7 @@ class BasicRedirection {
         this.statusCode = statusCode;
         this.url = url;
         if (!(0, text_util_1.isEmpty)(url))
-            this.setMsgQuery(msg);
+            this.setMsgQuery(msg || "");
         return this;
     }
     setMsgQuery(msg) {

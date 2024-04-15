@@ -24,6 +24,7 @@ const text_util_1 = require("../../util/common/text.util");
 const MyConst_1 = require("../../const/MyConst");
 const typeorm_2 = require("@nestjs/typeorm");
 const memberRole_repository_1 = require("./memberRole.repository");
+const basicException_1 = __importDefault(require("../../util/response/basicException"));
 let MemberRepository = class MemberRepository extends master_repository_1.default {
     constructor(dataSource, memberRoleRepository) {
         super(member_entity_1.MemberEntity, dataSource);
@@ -34,14 +35,17 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         return await this.find();
     }
     async findOneByMemID(id) {
-        const where = {};
-        where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = id;
-        return await this.find({ where })[0];
+        return await this.findOneByWhat(MyConst_1.MyConst.DB_FIELD_MEM_ID, id);
     }
     async findOneByID(id) {
+        return await this.findOneByWhat(MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE, id);
+    }
+    async findOneByWhat(what, str) {
+        if (!this.queryRunner)
+            throw new basicException_1.default(500);
         const where = {};
-        where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = id;
-        return await this.find({ where })[0];
+        where[what] = str;
+        return await this.queryRunner.manager.findOneBy(member_entity_1.MemberEntity, where);
     }
     async findOneByArmycode(sARMY_CODE) {
         return await this.findOneByID(sARMY_CODE);
@@ -52,23 +56,39 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         const entity = profile.toEntity();
         const where = {};
         where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
-        const qr = this.queryRunner;
-        await qr.startTransaction();
+        const newQR = this.dataSource.createQueryRunner();
+        await newQR.connect();
+        await newQR.startTransaction();
+        const manager = newQR.manager;
+        const user = await this.findOneByID(profile.userID);
+        if (!user)
+            throw new basicException_1.default(404);
         try {
+            if (profile.role && profile.role.length > 0) {
+                const roles = profile.role.split(';');
+                this.memberRoleRepository.deleteAllMemberRole(user.nMEM_ID);
+                this.memberRoleRepository.insertMemberRole(user.nMEM_ID);
+            }
+            await manager.getRepository(member_entity_1.MemberEntity).update(where, entity);
+            await newQR.commitTransaction();
         }
         catch (e) {
-            await qr.rollbackTransaction();
+            await newQR.rollbackTransaction();
         }
         finally {
-            await qr.release();
+            await newQR.release();
         }
-        return;
+        return true;
     }
     async findOneByArmycode2(id) {
         const sql = `
         SELECT * FROM T_MEMBER where "${MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE}"=:id
         `;
-        return (await this.doRawQuery(sql, { id }, {}))[0];
+        const res = await this.doRawQuery(sql, { id }, {});
+        if (res && res.length > 0)
+            return res[0];
+        else
+            return null;
     }
 };
 exports.MemberRepository = MemberRepository;

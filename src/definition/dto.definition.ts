@@ -5,9 +5,9 @@ export default abstract class DTODefinition
 {
     abstract toEntity(): any;
 
-    fill<T>(a: any, B:T, c:any)
-    {
-        if ( a )
-            B[c] = a;
-    }
+    // fill<T>(a: any, B:T, c:string|number)
+    // {
+    //     if ( a )
+    //         B[c] = a;
+    // }
 }

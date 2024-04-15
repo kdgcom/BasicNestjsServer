@@ -5,11 +5,11 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 export class MemberRoleEntity extends EntityDefinition
 {
     @PrimaryColumn()
-    nMEM_ROLE_ID: number;
+    nMEM_ROLE_ID!: number;
 
     @Column()
-    cROLE: string;
+    cROLE!: string;
 
     @Column()
-    nMEM_ID: number
+    nMEM_ID!: number
 }

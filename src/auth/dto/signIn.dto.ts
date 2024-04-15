@@ -7,12 +7,12 @@ export class SignInDTO extends DTODefinition
 {
     @IsString()
     @IsNotEmpty()
-    userID: string;
+    userID!: string;
 
     @IsString()
     @IsNotEmpty()
     @MinLength(8)
-    passwd: string;
+    passwd!: string;
     
     public toEntity(): any
     {

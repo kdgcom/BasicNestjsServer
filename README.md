@@ -194,25 +194,32 @@ try
 {
     // 두가지 옵션이 있음
     // 1. transaction은 insert와 update, delete에 대해서만 일어남
-      await newQR.manager.getRepository<>
-      await newQR.manager.save(ENTITY1, { /*data1*/ })
-      await newQR.manager.insert(ENTITY2, { /*data2*/ })
-      await newQR.manager.query("RAW QUERY");
-      await newQR.manager.createQueryBuilder(). ...
-      await newQR.manager.remove(INSTANCE_OF_AN_ENTITY); // 즉, User가 아니라 user
-      await newQR.manager.remove([instance1, instance2, instance3]);
-      await newQR.manager.update(User, {age: 18 }, { category: "ADULT" });
-      await newQR.manager.update(User, 1, { firstName: "Rizzrak" }); // id==1인 raw에 대해 udpate
+    await newQR.manager.getRepository(ENTITY1).save(INSTANT_OF_AN_ENTITY);
+    await newQR.manager.save(ENTITY1, { /*data1*/ })
+    await newQR.manager.insert(ENTITY2, { /*data2*/ })
+    await newQR.manager.createQueryBuilder(). ...
+    await newQR.manager.remove(INSTANCE_OF_AN_ENTITY); // 즉, User가 아니라 user
+    await newQR.manager.remove([instance1, instance2, instance3]);
+    await newQR.manager.delete(ID);
+    await newQR.manager.delete({ /*condition*/});
+    await newQR.manager.update(User, {age: 18 }, { category: "ADULT" });
+    await newQR.manager.update(User, 1, { firstName: "Rizzrak" }); // id==1인 raw에 대해 udpate
 
 
-    2. manager.withRepository 함수 이용
-      newQR.manager.withRepository(this.repository).FUNCTION_NAME()
+    // 2. manager.withRepository 함수 이용 --> 특정 repository에 정의된 함수 이용 가능
+    newQR.manager.withRepository(this.repository).FUNCTION_NAME()
     // this.setQueryRunner(newQR);
     // await this.repository.update(where, entity);
+
+    // 3. raw query 이용
+    await newQR.manager.query("RAW QUERY");
+    
+    // 모두 성공했다면 commit
     await newQR.commitTransaction();
 }
 catch(e)
 {
+    // 실패시 롤백
     await newQR.rollbackTransaction();
 }
 finally
@@ -287,4 +294,22 @@ finally
 ```javascript
   // req 는 request 객체
   const ip = require('request-ip').getClientIp(req);
+```
+
+## nestia 사용
+- swagger 사용을 위함
+- 
+
+## 문법 오류 처리
+
+- json 설정시 Element implicitly has an 'any' type because expression of type SOMETHING can't be used to index type
+  * key의 경우 type이 any라면 못받는 경우가 생김.
+```typescript
+const __errors: Record<string|number, any> = {};
+```
+
+- 일반 plain object일 경우 선언시 :any를 붙일것
+```typescript
+const where: any = {};
+where[SOMETHING] = xxx;
 ```

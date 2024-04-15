@@ -12,7 +12,7 @@ export default class BasicResponse {
   private _success: boolean | string = false;
   private _status: number = 0;
   private _error: any = null;
-  private _message: string = null;
+  private _message: string | null = null;
   private _data: any = {};
 
   constructor(status?: number) {
@@ -112,11 +112,11 @@ export class BasicRedirection {
   constructor(statusCode: number, url: string, msg?: string) {
     this.statusCode = statusCode;
     this.url = url;
-    if (!isEmpty(url)) this.setMsgQuery(msg);
+    if (!isEmpty(url)) this.setMsgQuery(msg || "");
     return this;
   }
 
-  private setMsgQuery(msg) {
+  private setMsgQuery(msg: string) {
     this.url += '?msg=';
     this.url += encodeURIComponent(msg);
   }

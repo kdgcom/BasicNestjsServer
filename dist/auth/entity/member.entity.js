@@ -73,14 +73,6 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], MemberEntity.prototype, "sROLE", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], MemberEntity.prototype, "sEMAIL", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
 ], MemberEntity.prototype, "cRANK", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

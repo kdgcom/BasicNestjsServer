@@ -6,65 +6,62 @@ export class MemberEntity extends EntityDefinition
 {
 //    @PrimaryGeneratedColumn()
     @Column()
-    nMEM_ID: number;
+    nMEM_ID!: number;
 
     @Column()
-    sUSER_ID: string;
+    sUSER_ID!: string;
 
     @Column()
-    sNAME: string;
+    sNAME!: string;
 
     @Column()
-    cROLE: string;
+    cROLE!: string;
 
     @Column()
-    dCREATE: string;
+    dCREATE!: string;
 
     @Column()
-    dUPDATE: string;
+    dUPDATE!: string;
 
     @Column()
-    sPASSWORD: string;
+    sPASSWORD!: string;
 
     @Column()
-    sMEMO: string;
+    sMEMO!: string;
 
     @Column()
-    tSEARCH: string;
+    tSEARCH!: string;
 
     @Column( {default: false} )
-    bACTIVE: number;
+    bACTIVE!: number;
 
     @Column()
-    sACCESS_TOKEN: string;
+    sACCESS_TOKEN!: string;
 
     @Column()
-    sREFRESH_TOKEN: string;
+    sREFRESH_TOKEN!: string;
 
     @Column()
-    nLEVEL: number;
+    nLEVEL!: number;
 
-    @Column()
-    sROLE: string;
-
-    @Column()
-    sEMAIL: string;
+    // @Column()
+    // sEMAIL: string;
 
 /************************* VSTS *************************/
 
     @Column()
-    cRANK: string;
+    cRANK!: string;
 
     @Column()
-    cSHIP_TYPE: string;
+    cSHIP_TYPE!: string;
 
     @Column()
-    nDEP_ID: number;
+    nDEP_ID!: number;
 
     @Column()
-    nUNIT_ID: number;
+    nUNIT_ID!: number;
 
     @PrimaryColumn()
-    sARMY_CODE: string;
+    sARMY_CODE!: string;
 
 }

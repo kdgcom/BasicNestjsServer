@@ -15,9 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemberRoleRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
-const member_entity_1 = require("../entity/member.entity");
 const master_repository_1 = __importDefault(require("../../repository/master.repository"));
-const text_util_1 = require("../../util/common/text.util");
 const MyConst_1 = require("../../const/MyConst");
 const role_entity_1 = require("../entity/role.entity");
 let MemberRoleRepository = class MemberRoleRepository extends master_repository_1.default {
@@ -28,9 +26,9 @@ let MemberRoleRepository = class MemberRoleRepository extends master_repository_
     async findOneByMemID(id) {
         const where = {};
         where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = id;
-        return await this.find({ where })[0];
+        return await this.manager.findOneBy(role_entity_1.MemberRoleEntity, where);
     }
-    async deleteMemberRole(memID) {
+    async deleteAllMemberRole(memID) {
         const where = {};
         where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = memID;
         const deleteRes = await this.delete(where);
@@ -55,28 +53,6 @@ VALUES(:seq, :roleCode, :memID);
         else {
             return await this.insert(mre);
         }
-    }
-    async updateMemberProfile(profile) {
-        if (profile.passwd)
-            profile.passwd = (0, text_util_1.passwordEncrypt)(profile.passwd);
-        const entity = profile.toEntity();
-        const where = {};
-        where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
-        const newQR = await this.dataSource.createQueryRunner();
-        await newQR.connect();
-        await newQR.startTransaction();
-        const manager = newQR.manager;
-        try {
-            await manager.getRepository(member_entity_1.MemberEntity).update(where, entity);
-            await newQR.commitTransaction();
-        }
-        catch (e) {
-            await newQR.rollbackTransaction();
-        }
-        finally {
-            await newQR.release();
-        }
-        return;
     }
 };
 exports.MemberRoleRepository = MemberRoleRepository;

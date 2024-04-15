@@ -10,12 +10,12 @@ export class JWTPayload
     public username: string;
     public rank: string;
     public memID: number;
-    public iat: number;
-    public exp: number;
+    public iat: number = 0;
+    public exp: number = 0;
     public level: number;
-    public role: string;
+    public role: string | null = null;
 
-    constructor( id, name, rank, memID, level, role?, iat?: number, exp?: number)
+    constructor( id: string, name: string, rank: string, memID: number, level: number, role?: string, iat?: number, exp?: number)
     {
         this.id = id;
         this.username = name;
@@ -27,7 +27,7 @@ export class JWTPayload
         if ( exp ) this.exp = exp;
     }
 
-    static fromObj( obj )
+    static fromObj( obj:any )
     {
         if ( obj.iat && obj.exp )
             return new JWTPayload( 
@@ -36,7 +36,7 @@ export class JWTPayload
         else
             return new JWTPayload( obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role || "" );
     }
-    static async fromJWT(jwt)
+    static async fromJWT(jwt: string)
     {
         return JWTPayload.fromObj(
             await new JwtService().verifyAsync(
@@ -52,7 +52,7 @@ export class JWTPayload
     async toJWTRT() { return await this.toJWT(false); }
 
     // access_token으로 JWT를 뽑아 낼 때
-    async toJWT(isAT)
+    async toJWT(isAT: boolean)
     {
         return await new JwtService().signAsync(
             this.toJSON(isAT), { secret: MyConst.JWT_SECRET, }

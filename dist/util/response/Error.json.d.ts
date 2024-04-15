@@ -1,11 +1,2 @@
-declare const __errors: {
-    ERR_SOMETHING: {
-        errorCode: number;
-        msg: string;
-    };
-    ERR_ANOTHER: {
-        errorCode: number;
-        msg: string;
-    };
-};
+declare const __errors: Record<string | number, any>;
 export default __errors;

@@ -6,13 +6,13 @@ export declare class JWTPayload {
     iat: number;
     exp: number;
     level: number;
-    role: string;
-    constructor(id: any, name: any, rank: any, memID: any, level: any, role?: any, iat?: number, exp?: number);
+    role: string | null;
+    constructor(id: string, name: string, rank: string, memID: number, level: number, role?: string, iat?: number, exp?: number);
     static fromObj(obj: any): JWTPayload;
-    static fromJWT(jwt: any): Promise<JWTPayload>;
+    static fromJWT(jwt: string): Promise<JWTPayload>;
     toJWTAT(): Promise<string>;
     toJWTRT(): Promise<string>;
-    toJWT(isAT: any): Promise<string>;
+    toJWT(isAT: boolean): Promise<string>;
     toJSON(isAT: boolean): {
         iat: number;
         exp: number;

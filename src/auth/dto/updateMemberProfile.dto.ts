@@ -8,48 +8,48 @@ export class UpdateMemberProfileDTO extends DTODefinition
 {
     @IsString()
     @IsOptional()
-    name: string;
+    name!: string;
 
     @IsString()
     @IsOptional()
-    userID: string;
+    userID!: string;
 
     @IsString()
     @IsOptional()
     @MinLength(8)
-    passwd: string;
+    passwd!: string;
 
     @IsNumber()
     @IsOptional()
-    depID: number;      // 부서ID
+    depID!: number;      // 부서ID
 
     @IsString()
     @IsOptional()
-    rankCode: string;   // 계급 코드
+    rankCode!: string;   // 계급 코드
 
     @IsNumber()
     @IsOptional()
-    isActive: number;   // 활성화여부. 1/0
+    isActive!: number;   // 활성화여부. 1/0
     
     @IsString()
     @IsOptional()
-    accessToken: string;
+    accessToken!: string;
 
     @IsString()
     @IsOptional()
-    refreshToken: string;
+    refreshToken!: string;
 
     @IsNumber()
     @IsOptional()
-    level: number;
+    level!: number;
 
     @IsString()
     @IsOptional()
-    role: string;
+    role!: string;
 
     public toEntity(): MemberEntity 
     {
-        const member = new MemberEntity();
+        const member: any = new MemberEntity();
         member[MyConst.DB_FIELD_MEM_UNIQUE] = this.userID;
         if ( this.name )    member.sNAME = this.name;
         if ( this.passwd )  member.sPASSWORD = this.passwd;
