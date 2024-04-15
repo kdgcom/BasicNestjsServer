@@ -33,7 +33,7 @@ export default class BasicException extends HttpException {
 
     // 만약 Error Alias값이 있을 경우, 정의된 값을 error 값에 넣는다.
     if (!isEmpty(errorAlias) && errorAlias) {
-      let nsError = ERROR[errorAlias];
+      let nsError = ERROR[errorAlias as keyof typeof ERROR];
       let errorData: Record<string|number, any> = {};
 
       if (!isEmpty(nsError)) {

@@ -1,3 +1,4 @@
+// const __errors: Record<string|number, any> = <JSON><any>{
 const __errors: Record<string|number, any> = {
   ERR_SOMETHING:
   {

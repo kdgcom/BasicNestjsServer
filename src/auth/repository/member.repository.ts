@@ -109,7 +109,8 @@ export class MemberRepository extends MasterRepository<MemberEntity>
                 const roles = profile.role.split(';');
                 // await manager.getRepository(MemberRoleEntity).delete(where);
                 this.memberRoleRepository.deleteAllMemberRole(user.nMEM_ID);
-                this.memberRoleRepository.insertMemberRole(user.nMEM_ID, );
+                for(let i=0; i<roles.length; ++i)
+                    this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
             }
             await manager.getRepository(MemberEntity).update(where, entity);
             await newQR.commitTransaction();

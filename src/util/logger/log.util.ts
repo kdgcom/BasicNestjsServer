@@ -31,7 +31,7 @@ export default class _l {
   
     constructor() {}
   
-    static setLevel(str) {
+    static setLevel(str: string) {
       localStorage.debug = str;
     }
   
@@ -53,7 +53,7 @@ export default class _l {
       return `[${time} ${process.pid}]`;
     }
 
-    static hl(...args) {
+    static hl(...args: any[]) {
       this._common(__hl, false, true, ...args);
     }
   
@@ -62,41 +62,41 @@ export default class _l {
      * 일반 로그 함수
      * @param args 
      */
-    static log(...args) {
+    static log(...args: any[]) {
       this._common(__log, false, false, ...args);
     }
     /**
      * prefix를 사용하는 log함수
      * @param args 
      */
-    static logp(...args) {
+    static logp(...args: any[]) {
       this._common(__log, true, false, ...args);
     }
   
     /**
      * 인수가 object일 경우 자세한 내용을 보고 싶을 때 
      */
-    static log_detail(...args) {
+    static log_detail(...args: any[]) {
       this._common(__log, false, true, ...args);
     }
   
-    static debug(...args) {
+    static debug(...args: any[]) {
       this._common(__debug, false, false, ...args);
     }
     
-    static debug_prefix(...args) {
+    static debug_prefix(...args: any[]) {
       this._common(__debug, true, false, ...args);
     }
 
-    static info(...args) {
+    static info(...args: any[]) {
       this._common(__info, true, false, ...args);
     }
   
-    static warn(...args) {
+    static warn(...args: any[]) {
       this._common(__warning, true, false, ...args);
     }
   
-    static error(...args) {
+    static error(...args: any[]) {
       this._common(__error, true, false, ...args);
     }
 
@@ -104,17 +104,17 @@ export default class _l {
      * 성공적으로 request를 날릴 때 사용할 log
      * @param args log 내용
      */
-    static success(...args)
+    static success(...args: any[])
     {
       this._common(__success, true, false, ...args);
     }
 
-    static success_detail(...args)
+    static success_detail(...args: any[])
     {
       this._common(__success, true, true, ...args);
     }
 
-    static httpException(...args) {
+    static httpException(...args: any[]) {
       _log.useLabels = true;
       _log.useSymbols = true;
       this._common(__httpError, true, false, ...args);
@@ -127,7 +127,7 @@ export default class _l {
     //   this._common(__debug, true, ...args)
     // }
 
-    static _common(_func, flagUsePrefix, flagPrintDetail, ...args)
+    static _common(_func: Function, flagUsePrefix: boolean, flagPrintDetail: boolean, ...args: any[])
     {
       let contents = [...args];
       if ( flagPrintDetail ) // 자세한 내용을 보고 싶을 때

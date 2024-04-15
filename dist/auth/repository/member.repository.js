@@ -67,7 +67,8 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
             if (profile.role && profile.role.length > 0) {
                 const roles = profile.role.split(';');
                 this.memberRoleRepository.deleteAllMemberRole(user.nMEM_ID);
-                this.memberRoleRepository.insertMemberRole(user.nMEM_ID);
+                for (let i = 0; i < roles.length; ++i)
+                    this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
             }
             await manager.getRepository(member_entity_1.MemberEntity).update(where, entity);
             await newQR.commitTransaction();

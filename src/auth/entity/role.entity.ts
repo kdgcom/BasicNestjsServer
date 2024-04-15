@@ -12,4 +12,5 @@ export class MemberRoleEntity extends EntityDefinition
 
     @Column()
     nMEM_ID!: number
+
 }

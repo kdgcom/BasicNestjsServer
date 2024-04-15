@@ -313,3 +313,10 @@ const __errors: Record<string|number, any> = {};
 const where: any = {};
 where[SOMETHING] = xxx;
 ```
+
+- Object의 타입이 안맞는다고 나올 때
+```typescript
+// MyObject가 JSON등의 Object라면, 
+// keyof 를 이용해 아예 이 object에 맞는 형태로 타입을 받도록 한다.
+const a = MyObject[kkk as keyof typeof MyObject];
+```

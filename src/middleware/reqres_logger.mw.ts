@@ -50,7 +50,8 @@ const getResponseLog = (res: Response, req:Request, ip: string) => {
   const rawResponseEnd = res.end;
   const chunkBuffers: any[] = [];
   res.write = (...chunks) => {
-    const resArgs: any[] = [];
+    // const resArgs: Record<string, Record<string, any>>[] = [];
+    const resArgs: any = [];
     for (let i = 0; i < chunks.length; i++) {
       resArgs[i] = chunks[i];
       if (!resArgs[i]) {
@@ -64,8 +65,8 @@ const getResponseLog = (res: Response, req:Request, ip: string) => {
     return rawResponse.apply(res, resArgs);
   };
   _l.info('----------------- RES START -----------------');
-  res.end = (...chunk) => {
-    const resArgs = [];
+  res.end = (...chunk: any[]) => {
+    const resArgs:any = [];
     for (let i = 0; i < chunk.length; i++) {
       resArgs[i] = chunk[i];
     }

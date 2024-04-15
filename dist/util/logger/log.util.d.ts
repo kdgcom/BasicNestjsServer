@@ -1,7 +1,7 @@
 export default class _l {
     static _time: number;
     constructor();
-    static setLevel(str: any): void;
+    static setLevel(str: string): void;
     static getDiffTime(): string;
     static prefix(): string;
     static hl(...args: any[]): void;
@@ -16,5 +16,5 @@ export default class _l {
     static success(...args: any[]): void;
     static success_detail(...args: any[]): void;
     static httpException(...args: any[]): void;
-    static _common(_func: any, flagUsePrefix: any, flagPrintDetail: any, ...args: any[]): void;
+    static _common(_func: Function, flagUsePrefix: boolean, flagPrintDetail: boolean, ...args: any[]): void;
 }

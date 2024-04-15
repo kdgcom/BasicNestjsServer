@@ -162,7 +162,7 @@ function getRandomPassword() {
 }
 exports.getRandomPassword = getRandomPassword;
 function passwordEncrypt(passwd) {
-    const saltRounds = process.env.PW_SALT_NROUND || 10;
+    const saltRounds = parseInt(process.env.PW_SALT_NROUND || '10');
     const salt = (0, bcrypt_1.genSaltSync)(saltRounds);
     const hash = (0, bcrypt_1.hashSync)(passwd, salt);
     return hash;
@@ -197,8 +197,9 @@ exports.camelToSnake = camelToSnake;
 function camelObjectToSnakeObject(obj, upper = true) {
     let result = {};
     Object.keys(obj).forEach(key => {
-        let _key = camelTextToSnake(key, upper);
-        result[_key] = obj[key];
+        let _key = camelTextToSnake(key, upper) || null;
+        if (_key)
+            result[_key] = obj[key];
         _key = null;
     });
     return result;
@@ -206,7 +207,7 @@ function camelObjectToSnakeObject(obj, upper = true) {
 exports.camelObjectToSnakeObject = camelObjectToSnakeObject;
 function camelTextToSnake(text, upper = true) {
     if (!text)
-        return;
+        return null;
     if (upper) {
         return text.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
     }
@@ -238,8 +239,9 @@ function snakeObjectToCamelObject(obj, useDataType = true) {
     let result = {};
     if (obj) {
         Object.keys(obj).forEach(key => {
-            let _key = snakeTextToCamel(key, useDataType);
-            result[_key] = obj[key];
+            let _key = snakeTextToCamel(key, useDataType) || null;
+            if (_key)
+                result[_key] = obj[key];
         });
     }
     return result;

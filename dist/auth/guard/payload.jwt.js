@@ -48,7 +48,8 @@ class JWTPayload {
         if (!expStr.match(/^[0-9]+[smhdMy]$/))
             expStr = "1d";
         let timeConst = 1;
-        switch (expStr.match(/[smhdMy]/)[0]) {
+        const timeUnit = expStr.match(/[smhdMy]/) || ["s"];
+        switch (timeUnit[0]) {
             case 's':
                 timeConst = 1;
                 break;

@@ -37,7 +37,7 @@ export function convertObjectToJsonString(value: any): string {
  * @returns 
  */
 export function findDuplicateFields(dtoObject: any, dbOBject: any, checkFields: string[]) {
-  let result = {};
+  let result: any = {};
   for (let key in dtoObject) {
     let dupliResult = {
       available: true,
@@ -65,7 +65,7 @@ export function findDuplicateFields(dtoObject: any, dbOBject: any, checkFields: 
  * @returns 
  */
 export function findDuplicateFieldsFromMany(dtoObject: any, dbOBjects: any[], checkFields: string[]) {
-  let result = {};
+  let result: any = {};
   for (let key in dtoObject) {
     let dupliResult = {
       available: true,
@@ -104,7 +104,7 @@ export function getNicknameFromEmail(email: string) {
  * @param bgmsStr 
  * @returns 
  */
-export function getStringToArray (bgmsStr) {
+export function getStringToArray (bgmsStr: string) {
   if(!bgmsStr) return null
   return bgmsStr.split(',')
 }
@@ -114,7 +114,7 @@ export function getStringToArray (bgmsStr) {
  * @param args 
  * @returns 
  */
-export function getArrayToString (...args) {
+export function getArrayToString (...args: any[]) {
   if(!args) return null
   let result = '';
   args.map( arg => result = result + ',' + arg )
@@ -206,9 +206,9 @@ export function getRandomPassword() {
  * 
  * @param passwd plain password
  */
-export function passwordEncrypt(passwd)
+export function passwordEncrypt(passwd: string)
 {
-  const saltRounds = process.env.PW_SALT_NROUND || 10;
+  const saltRounds: number = parseInt(process.env.PW_SALT_NROUND || '10');
 
   const salt = genSaltSync(saltRounds);
   const hash = hashSync( passwd, salt );
@@ -223,7 +223,7 @@ export function passwordEncrypt(passwd)
  * @param passwordHash DB에 저장된 패스워드 해쉬
  * @returns 
  */
-export function passwordCompare(inPassword, passwordHash)
+export function passwordCompare(inPassword: string, passwordHash: string)
 {
   _l.info("Password Compare : ", inPassword, passwordHash);
   return compareSync(inPassword, passwordHash);
@@ -266,10 +266,11 @@ export function camelToSnake(data: Object | Object[], upper: boolean = true) {
  * @returns     {Object} snake 형식의 key 값을 갖는 오브젝트
  */
 export function camelObjectToSnakeObject(obj: Object, upper: boolean = true) {
-  let result = {};
+  let result: any = {};
   Object.keys(obj).forEach(key => {
-    let _key = camelTextToSnake(key, upper);
-    result[_key] = obj[key];
+    let _key = camelTextToSnake(key, upper) || null;
+    if ( _key )
+      result[_key] = obj[key as keyof typeof obj];
     _key = null;
   });
   return result;
@@ -286,7 +287,7 @@ export function camelObjectToSnakeObject(obj: Object, upper: boolean = true) {
  * @returns {string|null}
  */
 export function camelTextToSnake(text: string, upper: boolean = true): string | null {
-  if (!text) return
+  if (!text) return null;
   if (upper) {
     return text.replace(/[A-Z]/g, letter => `_${letter}`).toUpperCase();
   } else {
@@ -302,7 +303,7 @@ export function camelTextToSnake(text: string, upper: boolean = true): string | 
  * @param useDataType   데이터 타입 명시하는지 여부 (기본 true)
  * @returns 
  */
-export function snakeToCamel(data, useDataType = true) {
+export function snakeToCamel(data: Object|[], useDataType = true) {
   _l.log('start snakeToCamel...', data)
   let result;
   if (isEmpty(data)) {
@@ -331,11 +332,12 @@ export function snakeToCamel(data, useDataType = true) {
  * @returns camel 규칙 오브젝트
  */
 export function snakeObjectToCamelObject(obj: Object, useDataType: boolean = true) {
-  let result = {}
+  let result: Record<string|number, any> = {}
   if (obj) {
     Object.keys(obj).forEach(key => {
-      let _key = snakeTextToCamel(key, useDataType);
-      result[_key] = obj[key];
+      let _key:string | null = snakeTextToCamel(key, useDataType) || null;
+      if ( _key )
+        result[_key] = obj[key as keyof typeof obj];
     });
   }
   return result;

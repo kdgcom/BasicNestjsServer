@@ -44,7 +44,7 @@ INSERT INTO VSTS.T_MEMBER_ROLE ("nMEM_ROLE_ID", "cROLE", "nMEM_ID")
 VALUES(:seq, :roleCode, :memID);
             `;
             const params = {
-                nMEM_ROLE_ID: () => "T_MEMBER_ROLE_SEQ.NEXTVAL",
+                seq: () => "T_MEMBER_ROLE_SEQ.NEXTVAL",
                 memID,
                 roleCode
             };

@@ -2,6 +2,7 @@ import { JwtService } from "@nestjs/jwt";
 import { classToPlain } from "class-transformer";
 import { MyConst } from "src/const/MyConst";
 import _l from "src/util/logger/log.util";
+import BasicException from "src/util/response/basicException";
 import { isatty } from "tty";
 
 export class JWTPayload
@@ -78,7 +79,8 @@ export class JWTPayload
             expStr = "1d";
         // 시간을 초단위로 환산
         let timeConst = 1;
-        switch(expStr.match(/[smhdMy]/)[0])
+        const timeUnit = expStr.match(/[smhdMy]/) || ["s"]; // 시간 단위가 안들어오면 초로 간주
+        switch(timeUnit[0])
         {
             case 's':
                 timeConst = 1;
