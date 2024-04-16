@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemberRoleRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
+const log_util_1 = __importDefault(require("../../util/logger/log.util"));
 const master_repository_1 = __importDefault(require("../../repository/master.repository"));
 const MyConst_1 = require("../../const/MyConst");
 const role_entity_1 = require("../entity/role.entity");
 let MemberRoleRepository = class MemberRoleRepository extends master_repository_1.default {
     constructor(dataSource) {
-        super(role_entity_1.MemberRoleEntity, dataSource);
-        this.dataSource = dataSource;
+        log_util_1.default.log(dataSource);
+        super(role_entity_1.MemberRoleEntity, dataSource.createEntityManager());
     }
     async findOneByMemID(id) {
         const where = {};
@@ -41,7 +42,7 @@ let MemberRoleRepository = class MemberRoleRepository extends master_repository_
         if (MyConst_1.MyConst.DB_MODE_ORACLE) {
             const sql = `
 INSERT INTO VSTS.T_MEMBER_ROLE ("nMEM_ROLE_ID", "cROLE", "nMEM_ID")
-VALUES(:seq, :roleCode, :memID);
+VALUES(:seq, :roleCode, :memID)
             `;
             const params = {
                 seq: () => "T_MEMBER_ROLE_SEQ.NEXTVAL",

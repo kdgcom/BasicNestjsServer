@@ -19,15 +19,18 @@ exports.MemberRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const member_entity_1 = require("../entity/member.entity");
+const log_util_1 = __importDefault(require("../../util/logger/log.util"));
 const master_repository_1 = __importDefault(require("../../repository/master.repository"));
 const text_util_1 = require("../../util/common/text.util");
 const MyConst_1 = require("../../const/MyConst");
 const typeorm_2 = require("@nestjs/typeorm");
 const memberRole_repository_1 = require("./memberRole.repository");
+const role_entity_1 = require("../entity/role.entity");
 const basicException_1 = __importDefault(require("../../util/response/basicException"));
+const responseCode_1 = require("../../util/response/responseCode");
 let MemberRepository = class MemberRepository extends master_repository_1.default {
     constructor(dataSource, memberRoleRepository) {
-        super(member_entity_1.MemberEntity, dataSource);
+        super(member_entity_1.MemberEntity, dataSource.createEntityManager());
         this.dataSource = dataSource;
         this.memberRoleRepository = memberRoleRepository;
     }
@@ -41,11 +44,9 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         return await this.findOneByWhat(MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE, id);
     }
     async findOneByWhat(what, str) {
-        if (!this.queryRunner)
-            throw new basicException_1.default(500);
         const where = {};
         where[what] = str;
-        return await this.queryRunner.manager.findOneBy(member_entity_1.MemberEntity, where);
+        return await this.manager.findOneBy(member_entity_1.MemberEntity, where);
     }
     async findOneByArmycode(sARMY_CODE) {
         return await this.findOneByID(sARMY_CODE);
@@ -54,27 +55,28 @@ let MemberRepository = class MemberRepository extends master_repository_1.defaul
         if (profile.passwd)
             profile.passwd = (0, text_util_1.passwordEncrypt)(profile.passwd);
         const entity = profile.toEntity();
-        const where = {};
-        where[MyConst_1.MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
-        const newQR = this.dataSource.createQueryRunner();
-        await newQR.connect();
-        await newQR.startTransaction();
-        const manager = newQR.manager;
         const user = await this.findOneByID(profile.userID);
         if (!user)
-            throw new basicException_1.default(404);
+            throw new basicException_1.default(responseCode_1.ResponseCode.NOT_FOUND);
+        const where = {};
+        where[MyConst_1.MyConst.DB_FIELD_MEM_ID] = user?.nMEM_ID;
+        let newQR = this.queryRunner || this.dataSource.createQueryRunner();
         try {
+            await newQR.startTransaction();
+            const manager = newQR.manager;
             if (profile.role && profile.role.length > 0) {
                 const roles = profile.role.split(';');
-                this.memberRoleRepository.deleteAllMemberRole(user.nMEM_ID);
+                await manager.getRepository(role_entity_1.MemberRoleEntity).delete(where);
                 for (let i = 0; i < roles.length; ++i)
-                    this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
+                    await this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
             }
             await manager.getRepository(member_entity_1.MemberEntity).update(where, entity);
             await newQR.commitTransaction();
         }
         catch (e) {
+            log_util_1.default.hl(e);
             await newQR.rollbackTransaction();
+            throw new basicException_1.default(responseCode_1.ResponseCode.INTERNAL_SERVER_ERROR, e.message);
         }
         finally {
             await newQR.release();

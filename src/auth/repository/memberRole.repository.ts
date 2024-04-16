@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository, createQueryBuilder } from "typeorm";
+import { DataSource, FindOptionsUtils, Repository, createQueryBuilder } from "typeorm";
 import { MemberEntity } from "../entity/member.entity";
 import _l from "src/util/logger/log.util";
 import { classToClassFromExist } from "class-transformer";
@@ -14,10 +14,11 @@ export class MemberRoleRepository extends MasterRepository<MemberRoleEntity>
 {
     // private repository: Repository<MemberRoleEntity>;
 
-    constructor(protected readonly dataSource: DataSource)
+    constructor(dataSource: DataSource)
     // constructor()
     {
-        super(MemberRoleEntity, dataSource);
+        _l.log(dataSource);
+        super(MemberRoleEntity, dataSource.createEntityManager());
         // this.repository = this.dataSource.getRepository(MemberRoleEntity)
     }
 
@@ -34,6 +35,10 @@ export class MemberRoleRepository extends MasterRepository<MemberRoleEntity>
         const where: any = {};
         where[MyConst.DB_FIELD_MEM_ID] = memID;
         const deleteRes = await this.delete(where);
+        // const sql = `DETELE FROM T_MEMBER_ROle where "nmem_id"=:memid`;
+        // const params = { memid};
+        // const deleteres = this.dorawquery(sql, params, {});
+        // this.delete(memID);
         return deleteRes;
     }
 
@@ -48,7 +53,7 @@ export class MemberRoleRepository extends MasterRepository<MemberRoleEntity>
         {
             const sql = `
 INSERT INTO VSTS.T_MEMBER_ROLE ("nMEM_ROLE_ID", "cROLE", "nMEM_ID")
-VALUES(:seq, :roleCode, :memID);
+VALUES(:seq, :roleCode, :memID)
             `;
             const params = {
                 seq: ()=>"T_MEMBER_ROLE_SEQ.NEXTVAL",

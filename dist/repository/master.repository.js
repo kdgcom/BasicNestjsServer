@@ -8,20 +8,21 @@ const basicException_1 = __importDefault(require("../util/response/basicExceptio
 const responseCode_1 = require("../util/response/responseCode");
 const typeorm_1 = require("typeorm");
 class MasterRepository extends typeorm_1.Repository {
-    constructor(target, dataSoruce) {
-        super(target, dataSoruce.createEntityManager(), dataSoruce.createQueryRunner());
+    constructor(target, manager, qr) {
+        super(target, manager, qr);
     }
     async doRawQuery(sql, params, options) {
-        if (!this.queryRunner)
-            throw new basicException_1.default(responseCode_1.ResponseCode.INTERNAL_SERVER_ERROR, `No query runner: doRawQuery(${sql})`);
+        return await this.doRawQueryWithManager(sql, params, options, this.manager);
+    }
+    async doRawQueryWithManager(sql, params, options, manager) {
         log_util_1.default.log("doRawQuery : ", sql, params, options);
-        const connection = this.queryRunner.connection;
+        const connection = manager.connection;
         if (!connection) {
             log_util_1.default.error("Cannot get DB Connection.");
             throw new basicException_1.default(responseCode_1.ResponseCode.INTERNAL_SERVER_ERROR);
         }
         const [query, parameters] = connection.driver.escapeQueryWithParameters(sql, params, options);
-        return this.queryRunner.manager.query(query, parameters);
+        return await manager.query(query, parameters);
     }
 }
 exports.default = MasterRepository;

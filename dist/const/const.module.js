@@ -14,9 +14,9 @@ let ConstModule = class ConstModule {
 exports.ConstModule = ConstModule;
 exports.ConstModule = ConstModule = __decorate([
     (0, common_1.Module)({
-        imports: [MyConst_1.MyConst],
+        imports: [],
         controllers: [],
-        providers: [],
+        providers: [MyConst_1.MyConst.initialize()],
     })
 ], ConstModule);
 //# sourceMappingURL=const.module.js.map

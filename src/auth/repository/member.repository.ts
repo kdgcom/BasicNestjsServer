@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository, createQueryBuilder } from "typeorm";
+import { DataSource, QueryRunner, Repository, createQueryBuilder } from "typeorm";
 import { MemberEntity } from "../entity/member.entity";
 import _l from "src/util/logger/log.util";
 import { classToClassFromExist } from "class-transformer";
@@ -11,6 +11,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { MemberRoleRepository } from "./memberRole.repository";
 import { MemberRoleEntity } from "../entity/role.entity";
 import BasicException from "src/util/response/basicException";
+import { ResponseCode } from "src/util/response/responseCode";
+import { message } from "typia/lib/protobuf";
 
 @Injectable()
 export class MemberRepository extends MasterRepository<MemberEntity>
@@ -18,12 +20,10 @@ export class MemberRepository extends MasterRepository<MemberEntity>
     constructor(
         protected readonly dataSource: DataSource,
         @InjectRepository(MemberRoleRepository) 
-        private memberRoleRepository: MemberRoleRepository
+        private readonly memberRoleRepository: MemberRoleRepository
     )
-    // constructor()
     {
-        super(MemberEntity, dataSource);
-        // this.repository = this.dataSource.getRepository(MemberEntity)
+        super(MemberEntity, dataSource.createEntityManager());
     }
 
     // createMember()
@@ -52,11 +52,12 @@ export class MemberRepository extends MasterRepository<MemberEntity>
 
     async findOneByWhat(what: string, str: any)
     {
-        if ( !this.queryRunner )
-            throw new BasicException(500);
+        // if ( !this.queryRunner )
+        //     throw new BasicException(500);
         const where: any = {};
         where[what] = str;
-        return await this.queryRunner.manager.findOneBy(MemberEntity, where);
+        // return await this.queryRunner.manager.findOneBy(MemberEntity, where);
+        return await this.manager.findOneBy(MemberEntity, where);
     }
 
 
@@ -87,37 +88,43 @@ export class MemberRepository extends MasterRepository<MemberEntity>
             profile.passwd = passwordEncrypt(profile.passwd);
 
         const entity = profile.toEntity();
+        const user = await this.findOneByID(profile.userID);
+        // user의 memID를 확보 (슈퍼유저가 update하는 경우도 있으므로)
+        // const user = await manager.withRepository(this).findOneByID(profile.userID);
+        if ( !user )
+            throw new BasicException(ResponseCode.NOT_FOUND);
         const where: any = {}
-        where[MyConst.DB_FIELD_MEM_UNIQUE] = profile.userID;
+        where[MyConst.DB_FIELD_MEM_ID] = user?.nMEM_ID;
+
 
         // transaction START
         // queryRunner를 새로 받음
-        const newQR = this.dataSource.createQueryRunner();
-        await newQR.connect();
-        await newQR.startTransaction();
-        const manager = newQR.manager;
-
-        // user의 memID를 확보 (슈퍼유저가 update하는 경우도 있으므로)
-        const user = await this.findOneByID(profile.userID);
-        if ( !user )
-            throw new BasicException(404);
-
+        // const newQR: QueryRunner = this.dataSource.createQueryRunner();
+        // let newQR = this.queryRunner;
+        let newQR = this.queryRunner || this.dataSource.createQueryRunner();
         try
         {
+            // if ( !newQR.connection )
+            //     await newQR.connect();
+            await newQR.startTransaction();
+            // this.queryRunner?.startTransaction();
+            const manager = newQR.manager;
+
             if ( profile.role && profile.role.length>0 )
             {
                 const roles = profile.role.split(';');
-                // await manager.getRepository(MemberRoleEntity).delete(where);
-                this.memberRoleRepository.deleteAllMemberRole(user.nMEM_ID);
+                await manager.getRepository(MemberRoleEntity).delete(where);
                 for(let i=0; i<roles.length; ++i)
-                    this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
+                    await this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
             }
             await manager.getRepository(MemberEntity).update(where, entity);
             await newQR.commitTransaction();
         }
-        catch(e)
+        catch(e: any)
         {
+            _l.hl(e);
             await newQR.rollbackTransaction();
+            throw new BasicException(ResponseCode.INTERNAL_SERVER_ERROR, e.message);
         }
         finally
         {

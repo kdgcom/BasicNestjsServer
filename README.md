@@ -76,8 +76,10 @@ curl -X POST -H 'Content-Type: application/json' --cookie "refreshToken=eyJhbGci
 # Get user by armycode
 curl -X GET http://192.168.0.7:4000/auth/user/00-00000
 curl -X GET http://192.168.0.7:4000/auth/user2/00-00000
-# update member info
+# update member info - PW
 curl -X PATCH -H 'Content-Type: application/json' -d '{"armyCode":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/user
+# update member role
+curl -X PATCH -H 'Content-Type: application/json' -d '{"userID":"00-00000", "role":"R_ADMIN;R_INST;R_TRAINEE"}' http://192.168.0.7:4000/auth/user
 #
 ```
 
@@ -320,3 +322,31 @@ where[SOMETHING] = xxx;
 // keyof 를 이용해 아예 이 object에 맞는 형태로 타입을 받도록 한다.
 const a = MyObject[kkk as keyof typeof MyObject];
 ```
+
+
+## 새 기능 추가 과정
+- API 설계
+  * DTO 작성
+- DB 설계
+- DB 내용 추가
+  * create table, alter table 등을 통해 테이블 변경
+  * ENTITY 작성
+  * Repository 작성
+    + MemberRepository 참고
+    + MasterRepository extends
+    + constructor 반드시 구현
+    + transaction등을 위해 다른 repository inject시 constructor에 InjectRepository 사용
+    ```typescript
+    export class MemberRepository extends MasterRepository<MemberEntity>
+    {
+      constructor(
+          protected readonly dataSource: DataSource,
+          @InjectRepository(MemberRoleRepository) 
+          private readonly memberRoleRepository: MemberRoleRepository
+      )
+      {
+          super(MemberEntity, dataSource.createEntityManager());
+      }
+    }
+    ```
+- 

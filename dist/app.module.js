@@ -22,7 +22,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const log_util_1 = __importDefault(require("./util/logger/log.util"));
 const config_1 = require("@nestjs/config");
 const typeorm_2 = require("typeorm");
-const member_entity_1 = require("./auth/entity/member.entity");
 const VSTS_module_1 = require("./VSTS/VSTS.module");
 const reqres_logger_mw_1 = require("./middleware/reqres_logger.mw");
 const test_service_1 = require("./test.service");
@@ -36,7 +35,9 @@ const get_db_options = () => {
         serviceName: process.env.DB_DATABASE,
         username: process.env.DB_USER,
         password: process.env.DB_PW,
-        entities: [member_entity_1.MemberEntity],
+        entities: [
+            __dirname + "/**/*entity.{js,ts}"
+        ],
         dropSchema: false,
         synchronize: false,
         keepConnectionAlive: true,

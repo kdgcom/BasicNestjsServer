@@ -25,7 +25,10 @@ const get_db_options = () =>
     serviceName: process.env.DB_DATABASE,
     username: process.env.DB_USER,
     password: process.env.DB_PW,
-    entities: [MemberEntity],
+    entities: [
+      // MemberEntity
+      __dirname + "/**/*entity.{js,ts}"
+    ],
     dropSchema: false,
     synchronize: false,
     keepConnectionAlive: true,
@@ -65,6 +68,7 @@ export class AppModule implements NestModule
 {
   constructor( private dataSource: DataSource ) {}
 
+  // for logger middle ware
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ReqResLoggerMiddleware)

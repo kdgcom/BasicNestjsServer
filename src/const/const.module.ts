@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { MyConst } from './MyConst';
 
 @Module({
-  imports: [MyConst],
+  imports: [],
   controllers: [],
-  providers: [],
+  providers: [MyConst.initialize()],
 })
 export class ConstModule {}

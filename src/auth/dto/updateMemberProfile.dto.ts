@@ -11,7 +11,6 @@ export class UpdateMemberProfileDTO extends DTODefinition
     name!: string;
 
     @IsString()
-    @IsOptional()
     userID!: string;
 
     @IsString()
