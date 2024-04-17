@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 import { MemberEntity } from "src/auth/entity/member.entity";
 import { MyConst } from "src/const/MyConst";
-import DTODefinition from "src/definition/dto.definition";
+import DTODefinition from "src/lib/definition/dto.definition";
 import { isEmpty } from "src/util/common/text.util";
 
 export class UpdateMemberProfileDTO extends DTODefinition

@@ -4,8 +4,8 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import _l from '../logger/log.util';
-import BasicException from '../../definition/response/basicException';
-import { ResponseCode } from '../../definition/response/responseCode';
+import BasicException from '../../lib/definition/response/basicException';
+import { ResponseCode } from '../../lib/definition/response/responseCode';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
 

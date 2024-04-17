@@ -1,0 +1,400 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "http://localhost:40001",
+      "description": "Local Server"
+    }
+  ],
+  "info": {
+    "version": "0.1.0",
+    "title": "VSTS HTTP Server",
+    "description": "VSTS Server"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user/{armycode}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "armycode",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user2/{armycode}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "armycode",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user": {
+      "patch": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMemberProfileDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionApiUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExceptionApiNotFound"
+                }
+              }
+            }
+          }
+        },
+        "description": "/auth/signin\n유저의 일반적인 로그인. SignInDTO를 통해 ID/PW를 받아 처리"
+      }
+    },
+    "/auth/regenerate": {
+      "post": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "description": "/auth/regenerate"
+      }
+    },
+    "/test": {
+      "post": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMemberProfileDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/members": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Object": {
+        "type": "object",
+        "properties": {
+          "constructor": {
+            "$ref": "#/components/schemas/Function",
+            "title": "The initial value of Object.prototype.constructor is the standard built-in Object constructor",
+            "description": "The initial value of Object.prototype.constructor is the standard built-in Object constructor."
+          }
+        },
+        "required": [
+          "constructor"
+        ]
+      },
+      "Function": {
+        "type": "object",
+        "properties": {
+          "prototype": {},
+          "length": {
+            "type": "number"
+          },
+          "arguments": {},
+          "caller": {
+            "$ref": "#/components/schemas/Function"
+          },
+          "name": {
+            "type": "string",
+            "title": "Returns the name of the function. Function names are read-only and can not be changed",
+            "description": "Returns the name of the function. Function names are read-only and can not be changed."
+          }
+        },
+        "required": [
+          "prototype",
+          "length",
+          "arguments",
+          "caller",
+          "name"
+        ],
+        "description": "Creates a new function."
+      },
+      "UpdateMemberProfileDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "userID": {
+            "type": "string"
+          },
+          "passwd": {
+            "type": "string"
+          },
+          "depID": {
+            "type": "number"
+          },
+          "rankCode": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "number"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "level": {
+            "type": "number"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "userID",
+          "passwd",
+          "depID",
+          "rankCode",
+          "isActive",
+          "accessToken",
+          "refreshToken",
+          "level",
+          "role"
+        ]
+      },
+      "SignInDTO": {
+        "type": "object",
+        "properties": {
+          "userID": {
+            "type": "string"
+          },
+          "passwd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userID",
+          "passwd"
+        ]
+      },
+      "ExceptionApiUnauthorized": {
+        "type": "object",
+        "properties": {
+          "cause": {},
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "stack": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cause",
+          "name",
+          "message"
+        ]
+      },
+      "ExceptionApiNotFound": {
+        "type": "object",
+        "properties": {
+          "cause": {},
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "stack": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cause",
+          "name",
+          "message"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "tags": [],
+  "x-samchon-emended": true
+}

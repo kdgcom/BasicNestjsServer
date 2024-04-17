@@ -7,6 +7,9 @@ import 'reflect-metadata';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 import cookieParser from 'cookie-parser';
+import { DocumentBuilder, OmitType, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import swaggerJSON from './swagger.json';
+import * as fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -17,6 +20,10 @@ async function bootstrap() {
       : ['error', 'warn', 'log', 'verbose', 'debug']
     }
   );
+
+  // Swagger는 /src에 있는 swagger.json에서 받아와 실행함.
+  // npm run swagger로 swagger.json을 빌드한다.
+  SwaggerModule.setup('doc', app, <OpenAPIObject>swaggerJSON);
 
 
   // Set validation pipe for DTO

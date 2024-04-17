@@ -10,7 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { MemberEntity } from './auth/entity/member.entity';
 import { VSTSModule } from './VSTS/VSTS.module';
-import { ReqResLoggerMiddleware } from './middleware/reqres_logger.mw';
+import { ReqResLoggerMiddleware } from './lib/definition/middleware/reqres_logger.mw';
 import { TestService } from './test.service';
 import { TestController } from './test.controller';
 

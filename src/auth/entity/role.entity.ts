@@ -1,4 +1,4 @@
-import EntityDefinition from "src/definition/entity.definition";
+import EntityDefinition from "src/lib/definition/entity.definition";
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('T_MEMBER_ROLE')

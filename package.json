@@ -17,7 +17,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "ts-patch install && typia patch"
+    "prepare": "ts-patch install && typia patch",
+    "swagger": "npx nestia swagger",
+    "swagger2": "npx nestia swagger --config nestia.config.ts --project tsconfig.json"
   },
   "dependencies": {
     "@nestia/core": "^3.0.3",
@@ -28,6 +30,7 @@
     "@nestjs/core": "^10.3.2",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.3.2",
+    "@nestjs/swagger": "^7.3.1",
     "@nestjs/typeorm": "^10.0.2",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",

@@ -1,5 +1,5 @@
 import { Controller, Injectable } from "@nestjs/common";
-import BasicResponse from "src/definition/response/BasicResponse";
+import BasicResponse from "src/lib/definition/response/BasicResponse";
 import { MemberRepository } from "../../auth/repository/member.repository";
 
 @Injectable()
