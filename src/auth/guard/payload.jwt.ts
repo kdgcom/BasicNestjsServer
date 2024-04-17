@@ -2,7 +2,7 @@ import { JwtService } from "@nestjs/jwt";
 import { classToPlain } from "class-transformer";
 import { MyConst } from "src/const/MyConst";
 import _l from "src/util/logger/log.util";
-import BasicException from "src/util/response/basicException";
+import BasicException from "src/definition/response/basicException";
 import { isatty } from "tty";
 
 export class JWTPayload

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import BasicResponse from 'src/util/response/BasicResponse';
+import BasicResponse from 'src/definition/response/BasicResponse';
 import _l from 'src/util/logger/log.util';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
 import { plainToClass } from 'class-transformer';

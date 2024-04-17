@@ -1,11 +1,11 @@
 import { HttpCode, Injectable, UnauthorizedException } from '@nestjs/common';
 import { MemberRepository } from 'src/auth/repository/member.repository';
 import { isEmpty, passwordCompare } from 'src/util/common/text.util';
-import BasicResponse from 'src/util/response/BasicResponse';
-import BasicException from 'src/util/response/basicException';
+import BasicResponse from 'src/definition/response/BasicResponse';
+import BasicException from 'src/definition/response/basicException';
 import { UpdateMemberProfileDTO } from './dto/updateMemberProfile.dto';
 import { MemberEntity } from 'src/auth/entity/member.entity';
-import { ResponseCode } from 'src/util/response/responseCode';
+import { ResponseCode } from 'src/definition/response/responseCode';
 import _l from 'src/util/logger/log.util';
 import { plainToClass } from 'class-transformer';
 import { SignInDTO } from './dto/signIn.dto';

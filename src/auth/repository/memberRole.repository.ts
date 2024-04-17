@@ -3,7 +3,7 @@ import { DataSource, FindOptionsUtils, Repository, createQueryBuilder } from "ty
 import { MemberEntity } from "../entity/member.entity";
 import _l from "src/util/logger/log.util";
 import { classToClassFromExist } from "class-transformer";
-import MasterRepository from "../../repository/master.repository";
+import MasterRepository from "../../definition/repository/master.repository";
 import { UpdateMemberProfileDTO } from "src/auth/dto/updateMemberProfile.dto";
 import { passwordEncrypt } from "src/util/common/text.util";
 import { MyConst } from "src/const/MyConst";

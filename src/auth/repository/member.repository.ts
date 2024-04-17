@@ -3,15 +3,15 @@ import { DataSource, QueryRunner, Repository, createQueryBuilder } from "typeorm
 import { MemberEntity } from "../entity/member.entity";
 import _l from "src/util/logger/log.util";
 import { classToClassFromExist } from "class-transformer";
-import MasterRepository from "../../repository/master.repository";
+import MasterRepository from "../../definition/repository/master.repository";
 import { UpdateMemberProfileDTO } from "src/auth/dto/updateMemberProfile.dto";
 import { passwordEncrypt } from "src/util/common/text.util";
 import { MyConst } from "src/const/MyConst";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MemberRoleRepository } from "./memberRole.repository";
 import { MemberRoleEntity } from "../entity/role.entity";
-import BasicException from "src/util/response/basicException";
-import { ResponseCode } from "src/util/response/responseCode";
+import BasicException from "src/definition/response/basicException";
+import { ResponseCode } from "src/definition/response/responseCode";
 import { message } from "typia/lib/protobuf";
 
 @Injectable()

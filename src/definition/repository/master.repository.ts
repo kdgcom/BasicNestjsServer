@@ -1,6 +1,6 @@
 import _l from "src/util/logger/log.util";
-import BasicException from "src/util/response/basicException";
-import { ResponseCode } from "src/util/response/responseCode";
+import BasicException from "src/definition/response/basicException";
+import { ResponseCode } from "src/definition/response/responseCode";
 import { DataSource, EntityManager, EntityTarget, ObjectLiteral, QueryRunner, Repository, getConnection } from "typeorm";
 
 /**
