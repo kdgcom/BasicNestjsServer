@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import { DocumentBuilder, OmitType, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import swaggerJSON from './swagger.json';
 import * as fs from 'fs';
+import { getStringToArray } from './util/common/text.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -25,6 +26,10 @@ async function bootstrap() {
   // npm run swagger로 swagger.json을 빌드한다.
   SwaggerModule.setup('doc', app, <OpenAPIObject>swaggerJSON);
 
+  app.enableCors({
+    credentials: true,
+    origin: MyConst.CORS_ORIGIN,
+  })
 
   // Set validation pipe for DTO
   app.useGlobalPipes(new ValidationPipe(
@@ -45,6 +50,8 @@ async function bootstrap() {
   const port = MyConst.LISTEN_PORT;
   await app.listen(port, ()=>
   {
+    _l.info("Coodie domains : ", MyConst.COOKIE_ALLOWED_DOMAIN);
+    _l.info("Cors origins : ", MyConst.CORS_ORIGIN);
     _l.info("LISTEN port : ", port);
   });
 }

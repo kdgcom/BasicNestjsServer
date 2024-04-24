@@ -17,7 +17,7 @@ export class MemberRoleRepository extends MasterRepository<MemberRoleEntity>
     constructor(dataSource: DataSource)
     // constructor()
     {
-        _l.log(dataSource);
+        // _l.log(dataSource);
         super(MemberRoleEntity, dataSource.createEntityManager());
         // this.repository = this.dataSource.getRepository(MemberRoleEntity)
     }

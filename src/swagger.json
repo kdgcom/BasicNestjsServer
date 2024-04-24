@@ -2,6 +2,10 @@
   "openapi": "3.1.0",
   "servers": [
     {
+      "url": "http://localhost:4000",
+      "description": "Local Server"
+    },
+    {
       "url": "http://localhost:40001",
       "description": "Local Server"
     }
@@ -151,26 +155,8 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExceptionApiUnauthorized"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExceptionApiNotFound"
+                  "$ref": "#/components/schemas/Object"
                 }
               }
             }
@@ -344,46 +330,6 @@
         "required": [
           "userID",
           "passwd"
-        ]
-      },
-      "ExceptionApiUnauthorized": {
-        "type": "object",
-        "properties": {
-          "cause": {},
-          "name": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "stack": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "cause",
-          "name",
-          "message"
-        ]
-      },
-      "ExceptionApiNotFound": {
-        "type": "object",
-        "properties": {
-          "cause": {},
-          "name": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "stack": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "cause",
-          "name",
-          "message"
         ]
       }
     },

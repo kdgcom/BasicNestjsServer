@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { getStringToArray } from "src/util/common/text.util";
 import _l from "src/util/logger/log.util";
 
 export class MyConst 
@@ -25,8 +26,11 @@ export class MyConst
   static JWT_SECRET = "-temp_jwt_secret-.,-";
   static JWT_AT_EXPIREIN = '30s'; // access_token expires in
   static JWT_RT_EXPIREIN = '1m'; // refresh_token expires in
+  
+  static CORS_ORIGIN = process.env.ENV_CORS_ORIGIN || "";
+
   // 쿠키는 ,로 구분해 넣을 수 있다.
-  static COOKIE_ALLOWED_DOMAIN = "localhost:"+MyConst.LISTEN_PORT
+  static COOKIE_ALLOWED_DOMAIN : string = "localhost:"+MyConst.LISTEN_PORT
 
   static COOKIE_REFRESH_TOKEN = "refreshToken";
 
@@ -45,8 +49,11 @@ export class MyConst
     MyConst.JWT_SECRET = process.env.JWT_SECRET || MyConst.JWT_SECRET;
     MyConst.JWT_AT_EXPIREIN = process.env.JWT_AT_EXPIREIN || MyConst.JWT_AT_EXPIREIN;
     MyConst.JWT_RT_EXPIREIN = process.env.JWT_RT_EXPIREIN || MyConst.JWT_RT_EXPIREIN;
-    MyConst.COOKIE_ALLOWED_DOMAIN = process.env.COOKIE_ALLOWED_DOMAIN || MyConst.COOKIE_ALLOWED_DOMAIN;
+
+    MyConst.CORS_ORIGIN = process.env.ENV_CORS_ORIGIN || "";
+    MyConst.COOKIE_ALLOWED_DOMAIN = process.env.ENV_COOKIE_ALLOWED_DOMAIN || MyConst.COOKIE_ALLOWED_DOMAIN;
     MyConst.COOKIE_REFRESH_TOKEN = "refreshToken";
+
     MyConst.DB_FIELD_MEM_UNIQUE = process.env.DB_FIELD_MEM_UNIQUE || MyConst.DB_FIELD_MEM_UNIQUE;
     MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
 

@@ -46,7 +46,7 @@ export class AuthService {
     if ( isEmpty(memPlain) )
       throw new BasicException(ResponseCode.NOT_FOUND);
     const mem = plainToClass(MemberEntity, memPlain);
-    _l.log(mem);
+    // _l.log(mem);
     return new BasicResponse(ResponseCode.OK).data(mem.toPlain());
   }
 
@@ -99,7 +99,7 @@ export class AuthService {
     member.accessToken = data.accessToken;
     member.refreshToken = data.refreshToken;
     this.memberRepository.updateMemberProfile(member);
-    return { ret: new BasicResponse(ResponseCode.OK).data(data), refreshToken: data.refreshToken };
+    return { ret: new BasicResponse(ResponseCode.ACCEPTED).data(data), refreshToken: data.refreshToken };
   }
 
   async tokenRefresh(rt: string): Promise<any>

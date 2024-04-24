@@ -35,7 +35,7 @@ const get_db_options = () =>
     logging: true,
 
   }
-  _l.debug("DB Options : ", db_options );
+  // _l.debug("DB Options : ", db_options );
   return db_options;
 }
 

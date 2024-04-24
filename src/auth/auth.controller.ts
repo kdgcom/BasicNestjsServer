@@ -12,7 +12,7 @@ import { TypedBody, TypedException, TypedRoute } from '@nestia/core';
 import { ResponseCode } from 'src/lib/definition/response/responseCode';
 import { ExceptionApiNotFound, ExceptionApiUnauthorized } from 'src/lib/definition/response/all.exception';
 import { ApiExtraModels, ApiOkResponse, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import { ApiCommonResponse } from 'src/lib/definition/swagger/common.api.response';
+import { ApiCommonAcceptedResponse, ApiCommonResponse } from 'src/lib/definition/swagger/common.api.response';
 
 @Controller('/auth')
 export class AuthController {
@@ -37,6 +37,9 @@ export class AuthController {
     return await this.authService.getUser2(params);
   }
 
+  @ApiResponse({
+    status: ResponseCode.ACCEPTED
+  })
   @Patch('/user')
   async updateUser(@Body() profile: UpdateMemberProfileDTO): Promise<BasicResponse>
   {
@@ -50,15 +53,19 @@ export class AuthController {
    * @param body 
    * @returns 
    */
-  @TypedRoute.Post('/signin')
-  @TypedException<ExceptionApiNotFound>(ResponseCode.NOT_FOUND)
-  @TypedException<ExceptionApiUnauthorized>(ResponseCode.UNAUTHORIZED)
-  @ApiExtraModels(SignInResDTO)
-  @ApiCommonResponse({ $ref: getSchemaPath(SignInResDTO) })
+  @Post('/signin')
+  // @TypedException<ExceptionApiNotFound>(ResponseCode.NOT_FOUND)
+  // @TypedException<ExceptionApiUnauthorized>(ResponseCode.UNAUTHORIZED)
+  // @ApiExtraModels(SignInResDTO)
+  // @ApiResponse({
+  //   status: ResponseCode.OK,
+  //   type: SignInResDTO
+  // })
+  // @ApiCommonResponse({ $ref: getSchemaPath(SignInResDTO) }, ResponseCode.OK) 
   async signIn(
     @TypedBody() body: SignInDTO, 
     @Res({passthrough: true}) response: Response
-  ): Promise<any>
+  ): Promise<BasicResponse>
   {
     const { ret, refreshToken } = await this.authService.signIn(body);
     // 쿠키에 refresh_token을 세팅한다.
@@ -69,12 +76,15 @@ export class AuthController {
         httpOnly: true, 
         domain: MyConst.COOKIE_ALLOWED_DOMAIN
       });
-    return ret;
+    return <BasicResponse>ret;
   }
 
   /**
    * /auth/regenerate
    */
+  @ApiResponse({
+    status: ResponseCode.ACCEPTED
+  })
   @Post('/regenerate')
   async signInRT(@Req() req: Request): Promise<any>
   {

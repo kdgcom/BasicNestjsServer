@@ -89,6 +89,10 @@ export default class _l {
     }
 
     static info(...args: any[]) {
+      this._common(__info, false, false, ...args);
+    }
+
+    static info_prefix(...args: any[]) {
       this._common(__info, true, false, ...args);
     }
   

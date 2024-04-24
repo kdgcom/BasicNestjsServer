@@ -104,9 +104,9 @@ export function getNicknameFromEmail(email: string) {
  * @param bgmsStr 
  * @returns 
  */
-export function getStringToArray (bgmsStr: string) {
+export function getStringToArray (bgmsStr: string | undefined) {
   if(!bgmsStr) return null
-  return bgmsStr.split(',')
+  return bgmsStr.split(',').map(i=>i.trim());
 }
 
 /**
@@ -206,12 +206,12 @@ export function getRandomPassword() {
  * 
  * @param passwd plain password
  */
-export function passwordEncrypt(passwd: string)
+export async function passwordEncrypt(passwd: string)
 {
   const saltRounds: number = parseInt(process.env.PW_SALT_NROUND || '10');
 
-  const salt = genSaltSync(saltRounds);
-  const hash = hashSync( passwd, salt );
+  const salt = await genSaltSync(saltRounds);
+  const hash = await hashSync( passwd, salt );
 
   return hash;
 }
@@ -223,10 +223,10 @@ export function passwordEncrypt(passwd: string)
  * @param passwordHash DB에 저장된 패스워드 해쉬
  * @returns 
  */
-export function passwordCompare(inPassword: string, passwordHash: string)
+export async function passwordCompare(inPassword: string, passwordHash: string)
 {
   _l.info("Password Compare : ", inPassword, passwordHash);
-  return compareSync(inPassword, passwordHash);
+  return await compareSync(inPassword, passwordHash);
 }
 
 

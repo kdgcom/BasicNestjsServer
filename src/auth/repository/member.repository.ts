@@ -85,7 +85,7 @@ export class MemberRepository extends MasterRepository<MemberEntity>
     async updateMemberProfile(profile: UpdateMemberProfileDTO)
     {
         if ( profile.passwd ) // 패스워드가 들어 왔다면 bcrypt를 이용한 해쉬를 이용
-            profile.passwd = passwordEncrypt(profile.passwd);
+            profile.passwd = await passwordEncrypt(profile.passwd);
 
         const entity = profile.toEntity();
         const user = await this.findOneByID(profile.userID);

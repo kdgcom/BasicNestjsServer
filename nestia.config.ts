@@ -29,6 +29,14 @@ const NESTIA_CONFIG: INestiaConfig = {
       },
     },
     servers: [
+      // {
+      //   url: `http://192.168.0.7:4000`,
+      //   description: "Local Server",
+      // },
+      {
+        url: `http://localhost:4000`,
+        description: "Local Server",
+      },
       {
         url: `http://localhost:${<number>MyConst.LISTEN_PORT+1}`,
         description: "Local Server",
