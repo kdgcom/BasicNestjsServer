@@ -29,6 +29,15 @@ export default abstract class MasterRepository<T extends ObjectLiteral> extends 
         );
     }
 
+    async findOneByWhat(what: string, str: any)
+    {
+        const where: any = {};
+        where[what] = str;
+        return await this.manager.findOneBy(this.target, where);
+    }
+
+
+
     /**
      * escape가 가능한 raw sql query 실행
      * 
