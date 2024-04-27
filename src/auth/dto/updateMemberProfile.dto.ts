@@ -20,14 +20,6 @@ export class UpdateMemberProfileDTO extends DTODefinition
 
     @IsNumber()
     @IsOptional()
-    depID!: number;      // 부서ID
-
-    @IsString()
-    @IsOptional()
-    rankCode!: string;   // 계급 코드
-
-    @IsNumber()
-    @IsOptional()
     isActive!: number;   // 활성화여부. 1/0
     
     @IsString()
@@ -42,9 +34,9 @@ export class UpdateMemberProfileDTO extends DTODefinition
     @IsOptional()
     level!: number;
 
-    @IsString()
-    @IsOptional()
-    role!: string;
+    // @IsString()
+    // @IsOptional()
+    // role!: string;
 
     public toEntity(): MemberEntity 
     {
@@ -52,8 +44,6 @@ export class UpdateMemberProfileDTO extends DTODefinition
         member[MyConst.DB_FIELD_MEM_UNIQUE] = this.userID;
         if ( this.name )    member.sNAME = this.name;
         if ( this.passwd )  member.sPASSWORD = this.passwd;
-        if ( this.depID )   member.nDEP_ID = this.depID;
-        if ( this.rankCode ) member.cRANK = this.rankCode;
         if ( this.level )   member.nLEVEL = this.level;
 
         if ( !isEmpty(this.isActive) ) member.bACTIVE = this.isActive;

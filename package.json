@@ -1,8 +1,8 @@
 {
-  "name": "VSTS HTTP Server",
+  "name": "api-server",
   "private": true,
   "version": "0.1.0",
-  "description": "VSTS Server",
+  "description": "API Server",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

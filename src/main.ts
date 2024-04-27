@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import { DocumentBuilder, OmitType, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import swaggerJSON from './swagger.json';
 import * as fs from 'fs';
-import { getStringToArray } from './util/common/text.util';
+import { corsOrigin, getStringToArray } from './util/common/text.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -28,7 +28,7 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: MyConst.CORS_ORIGIN,
+    origin: corsOrigin(MyConst.CORS_ORIGIN)
   })
 
   // Set validation pipe for DTO
