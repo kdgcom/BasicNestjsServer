@@ -383,32 +383,3 @@ export function snakeTextToCamel(text: string, useDataType: boolean = true) {
 export function replaceAll(str: string, searchText: string, replaceText: string) {
   return str.replace(`/${searchText}/gi`, replaceText);
 }
-
-/**
- * env에 cors origin에 들어온 ,로 구분된 주소들을 (string | RegExp)[] 로 전환한다.
- * ,로 구분된 주소들은 다음의 꼴을 가져야 함
- * 1. http:// 혹은 https:// 로 시작
- * 2. 일반 domain name
- * 3. 정규표현식일 경우 앞뒤를 / 로 감싸야 함. 예> "/localhost:*00/"" or "/eroom.com$/" or "localhost:[0-9]{4,5}$"
- * @param str 
- */
-export function corsOrigin(str: string): (string | RegExp ) []
-{
-  const ret =
-    str.split(',').map(i =>
-    {
-      i = i?.trim();
-      if (!i) return "";
-      else if (i.startsWith('/') && i.endsWith('/')) // 문자열 시작과 끝이 / 라면 정규표현식
-      {
-        const content = i.slice(1, -1);
-        if (content.length > 0)
-          return RegExp(content);
-        else return "";
-      }
-      return "";
-    }
-    );
-
-    return ret;
-}
