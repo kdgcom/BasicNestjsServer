@@ -71,7 +71,7 @@ export class AuthController {
     response.set(
       {
        'access_token': ret.data.accessToken,
-       'Access-Control-Allow-Origin': 'POST'
+       'Access-Control-Allow-Method': 'POST'
       });
     // 쿠키에 refresh_token을 세팅한다.
     response.cookie( MyConst.COOKIE_REFRESH_TOKEN, refreshToken, 
