@@ -78,7 +78,7 @@ export class AuthController {
     // 쿠키에 refresh_token을 세팅한다.
     response.cookie( MyConst.COOKIE_REFRESH_TOKEN, refreshToken, 
       {
-        secure: true,
+        secure: MyConst.COOKIE_SECURE, // https일 경우만 true라야 함.
         sameSite: false,
         httpOnly: true, 
         domain: MyConst.COOKIE_ALLOWED_DOMAIN,
