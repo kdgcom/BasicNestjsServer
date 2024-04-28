@@ -18,6 +18,8 @@ export class MyConst
     else
       return MyConst.MODE_DEV;
   }
+
+  static isProduction = () => MyConst.checkMode()===MyConst.MODE_PRODUCTION;
   static mode = MyConst.checkMode();
 
   static DB_MODE_ORACLE = true;
@@ -31,6 +33,7 @@ export class MyConst
 
   // 쿠키는 ,로 구분해 넣을 수 있다.
   static COOKIE_ALLOWED_DOMAIN : string = "localhost:"+MyConst.LISTEN_PORT
+  static COOKIE_SECURE : boolean = false;
 
   static COOKIE_REFRESH_TOKEN = "refreshToken";
 
@@ -53,6 +56,7 @@ export class MyConst
     MyConst.CORS_ORIGIN = process.env.ENV_CORS_ORIGIN || "";
     MyConst.COOKIE_ALLOWED_DOMAIN = process.env.ENV_COOKIE_ALLOWED_DOMAIN || MyConst.COOKIE_ALLOWED_DOMAIN;
     MyConst.COOKIE_REFRESH_TOKEN = "refreshToken";
+    MyConst.COOKIE_SECURE = MyConst.isProduction();
 
     MyConst.DB_FIELD_MEM_UNIQUE = process.env.DB_FIELD_MEM_UNIQUE || MyConst.DB_FIELD_MEM_UNIQUE;
     MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
