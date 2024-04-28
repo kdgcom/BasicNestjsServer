@@ -70,7 +70,7 @@ export class AuthController {
     const { ret, refreshToken } = await this.authService.signIn(body);
     response.set(
       {
-       'access_token': ret.accessToken ,
+       'access_token': ret.data.accessToken,
        'Access-Control-Allow-Origin': 'POST'
       });
     // 쿠키에 refresh_token을 세팅한다.
