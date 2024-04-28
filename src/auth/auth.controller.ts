@@ -68,7 +68,11 @@ export class AuthController {
   ): Promise<BasicResponse>
   {
     const { ret, refreshToken } = await this.authService.signIn(body);
-    response.set({ 'access_token': ret.accessToken });
+    response.set(
+      {
+       'access_token': ret.accessToken ,
+       'Access-Control-Allow-Origin': 'POST'
+      });
     // 쿠키에 refresh_token을 세팅한다.
     response.cookie( MyConst.COOKIE_REFRESH_TOKEN, refreshToken, 
       {
