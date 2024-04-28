@@ -82,7 +82,7 @@ export class AuthController {
         sameSite: false,
         httpOnly: true, 
         domain: MyConst.COOKIE_ALLOWED_DOMAIN,
-        maxAge: (tempRT.exp - tempRT.iat),
+        maxAge: (tempRT.exp - tempRT.iat)*1000,
       });
     return <BasicResponse>ret;
   }
