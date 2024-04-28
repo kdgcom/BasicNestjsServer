@@ -71,7 +71,7 @@ export class AuthController {
     const { ret, refreshToken } = await this.authService.signIn(body);
     response.set(
       {
-       'access_token': ret.data.accessToken,
+       'access_token': ret.toJSON().data.accessToken,
        'Access-Control-Allow-Method': 'POST'
       });
     const tempRT = await JWTPayload.fromJWT(refreshToken);
