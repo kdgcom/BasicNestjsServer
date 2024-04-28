@@ -28,7 +28,8 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: [...MyConst.CORS_ORIGIN.split(',').map(i=>i?.trim()), /localhost:[0-9]{4,5}/]
+    origin: [...MyConst.CORS_ORIGIN.split(',').map(i=>i?.trim()), /localhost:[0-9]{4,5}/],
+    exposedHeaders: ["set-cookie"],
   })
 
   // Set validation pipe for DTO
