@@ -16,7 +16,8 @@ async function bootstrap() {
   const app = await NestFactory.create(
     AppModule, 
     {
-      logger: process.env.NODE_ENV === 'production' 
+      // logger: process.env.NODE_ENV === 'production' 
+      logger: MyConst.checkMode() // 1==production, 0==dev
       ? ['error', 'warn', 'log']
       : ['error', 'warn', 'log', 'verbose', 'debug']
     }
@@ -43,7 +44,7 @@ async function bootstrap() {
       
     }));
   
-  // 쿠기 사용 설정
+  // 쿠키 사용 설정
   app.use(cookieParser());
 
   /** Listen **/
@@ -51,6 +52,7 @@ async function bootstrap() {
   const port = MyConst.LISTEN_PORT;
   await app.listen(port, ()=>
   {
+    _l.info(`Envoronment : ${MyConst.checkMode()==1?"Production":"Development"}`);
     _l.info("Coodie domains : ", MyConst.COOKIE_ALLOWED_DOMAIN);
     _l.info("Cors origins : ", MyConst.CORS_ORIGIN);
     _l.info("LISTEN port : ", port);

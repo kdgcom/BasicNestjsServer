@@ -8,11 +8,19 @@ export class MyConst
 
   static MODE_DEV = 0;
   static MODE_PRODUCTION = 1;
+
+  /**
+   * check this build is production or development 
+   * @returns 1: production, 0: development
+   */
   static checkMode = () =>
   {
     if ( 
       process.env.NODE_ENV=="production" ||
-      process.env.NODE_ENV=="prod"
+      process.env.NODE_ENV=="prod" ||
+      process.env.ENVIROMENT=="production" || 
+      process.env.ENVIROMENT=="prod" || 
+      process.env.ENVIROMENT=="live"
     )
       return MyConst.MODE_PRODUCTION;
     else
