@@ -53,7 +53,7 @@ async function bootstrap() {
   await app.listen(port, ()=>
   {
     _l.info(`Envoronment : ${MyConst.checkMode()==1?"Production":"Development"}`);
-    _l.info("Coodie domains : ", MyConst.COOKIE_ALLOWED_DOMAIN);
+    _l.info("Cookie domains : ", MyConst.COOKIE_ALLOWED_DOMAIN);
     _l.info("Cors origins : ", MyConst.CORS_ORIGIN);
     _l.info("LISTEN port : ", port);
   });
