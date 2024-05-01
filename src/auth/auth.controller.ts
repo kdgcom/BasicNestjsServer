@@ -13,6 +13,7 @@ import { ResponseCode } from 'src/lib/definition/response/responseCode';
 import { ExceptionApiNotFound, ExceptionApiUnauthorized } from 'src/lib/definition/response/all.exception';
 import { ApiExtraModels, ApiOkResponse, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { ApiCommonAcceptedResponse, ApiCommonResponse } from 'src/lib/definition/swagger/common.api.response';
+import { JWTPayload } from './guard/payload.jwt';
 
 @Controller('/auth')
 export class AuthController {
@@ -68,13 +69,20 @@ export class AuthController {
   ): Promise<BasicResponse>
   {
     const { ret, refreshToken } = await this.authService.signIn(body);
+    response.set(
+      {
+       'access_token': ret.toJSON().data.accessToken,
+       'Access-Control-Allow-Method': 'POST'
+      });
+    const tempRT = await JWTPayload.fromJWT(refreshToken);
     // 쿠키에 refresh_token을 세팅한다.
     response.cookie( MyConst.COOKIE_REFRESH_TOKEN, refreshToken, 
       {
-        secure: true,
+        secure: MyConst.COOKIE_SECURE, // https일 경우만 true라야 함.
         sameSite: false,
         httpOnly: true, 
-        domain: MyConst.COOKIE_ALLOWED_DOMAIN
+        domain: MyConst.COOKIE_ALLOWED_DOMAIN,
+        maxAge: (tempRT.exp - tempRT.iat)*1000,
       });
     return <BasicResponse>ret;
   }

@@ -393,3 +393,6 @@ Temporary Items
 .apdisk
 
 dist/*
+
+.env.local
+.next

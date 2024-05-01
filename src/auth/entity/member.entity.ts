@@ -4,8 +4,7 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 @Entity('T_MEMBER')
 export class MemberEntity extends EntityDefinition
 {
-//    @PrimaryGeneratedColumn()
-    @Column()
+   @PrimaryGeneratedColumn()
     nMEM_ID!: number;
 
     @Column()
@@ -14,8 +13,8 @@ export class MemberEntity extends EntityDefinition
     @Column()
     sNAME!: string;
 
-    @Column()
-    cROLE!: string;
+    // @Column()
+    // cROLE!: string;
 
     @Column()
     dCREATE!: string;
@@ -46,22 +45,5 @@ export class MemberEntity extends EntityDefinition
 
     // @Column()
     // sEMAIL: string;
-
-/************************* VSTS *************************/
-
-    @Column()
-    cRANK!: string;
-
-    @Column()
-    cSHIP_TYPE!: string;
-
-    @Column()
-    nDEP_ID!: number;
-
-    @Column()
-    nUNIT_ID!: number;
-
-    @PrimaryColumn()
-    sARMY_CODE!: string;
 
 }

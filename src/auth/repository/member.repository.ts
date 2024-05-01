@@ -110,13 +110,13 @@ export class MemberRepository extends MasterRepository<MemberEntity>
             // this.queryRunner?.startTransaction();
             const manager = newQR.manager;
 
-            if ( profile.role && profile.role.length>0 )
-            {
-                const roles = profile.role.split(';');
-                await manager.getRepository(MemberRoleEntity).delete(where);
-                for(let i=0; i<roles.length; ++i)
-                    await this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
-            }
+            // if ( profile.role && profile.role.length>0 )
+            // {
+            //     const roles = profile.role.split(';');
+            //     await manager.getRepository(MemberRoleEntity).delete(where);
+            //     for(let i=0; i<roles.length; ++i)
+            //         await this.memberRoleRepository.insertMemberRole(user.nMEM_ID, roles[i]);
+            // }
             await manager.getRepository(MemberEntity).update(where, entity);
             await newQR.commitTransaction();
         }
