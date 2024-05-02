@@ -396,3 +396,5 @@ dist/*
 
 .env.local
 .next
+pnpm-lock.yaml
+package-lock.json
