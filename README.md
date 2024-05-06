@@ -254,6 +254,17 @@ finally
   create(@Body() createUserDto: CreateUserDto) { return 'This action adds a new user'; }
   ```
   - 요건에 맞지 않으면 로직에 들어가지 않고 바로 리턴시킨다.
+  - Get 방식 요청에서 dto를 query parameter로 받는 경우 변수중 number형에서 오류 발생시
+  ```typescript
+  export class SomeDTO
+  {
+      @Type(() => Number) // Type을 붙여서 강제로 Number로 바꿔 주는게 핵심!
+      @IsNotEmpty()
+      @IsInt()
+      someID!: number
+  }
+  ```
+  
 ## auth
 
 - 기본 auth 관련 함수들은 src/auth에 정의됨
