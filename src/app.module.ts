@@ -13,6 +13,8 @@ import { VSTSModule } from './VSTS/VSTS.module';
 import { ReqResLoggerMiddleware } from './lib/definition/middleware/reqres_logger.mw';
 import { TestService } from './test.service';
 import { TestController } from './test.controller';
+import { RenderModule } from 'nest-next';
+import Next from 'next';
 
 const get_db_options = () => 
 {
@@ -45,6 +47,7 @@ const imports = [
       isGlobal: true
     }
   ),
+  RenderModule.forRootAsync(Next({})),
   AuthModule, 
   ConstModule,
   VSTSModule,

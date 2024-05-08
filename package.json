@@ -20,7 +20,9 @@
     "prepare": "ts-patch install && typia patch",
     "swagger": "npx nestia swagger",
     "swagger2": "npx nestia swagger --config nestia.config.ts --project tsconfig.json",
-    "start:nd": "nest start --path ./tsconfig.server.json --watch -- -b swc"
+
+    "start:nd": "nest start --path ./tsconfig.server.json --watch -- -b swc",
+    "build:next": "next build"
   },
   "dependencies": {
     "@nestia/core": "^3.0.3",
@@ -44,6 +46,7 @@
     "log-beautify": "^1.2.0",
     "multer": "1.4.5-lts.1",
     "mysql2": "^3.9.4",
+    "nest-next": "^10.1.0",
     "next": "^14.2.3",
     "oracledb": "^6.4.0",
     "react": "^18.3.1",

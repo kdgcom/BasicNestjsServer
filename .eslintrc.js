@@ -8,7 +8,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
+    // 'plugin:prettier/recommended',
     'next'
   ],
   root: true,
@@ -16,7 +16,15 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: [
+    '.eslintrc.js'
+    , "src/*.ts"
+    , "src/auth/**/*ts"
+    , "src/const/**/*ts"
+    , "src/lib/**/*ts"
+    , "src/util/**/*ts"
+    , "src/VSTS/**/*ts"
+  ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
