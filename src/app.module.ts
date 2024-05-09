@@ -41,29 +41,48 @@ const get_db_options = () =>
   return db_options;
 }
 
-const imports = [
-  ConfigModule.forRoot(
-    {
-      isGlobal: true
-    }
-  ),
-  RenderModule.forRootAsync(Next({})),
-  AuthModule, 
-  ConstModule,
-  VSTSModule,
-  TypeOrmModule.forRootAsync(
-    {
-      name: 'default',
-      type: 'db',
-      useFactory: async () => {
-        return get_db_options()
-      },
-    } as TypeOrmModuleAsyncOptions
-  )
-];
+// const imports = [
+//   ConfigModule.forRoot(
+//     {
+//       isGlobal: true
+//     }
+//   ),
+//   RenderModule.forRootAsync(await Next({})),
+//   AuthModule, 
+//   ConstModule,
+//   VSTSModule,
+//   TypeOrmModule.forRootAsync(
+//     {
+//       name: 'default',
+//       type: 'db',
+//       useFactory: async () => {
+//         return get_db_options()
+//       },
+//     } as TypeOrmModuleAsyncOptions
+//   )
+// ];
 
 @Module({
-  imports,
+  imports:[
+    ConfigModule.forRoot(
+      {
+        isGlobal: true
+      }
+    ),
+    RenderModule.forRootAsync(Next({}), { viewsDir: null }),
+    AuthModule, 
+    ConstModule,
+    VSTSModule,
+    TypeOrmModule.forRootAsync(
+      {
+        name: 'default',
+        type: 'db',
+        useFactory: async () => {
+          return get_db_options()
+        },
+      } as TypeOrmModuleAsyncOptions
+    )
+  ],
   controllers: [AppController, TestController],
   providers: [AppService, TestService],
 })

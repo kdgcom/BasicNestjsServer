@@ -1,0 +1,13 @@
+diff --git a/dist/render.module.js b/dist/render.module.js
+index aabdf486d1f24b704c5797c079505916879a9bc4..4cdd6ad8caa0cba456107f620b69de49b18dc452 100644
+--- a/dist/render.module.js
++++ b/dist/render.module.js
+@@ -31,7 +31,7 @@ let RenderModule = RenderModule_1 = class RenderModule {
+                 yield next.prepare();
+             }
+             const nextConfig = next.nextConfig;
+-            const nextServer = next.server;
++            const nextServer = next.renderServer.server;
+             const basePath = nextConfig
+                 ? nextConfig.basePath
+                 : nextServer.nextConfig.basePath;

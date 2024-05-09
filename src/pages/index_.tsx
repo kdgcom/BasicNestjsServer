@@ -3,7 +3,7 @@ import { FC } from 'react';
 const Index: FC = () =>
 {
     return(
-        "Hello next!"
+        "index.tsx"
     )
 }
 
