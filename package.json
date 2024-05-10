@@ -20,7 +20,7 @@
     "prepare": "ts-patch install && typia patch",
     "swagger": "npx nestia swagger",
     "swagger2": "npx nestia swagger --config nestia.config.ts --project tsconfig.json",
-    "start:nd": "nest start --path ./tsconfig.server.json --watch -- -b swc",
+    "start:nd": "nest start --debug 0.0.0.0:9229 --path ./tsconfig.server.json --watch -- -b swc",
     "build:next": "next build"
   },
   "dependencies": {

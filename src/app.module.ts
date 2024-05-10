@@ -14,7 +14,7 @@ import { ReqResLoggerMiddleware } from './lib/definition/middleware/reqres_logge
 import { TestService } from './test.service';
 import { TestController } from './test.controller';
 import { RenderModule } from 'nest-next';
-import Next from 'next';
+import _Next from 'next';
 
 const get_db_options = () => 
 {
@@ -69,7 +69,7 @@ const get_db_options = () =>
         isGlobal: true
       }
     ),
-    RenderModule.forRootAsync(Next({}), { viewsDir: null }),
+    RenderModule.forRootAsync(_Next({}), { viewsDir: null }),
     AuthModule, 
     ConstModule,
     VSTSModule,
