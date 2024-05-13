@@ -64,11 +64,12 @@ export class AuthController {
   // })
   // @ApiCommonResponse({ $ref: getSchemaPath(SignInResDTO) }, ResponseCode.OK) 
   async signIn(
-    @TypedBody() body: SignInDTO, 
-    @Res({passthrough: true}) response: Response
+    @Body() body: SignInDTO, 
+    @Res({passthrough: true}) response: Response,
+    @Req() req: Request
   ): Promise<BasicResponse>
   {
-    const { ret, refreshToken } = await this.authService.signIn(body);
+    const { ret, refreshToken } = await this.authService.signIn(req.user);
     response.set(
       {
        'access_token': ret.toJSON().data.accessToken,

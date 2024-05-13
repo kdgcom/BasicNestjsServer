@@ -72,16 +72,17 @@ export class AuthService {
    * @param pw 
    * @return {BasicResponse, refresh_token} : controller에서 RT를 쿠키로 보내기 위함
    */
-  async signIn(sidto: SignInDTO): Promise<any>
+  async signIn(user: any): Promise<any>
   {
     let me: MemberEntity | null = null;
     // DB에서 유저 확인
-    if ( !(me = await this.memberRepository.findOneByArmycode(sidto.userID)) ) // 유저가 없을 경우
-      throw new ExceptionApiNotFound();
+    // if ( !(me = await this.memberRepository.findOneByID(sidto.userID)) ) // 유저가 없을 경우
+    //   throw new ExceptionApiNotFound();
     // DB 결과물을 plain json으로 변환
-    const user = me.toPlain();
-    if ( !passwordCompare(sidto.passwd, user.password) ) // 패스워드가 틀릴 경우 Forbidden
-      throw new ExceptionApiUnauthorized();
+    // const user = me.toPlain();
+    // const user: any = this.validateUser(sidto.userID, sidto.passwd);
+    // if ( !passwordCompare(sidto.passwd, user.password) ) // 패스워드가 틀릴 경우 Forbidden
+    //   throw new ExceptionApiUnauthorized();
     
     // payload에 탑재하여 jwt로 변환 및 클라이언트로 리턴
     // const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
@@ -95,7 +96,7 @@ export class AuthService {
 
     // AT 및 RT 업데이트
     const member = new UpdateMemberProfileDTO();
-    member.userID = sidto.userID;
+    member.userID = user.id;
     member.accessToken = data.accessToken;
     member.refreshToken = data.refreshToken;
     this.memberRepository.updateMemberProfile(member);
@@ -123,4 +124,14 @@ export class AuthService {
     return {res:new BasicResponse(ResponseCode.OK), refreshToken};
 
   }
+
+  async validateUser(username: string, pass: string): Promise<any> {
+    const me = await this.memberRepository.findOneByID(username);
+    const user = me?.toPlain();
+    if ( !passwordCompare(pass, user.password) ) // 패스워드가 틀릴 경우 Forbidden
+      throw new ExceptionApiUnauthorized();
+    const { password, ...result } = user;
+    return result;
+  }
+
 }
