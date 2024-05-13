@@ -85,8 +85,9 @@ export class AuthService {
     //   throw new ExceptionApiUnauthorized();
     
     // payload에 탑재하여 jwt로 변환 및 클라이언트로 리턴
-    // const payload = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
-    const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID, user.level);
+    const payloadObject = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
+    // const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID, user.level);
+    const payload = new JWTPayload(payloadObject);
     const data = 
     { 
       // access_token: await this.jwtService.signAsync(payload) ,
