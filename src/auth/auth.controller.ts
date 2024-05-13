@@ -14,6 +14,7 @@ import { ExceptionApiNotFound, ExceptionApiUnauthorized } from 'src/lib/definiti
 import { ApiExtraModels, ApiOkResponse, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { ApiCommonAcceptedResponse, ApiCommonResponse } from 'src/lib/definition/swagger/common.api.response';
 import { JWTPayload } from './guard/payload.jwt';
+import { LocalAuthGuard } from './guard/local-auth.guard';
 
 @Controller('/auth')
 export class AuthController {
@@ -54,6 +55,8 @@ export class AuthController {
    * @param body 
    * @returns 
    */
+  
+  @UseGuards(LocalAuthGuard)
   @Post('/signin')
   // @TypedException<ExceptionApiNotFound>(ResponseCode.NOT_FOUND)
   // @TypedException<ExceptionApiUnauthorized>(ResponseCode.UNAUTHORIZED)
