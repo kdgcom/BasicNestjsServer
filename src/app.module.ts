@@ -69,7 +69,6 @@ const get_db_options = () =>
         isGlobal: true
       }
     ),
-    RenderModule.forRootAsync(_Next({}), { viewsDir: null }),
     AuthModule, 
     ConstModule,
     VSTSModule,
@@ -81,9 +80,10 @@ const get_db_options = () =>
           return get_db_options()
         },
       } as TypeOrmModuleAsyncOptions
-    )
+    ),
+    RenderModule.forRootAsync(_Next({}), { viewsDir: null }),
   ],
-  controllers: [AppController, TestController],
+  controllers: [AppController],
   providers: [AppService, TestService],
 })
 export class AppModule implements NestModule

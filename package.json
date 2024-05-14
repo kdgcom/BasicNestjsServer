@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "API Server",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build --path ./tsconfig.server.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start --watch -- -b swc",
     "start:dev": "nest start --watch",

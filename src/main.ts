@@ -50,6 +50,7 @@ async function bootstrap() {
   /** Listen **/
   // const port = MyConst.LISTEN_PORT = process.env.LISTEN_PORT || MyConst.LISTEN_PORT;
   const port = MyConst.LISTEN_PORT;
+  console.log(">>> before ");
   await app.listen(port, ()=>
   {
     _l.info(`Envoronment : ${MyConst.checkMode()==1?"Production":"Development"}`);
@@ -57,5 +58,6 @@ async function bootstrap() {
     _l.info("Cors origins : ", MyConst.CORS_ORIGIN);
     _l.info("LISTEN port : ", port);
   });
+  console.log("<<< after ");
 }
 bootstrap();
