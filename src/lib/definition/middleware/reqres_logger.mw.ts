@@ -47,10 +47,10 @@ export class ReqResLoggerMiddleware implements NestMiddleware {
       // 답변을 발송하고 나면 자동으로 res의 내용이 찍히도록 한다.
       getResponseLog(res, req, clientIP);
 
-      // Ends middleware function execution, hence allowing to move on 
-      if (next) {
-        next();
-      }
+    }
+    // Ends middleware function execution, hence allowing to move on 
+    if (next) {
+      next();
     }
   }
 }

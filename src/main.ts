@@ -53,10 +53,12 @@ async function bootstrap() {
   console.log(">>> before ");
   await app.listen(port, ()=>
   {
-    _l.info_(`Envoronment : ${MyConst.checkMode()==1?"Production":"Development"}`);
-    _l.info_("Cookie domains : ", MyConst.COOKIE_ALLOWED_DOMAIN);
-    _l.info_("Cors origins : ", MyConst.CORS_ORIGIN);
-    _l.info_("LISTEN port : ", port);
+    _l.info_("                      --- === Server info === ---                      ")
+    _l.info(`Envoronment : ${MyConst.checkMode()==1?"Production":"Development"}`);
+    _l.info("Cookie domains : ", MyConst.COOKIE_ALLOWED_DOMAIN);
+    _l.info("Cors origins : ", MyConst.CORS_ORIGIN);
+    _l.info("LISTEN port : ", port);
+    _l.info_("                                                                       ");
   });
 }
 bootstrap();
