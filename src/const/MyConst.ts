@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { getStringToArray } from "src/util/common/text.util";
 import _l from "src/util/logger/log.util";
+import { __setLogLevel } from "../util/logger/log.util";
 
 export class MyConst 
 {
@@ -15,6 +16,7 @@ export class MyConst
    */
   static checkMode = () =>
   {
+    let res = -1
     if ( 
       process.env.NODE_ENV=="production" ||
       // process.env.NODE_ENV=="prod" ||
@@ -22,9 +24,10 @@ export class MyConst
       process.env.ENVIROMENT=="prod" || 
       process.env.ENVIROMENT=="live"
     )
-      return MyConst.MODE_PRODUCTION;
+      res = MyConst.MODE_PRODUCTION;
     else
-      return MyConst.MODE_DEV;
+      res = MyConst.MODE_DEV;
+    return res;
   }
 
   static isProduction = () => MyConst.checkMode()===MyConst.MODE_PRODUCTION;
@@ -70,6 +73,12 @@ export class MyConst
     MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
 
     _l.info("MyConst was initialized. ");
+
+    if ( this.checkMode() ) // production 모드일 경우 info 레벨에서만 로그가 찍히도록
+    {
+      __setLogLevel(3);
+      _l.info("Log level : info ");
+    }
 
     return MyConst;
   }

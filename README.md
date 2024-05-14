@@ -92,6 +92,35 @@ curl -X PATCH -H 'Content-Type: application/json' -d '{"userID":"00-00000", "rol
   # example
   npx env-cmd -f .env.local nest start --watch
   ```
+- <b>NODE_ENV를 반드시 유지할 것</b>
+  * log 레벨 결정 등에 매우 중요함.
+
+
+## log 사용
+- util/logger/log.util 이용
+  * 사용법 : _l을 import
+  ```typescript
+  import _l from './util/logger/log.util';
+  ```
+  * 가능 함수
+  ```typescript
+    _l.log("log "); // 초록
+    _l.debug("debug "); // 하늘색
+    _l.info("info "); // 파랑
+    _l.warn("warning "); // 노랑
+    _l.error("error "); // 빨강
+    _l.show("show "); // 하양
+
+    _l.log("log "); // 초록
+    _l.debug("debug "); // 하늘색
+    _l.info("info "); // 파랑
+    _l.warn("warning "); // 노랑
+    _l.error("error "); // 빨강
+    _l.show("show "); // 하양
+  ```
+- prod/dev에 따른 로그 적용
+  * prod : info, warn, error, show, success, httperror
+  * dev : all(info, warn, error, show, success, debug, log, ok, )
 
 ## class transform, class validator
 ```shell

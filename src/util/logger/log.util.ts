@@ -1,3 +1,5 @@
+import { MyConst } from "../../const/MyConst";
+
 const _log = require("log-beautify");
 
 _log.setColors( {httpError: "magenta", httpError_: "magenta", highlight:"yellow", highlight_:"yellow"});
@@ -6,17 +8,29 @@ _log.setLabels({ httpError: "HTTP Exception!!", highlight:"Check!! : "});
 _log.setTextColors( {httpError_: "pink", highlight_: "yellow"});
 
 const __show = _log.show.bind(_log);
+const __ok = _log.ok.bind(_log);
+const __ok_ = _log.ok_.bind(_log);
 const __debug = _log.debug.bind(_log);
+const __debug_ = _log.debug_.bind(_log);
 const __info = _log.info.bind(_log);
-const __log = __show;
+const __info_ = _log.info_.bind(_log);
+const __log = __ok;
 const __error = _log.error.bind(_log);
+const __error_ = _log.error_.bind(_log);
 const __warning = _log.warn.bind(_log);
+const __warning_ = _log.warn_.bind(_log);
 const __success = _log.success.bind(_log);
+const __success_ = _log.success_.bind(_log);
 const __httpError = _log.httpError.bind(_log);
 const __hl = _log.highlight.bind(_log);
 
-_log.trace('Trace');//change the level to use trace
+_log.trace('trace');//change the level to use trace
 // __log.bind(_log)("_log : ", _log);
+
+export function __setLogLevel(n: number)
+{
+  _log.setLocalLevel(n);
+}
 
 /**
  * Log class
@@ -63,7 +77,10 @@ export default class _l {
      * @param args 
      */
     static log(...args: any[]) {
-      this._common(__log, false, false, ...args);
+      this._common(__ok_, false, false, ...args);
+    }
+    static log_(...args: any[]) {
+      this._common(__ok_, false, false, ...args);
     }
     /**
      * prefix를 사용하는 log함수
@@ -80,8 +97,16 @@ export default class _l {
       this._common(__log, false, true, ...args);
     }
   
+    static show(...args: any[]) {
+      this._common(__show, false, true, ...args);
+    }
+
     static debug(...args: any[]) {
-      this._common(__debug, false, false, ...args);
+      this._common(__debug, false, true, ...args);
+    }
+    
+    static debug_(...args: any[]) {
+      this._common(__debug_, false, true, ...args);
     }
     
     static debug_prefix(...args: any[]) {
@@ -92,6 +117,10 @@ export default class _l {
       this._common(__info, false, false, ...args);
     }
 
+    static info_(...args: any[]) {
+      this._common(__info_, false, false, ...args);
+    }
+
     static info_prefix(...args: any[]) {
       this._common(__info, true, false, ...args);
     }
@@ -100,8 +129,16 @@ export default class _l {
       this._common(__warning, true, false, ...args);
     }
   
+    static warn_(...args: any[]) {
+      this._common(__warning_, true, false, ...args);
+    }
+  
     static error(...args: any[]) {
       this._common(__error, true, false, ...args);
+    }
+
+    static error_(...args: any[]) {
+      this._common(__error_, true, false, ...args);
     }
 
     /**
