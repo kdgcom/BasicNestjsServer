@@ -24,6 +24,7 @@ module.exports = {
     , "src/lib/**/*ts"
     , "src/util/**/*ts"
     , "src/VSTS/**/*ts"
+    , "src/**/*jsx"
   ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
