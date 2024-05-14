@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  log-beautify@1.2.0:
+    hash: 4bomlpanf3fdkzfofxys76xra4
+    path: patches/log-beautify@1.2.0.patch
   nest-next@10.1.0:
     hash: wpcxms7pjmois2m52kj2sb7f6i
     path: patches/nest-next@10.1.0.patch
@@ -69,7 +72,7 @@ importers:
         version: 14.2.3(eslint@8.57.0)(typescript@5.4.5)
       log-beautify:
         specifier: ^1.2.0
-        version: 1.2.0
+        version: 1.2.0(patch_hash=4bomlpanf3fdkzfofxys76xra4)
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -8126,7 +8129,7 @@ snapshots:
 
   lodash@4.17.21: {}
 
-  log-beautify@1.2.0:
+  log-beautify@1.2.0(patch_hash=4bomlpanf3fdkzfofxys76xra4):
     dependencies:
       chalk: 3.0.0
       color-regex: 1.0.2

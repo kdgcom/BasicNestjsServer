@@ -109,7 +109,8 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "nest-next@10.1.0": "patches/nest-next@10.1.0.patch"
+      "nest-next@10.1.0": "patches/nest-next@10.1.0.patch",
+      "log-beautify@1.2.0": "patches/log-beautify@1.2.0.patch"
     }
   }
 }

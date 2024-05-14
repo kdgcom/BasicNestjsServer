@@ -1,0 +1,13 @@
+diff --git a/index.js b/index.js
+index 42116acaca7e44d64d74df3836a4118688b968b7..3268c7275fa4632ae3fc538287957d2b1e20c6c2 100644
+--- a/index.js
++++ b/index.js
+@@ -451,7 +451,7 @@ class LogBeautify {
+                 return result;
+             } else {
+                 //hide all logs on production
+-                return false;
++                return (level>=workingLevel);
+             }
+         }
+         return result;

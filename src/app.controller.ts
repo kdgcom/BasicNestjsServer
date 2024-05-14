@@ -10,8 +10,14 @@ export class AppController {
     return this.appService.getHello();
   }
   
+  @Get('apppp')
+  @Render('app')
+  apppp() {
+    return {};
+  }
+
   @Get('admin')
-  @Render('index')
+  @Render('index') // index는 pages/의 파일 이름
   admin() {
     return {};
   }

@@ -368,8 +368,8 @@ $ pnpm patch <package-name>@<package-version>
   'C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572'"
 # 윈도우일 경우 다른 cmd창에서 실행해 필요한 곳을 수정
 $ code C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572
-# 수정이 완료되면 commit
-$ pnpm commit <some/path>/daceec00efc7e9e52709e7620cba9572
+# 수정이 완료되면 patch-commit
+$ pnpm patch-commit <some/path>/daceec00efc7e9e52709e7620cba9572
 # 이후 pnpm install 할때마다 patch가 자동 반영됨
 $ pnpm install
 ...
@@ -400,7 +400,7 @@ index aabdf486d1f24b704c5797c079505916879a9bc4..4cdd6ad8caa0cba456107f620b69de49
     'C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572'"
   ## Windows - open folder
   c:\> code C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572
-  c:\> pnpm commit <some/path>/daceec00efc7e9e52709e7620cba9572
+  c:\> pnpm patch-commit <some/path>/daceec00efc7e9e52709e7620cba9572
   ```
 
 
