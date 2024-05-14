@@ -7,35 +7,27 @@ import { isatty } from "tty";
 
 export class JWTPayload
 {
-    public id: string;
-    public username: string;
-    public rank: string;
-    public memID: number;
+    public id: string = "";
+    public username: string = "";
+    public rank: string = "";
+    public memID: number = 0;
     public iat: number = 0;
     public exp: number = 0;
-    public level: number;
+    public level: number = 0;
     public role: string | null = null;
 
-    constructor( id: string, name: string, rank: string, memID: number, level: number, role?: string, iat?: number, exp?: number)
+    constructor( obj: Partial<JWTPayload> )
     {
-        this.id = id;
-        this.username = name;
-        this.rank = rank;
-        this.memID = memID;
-        this.level = level;
-        if ( role ) this.role = role;
-        if ( iat ) this.iat = iat;
-        if ( exp ) this.exp = exp;
+        const keys = Object.keys(obj);
+        const thisObj: any = this;
+        keys.forEach(i=>{
+            thisObj[i] = (<any>obj)[i];
+        })
     }
 
     static fromObj( obj:any )
     {
-        if ( obj.iat && obj.exp )
-            return new JWTPayload( 
-                obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role, obj.iat, obj.exp 
-            );
-        else
-            return new JWTPayload( obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role || "" );
+        return new JWTPayload(obj);
     }
     static async fromJWT(jwt: string)
     {
@@ -47,6 +39,37 @@ export class JWTPayload
             }
           ));
     }
+    // constructor( id: string, name: string, rank: string, memID: number, level: number, role?: string, iat?: number, exp?: number)
+    // {
+    //     this.id = id;
+    //     this.username = name;
+    //     this.rank = rank;
+    //     this.memID = memID;
+    //     this.level = level;
+    //     if ( role ) this.role = role;
+    //     if ( iat ) this.iat = iat;
+    //     if ( exp ) this.exp = exp;
+    // }
+
+    // static fromObj( obj:any )
+    // {
+    //     if ( obj.iat && obj.exp )
+    //         return new JWTPayload( 
+    //             obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role, obj.iat, obj.exp 
+    //         );
+    //     else
+    //         return new JWTPayload( obj.id, obj.name, obj.rank, obj.memID, obj.level, obj.role || "" );
+    // }
+    // static async fromJWT(jwt: string)
+    // {
+    //     return JWTPayload.fromObj(
+    //         await new JwtService().verifyAsync(
+    //         jwt,
+    //         {
+    //           secret: MyConst.JWT_SECRET
+    //         }
+    //       ));
+    // }
 
     // access_token으로 JWT를 뽑아 낼 때
     async toJWTAT() { return await this.toJWT(true); }

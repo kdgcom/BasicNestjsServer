@@ -14,6 +14,7 @@ import { ExceptionApiNotFound, ExceptionApiUnauthorized } from 'src/lib/definiti
 import { ApiExtraModels, ApiOkResponse, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { ApiCommonAcceptedResponse, ApiCommonResponse } from 'src/lib/definition/swagger/common.api.response';
 import { JWTPayload } from './guard/payload.jwt';
+import { LocalAuthGuard } from './guard/local-auth.guard';
 
 @Controller('/auth')
 export class AuthController {
@@ -54,6 +55,8 @@ export class AuthController {
    * @param body 
    * @returns 
    */
+  
+  @UseGuards(LocalAuthGuard)
   @Post('/signin')
   // @TypedException<ExceptionApiNotFound>(ResponseCode.NOT_FOUND)
   // @TypedException<ExceptionApiUnauthorized>(ResponseCode.UNAUTHORIZED)
@@ -64,11 +67,12 @@ export class AuthController {
   // })
   // @ApiCommonResponse({ $ref: getSchemaPath(SignInResDTO) }, ResponseCode.OK) 
   async signIn(
-    @TypedBody() body: SignInDTO, 
-    @Res({passthrough: true}) response: Response
+    @Body() body: SignInDTO, 
+    @Res({passthrough: true}) response: Response,
+    @Req() req: Request
   ): Promise<BasicResponse>
   {
-    const { ret, refreshToken } = await this.authService.signIn(body);
+    const { ret, refreshToken } = await this.authService.signIn(req.user);
     response.set(
       {
        'access_token': ret.toJSON().data.accessToken,

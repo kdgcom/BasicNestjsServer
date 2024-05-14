@@ -6,6 +6,8 @@ import { MyConst } from 'src/const/MyConst';
 import { ConfigModule } from '@nestjs/config';
 import { MemberRepository } from 'src/auth/repository/member.repository';
 import { MemberRoleRepository } from 'src/auth/repository/memberRole.repository';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './guard/local.strategy';
 
 @Module({
   imports: [
@@ -14,13 +16,15 @@ import { MemberRoleRepository } from 'src/auth/repository/memberRole.repository'
       global: true,
       secret: MyConst.JWT_SECRET,
       signOptions: { expiresIn: MyConst.JWT_AT_EXPIREIN},
-    })
+    }),
+    PassportModule,
   ],
   controllers: [AuthController],
   providers: [
     AuthService,
     MemberRoleRepository,
     MemberRepository,
+    LocalStrategy
   ],
 })
 export class AuthModule {}
