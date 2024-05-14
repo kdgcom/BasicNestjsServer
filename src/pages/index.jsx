@@ -1,11 +1,10 @@
-import BasicTemplate from "./basicTemplate";
+import AdminHome from "./views/adminHome";
 
 const Index = () =>
 {
     return(
         <>
-        "index.jsx"
-        <BasicTemplate ></BasicTemplate>
+            <AdminHome />
         </>
     )
 }
