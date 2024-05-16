@@ -12,6 +12,8 @@ import { VSTSModule } from './VSTS/VSTS.module';
 import { ReqResLoggerMiddleware } from './lib/definition/middleware/reqres_logger.mw';
 import { TestService } from './test.service';
 import { TestController } from './test.controller';
+import { RenderModule } from 'nest-next';
+import _Next from 'next';
 
 const get_db_options = () => 
 {
@@ -38,29 +40,49 @@ const get_db_options = () =>
   return db_options;
 }
 
-const imports = [
-  ConfigModule.forRoot(
-    {
-      isGlobal: true
-    }
-  ),
-  AuthModule, 
-  ConstModule,
-  VSTSModule,
-  TypeOrmModule.forRootAsync(
-    {
-      name: 'default',
-      type: 'db',
-      useFactory: async () => {
-        return get_db_options()
-      },
-    } as TypeOrmModuleAsyncOptions
-  )
-];
+// const imports = [
+//   ConfigModule.forRoot(
+//     {
+//       isGlobal: true
+//     }
+//   ),
+//   RenderModule.forRootAsync(await Next({})),
+//   AuthModule, 
+//   ConstModule,
+//   VSTSModule,
+//   TypeOrmModule.forRootAsync(
+//     {
+//       name: 'default',
+//       type: 'db',
+//       useFactory: async () => {
+//         return get_db_options()
+//       },
+//     } as TypeOrmModuleAsyncOptions
+//   )
+// ];
 
 @Module({
-  imports,
-  controllers: [AppController, TestController],
+  imports:[
+    ConfigModule.forRoot(
+      {
+        isGlobal: true
+      }
+    ),
+    AuthModule, 
+    ConstModule,
+    VSTSModule,
+    TypeOrmModule.forRootAsync(
+      {
+        name: 'default',
+        type: 'db',
+        useFactory: async () => {
+          return get_db_options()
+        },
+      } as TypeOrmModuleAsyncOptions
+    ),
+    RenderModule.forRootAsync(_Next({}), { viewsDir: null }),
+  ],
+  controllers: [AppController],
   providers: [AppService, TestService],
 })
 export class AppModule implements NestModule

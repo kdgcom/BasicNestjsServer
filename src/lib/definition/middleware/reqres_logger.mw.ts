@@ -21,17 +21,33 @@ import { isEmpty } from 'src/util/common/text.util';
 export class ReqResLoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const clientIP = require('request-ip').getClientIp(req);
+    const headers = req.headers;
     // Gets the request log
-    _l.info(`------- REQ START [ ${clientIP } ] --> [ ${req.originalUrl} ] ------- `);
-    _l.logp(" >>>> Req", {
-      headers: JSON.stringify({...req.headers}),
-      body: req.body,
-    });
+    _l.info(`------- REQ START [ ${clientIP } ] --> ${req.method} [ ${req.get('host')}${req.originalUrl} ] ------- `);
+    delete headers.host; delete headers["user-agent"];
 
-    // response를 처리할 수 있는 이벤트를 등록시켜
-    // 답변을 발송하고 나면 자동으로 res의 내용이 찍히도록 한다.
-    getResponseLog(res, req, clientIP);
+    /** 특수 케이스들은 response를 찍을 필요가 없음 **/
+    if(req.originalUrl == '/health') { // health check
+      // health check만 짧게 찍기
+      _l.log(`*** Health check Request ***`);
+    } else if (req.originalUrl == '/favicon.ico') { // favicon
+      _l.log(`Request favicon /favicon.ico`)
+    } else if(req.originalUrl.includes('_next')) { // next 번들 파일들
+      _l.log(`next js 관련 요청 ${req.originalUrl}`)
+    } else { // 일반 nestjs 응답의 경우
+      _l.logp(" >>>> Req", {
+        referer: req.get('referer'),
+        userAgent: req.headers['user-agent'],
+        // headers: JSON.stringify({...req.headers}),
+        headers,
+        body: req.body,
+      });
 
+      // response를 처리할 수 있는 이벤트를 등록시켜
+      // 답변을 발송하고 나면 자동으로 res의 내용이 찍히도록 한다.
+      getResponseLog(res, req, clientIP);
+
+    }
     // Ends middleware function execution, hence allowing to move on 
     if (next) {
       next();
@@ -50,7 +66,6 @@ const getResponseLog = (res: Response, req:Request, ip: string) => {
   const rawResponseEnd = res.end;
   const chunkBuffers: any[] = [];
   res.write = (...chunks) => {
-    // const resArgs: Record<string, Record<string, any>>[] = [];
     const resArgs: any = [];
     for (let i = 0; i < chunks.length; i++) {
       resArgs[i] = chunks[i];
@@ -64,7 +79,7 @@ const getResponseLog = (res: Response, req:Request, ip: string) => {
     }
     return rawResponse.apply(res, resArgs);
   };
-  _l.info('----------------- RES START -----------------');
+  // _l.info('----------------- RES START -----------------');
   res.end = (...chunk: any[]) => {
     const resArgs:any = [];
     for (let i = 0; i < chunk.length; i++) {

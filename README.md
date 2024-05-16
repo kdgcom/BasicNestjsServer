@@ -92,6 +92,35 @@ curl -X PATCH -H 'Content-Type: application/json' -d '{"userID":"00-00000", "rol
   # example
   npx env-cmd -f .env.local nest start --watch
   ```
+- <b>NODE_ENV를 반드시 유지할 것</b>
+  * log 레벨 결정 등에 매우 중요함.
+
+
+## log 사용
+- util/logger/log.util 이용
+  * 사용법 : _l을 import
+  ```typescript
+  import _l from './util/logger/log.util';
+  ```
+  * 가능 함수
+  ```typescript
+    _l.log("log "); // 초록
+    _l.debug("debug "); // 하늘색
+    _l.info("info "); // 파랑
+    _l.warn("warning "); // 노랑
+    _l.error("error "); // 빨강
+    _l.show("show "); // 하양
+
+    _l.log("log "); // 초록
+    _l.debug("debug "); // 하늘색
+    _l.info("info "); // 파랑
+    _l.warn("warning "); // 노랑
+    _l.error("error "); // 빨강
+    _l.show("show "); // 하양
+  ```
+- prod/dev에 따른 로그 적용
+  * prod : info, warn, error, show, success, httperror
+  * dev : all(info, warn, error, show, success, debug, log, ok, )
 
 ## class transform, class validator
 ```shell
@@ -333,6 +362,57 @@ where[SOMETHING] = xxx;
 // keyof 를 이용해 아예 이 object에 맞는 형태로 타입을 받도록 한다.
 const a = MyObject[kkk as keyof typeof MyObject];
 ```
+
+
+## Patch 하는 법
+- node_modules에 있는 외부에서 받은 패키지를 patch해야할 때
+- pnpm의 patch 방법은 조금 다름
+  * patch 시작 - 임시 파일 생성
+```sh
+## patch 시작 - 패키지 명과 버전을 명시
+## 임시 디렉토리를 만들어 줌
+$ pnpm patch <package-name>@<package-version>
+  You can now edit the following folder:
+  C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572
+  
+  Once you're done with your changes, run "pnpm patch-commit
+  'C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572'"
+# 윈도우일 경우 다른 cmd창에서 실행해 필요한 곳을 수정
+$ code C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572
+# 수정이 완료되면 patch-commit
+$ pnpm patch-commit <some/path>/daceec00efc7e9e52709e7620cba9572
+# 이후 pnpm install 할때마다 patch가 자동 반영됨
+$ pnpm install
+...
+[+] ts-patch installed!
+...
+# 프로젝트에 patches 디렉토리가 생성됨
+$ cd patches
+$ cat <package-name>@<package-version>.patch
+diff --git a/어쩌고 b/저쩌고
+index aabdf486d1f24b704c5797c079505916879a9bc4..4cdd6ad8caa0cba456107f620b69de49b18dc452 100644
+--- a/어쩌고
++++ b/저쩌고
+@@ -31,7 +31,7 @@ let RenderModule = RenderModule_1 = class RenderModule {
+             const nextConfig = next.nextConfig;
+-            <이전 내용>
++            <바뀐 내용>
+             const basePath = nextConfig
+
+```
+
+  ```shell
+  ## 예제`
+  c:\> pnpm patch nest-next@10.1.0
+    You can now edit the following folder:
+    C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572
+
+    Once you're done with your changes, run "pnpm patch-commit
+    'C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572'"
+  ## Windows - open folder
+  c:\> code C:\Users\<user>\AppData\Local\Temp\daceec00efc7e9e52709e7620cba9572
+  c:\> pnpm patch-commit <some/path>/daceec00efc7e9e52709e7620cba9572
+  ```
 
 
 ## 새 기능 추가 과정
