@@ -13,5 +13,13 @@
 - npx next build 명령은 tsconfig를 next용으로 바꿔 버림 (하단에 라인들을 추가함)
 - 따라서 nestjs용으로 원본 tsconfig를 tsconfig.server.json 이라고 따로 만들어 둠
 - package.json에 start:nd 를 만들어 개발용으로 tsconfig.server.json을 사용하도록 설정함
+    * tsconfig.server.json을 사용하지 않는 경우 아래 오류 등장
+    ```sh
+    Error: Cannot find module 'C:\Workspace\hangil\VSTS\ns-nest\dist\main'
+    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:1144:15)
+    at Function.Module._load (node:internal/modules/cjs/loader:985:27)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:135:12)
+    at node:internal/main/run_main_module:28:49
+    ```
     * 향후 production용 빌드시에도 적용해야 함.
 

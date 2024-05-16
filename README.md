@@ -27,26 +27,27 @@ yellow { color: Yellow }
 ## Installation
 
 ```bash
-$ npm install
+$ pnpm install
 ```
 
-## Running the app
+## 빌드 및 실행 방법
+```sh
+## Master branch로 checkout
+git checkout master
+## 웹 어드민용 페이지 우선 빌드
+pnpm next build
 
-```bash
-# development
-$ npm run start
+### 아래는 일반 로컬 실행 / production 빌드에 따라 다르게 수행해야 함.
+
+## .env파일의 NODE_ENV를 목적에 맞게 수정(production / development)
+
+## nest 서버 실행 (tsconfig.server.ts 파일 사용)
+pnpm start:nd
+
+## production 빌드 (tsconfig.server.ts 파일 사용) - show, info, warn error의 로그만 찍힘
+pnpm build
+
 ```
-
-## Build
-
-```bash
-# production build
-$ npm run build
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## Stay in touch
 
@@ -441,3 +442,16 @@ index aabdf486d1f24b704c5797c079505916879a9bc4..4cdd6ad8caa0cba456107f620b69de49
     }
     ```
 - 
+
+## 각종 개발 환경
+- 에디터
+  * VSCode : 1.89
+- Database
+  * Oracle : 19c(v19.9.1)
+  * ERD 작성 프로그램 : DA# Modeler5 (5.0.10)
+- API 서버 관련
+  * 기본 Framework : Nestjs v10.3.2
+  * node : 20.10.0
+  * Package Manager : pnpm v9.0.5
+  * 웹 어드민용 Framework : Nextjs v14.2.3
+
