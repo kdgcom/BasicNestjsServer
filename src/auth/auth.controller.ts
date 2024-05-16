@@ -72,6 +72,7 @@ export class AuthController {
     @Req() req: Request
   ): Promise<BasicResponse>
   {
+    _l.show(req.user);
     const { ret, refreshToken } = await this.authService.signIn(req.user);
     response.set(
       {

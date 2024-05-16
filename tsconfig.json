@@ -58,8 +58,8 @@
   },
   "include": [
     "next-env.d.ts",
-    "src/pages/**/*.ts",
-    "src/pages/**/*.tsx"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules"

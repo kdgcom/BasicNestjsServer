@@ -4,13 +4,17 @@ import { MyConst } from './const/MyConst';
 import { warn } from 'console';
 import _l from './util/logger/log.util';
 import 'reflect-metadata';
-import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Response, ValidationPipe } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 import cookieParser from 'cookie-parser';
 import { DocumentBuilder, OmitType, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import swaggerJSON from './swagger.json';
 import * as fs from 'fs';
 import { getStringToArray } from './util/common/text.util';
+import { RenderService } from 'nest-next';
+import { ServerResponse } from 'http';
+import { ResponseCode } from './lib/definition/response/responseCode';
+import BasicResponse from './lib/definition/response/BasicResponse';
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -47,10 +51,18 @@ async function bootstrap() {
   // 쿠키 사용 설정
   app.use(cookieParser());
 
+  // nest-next가 모든 에러를 next의 error 페이지로 보내는 것을 막기위한 error handler 설정
+  // nest-next 문서에 따르면, 에러 핸들러가 설정되어 있다면 next의 에러 페이지로 보내지 않는다 함.
+  const renderService = app.get(RenderService);
+  renderService.setErrorHandler( async(e, req, res) =>{
+    _l.error(e);
+    // res.sendStatus(ResponseCode.INTERNAL_SERVER_ERROR);
+    res.send(new BasicResponse(ResponseCode.INTERNAL_SERVER_ERROR).message('Internal Server Error').toJSON());
+  })
+
   /** Listen **/
   // const port = MyConst.LISTEN_PORT = process.env.LISTEN_PORT || MyConst.LISTEN_PORT;
   const port = MyConst.LISTEN_PORT;
-  console.log(">>> before ");
   await app.listen(port, ()=>
   {
     _l.info_("                      --- === Server info === ---                      ")
