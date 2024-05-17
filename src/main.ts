@@ -57,7 +57,8 @@ async function bootstrap() {
   renderService.setErrorHandler( async(e, req, res) =>{
     _l.error(e);
     // res.sendStatus(ResponseCode.INTERNAL_SERVER_ERROR);
-    res.send(new BasicResponse(ResponseCode.INTERNAL_SERVER_ERROR).message('Internal Server Error').toJSON());
+    // res.send(new BasicResponse(e.response).message('Internal Server Error').toJSON());
+    res.send(new BasicResponse(e.response).toJSON());
   })
 
   /** Listen **/
