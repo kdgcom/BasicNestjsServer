@@ -128,6 +128,7 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const me = await this.memberRepository.findOneByID(username);
+    _l.log("me : ", me);
     const user = me?.toPlain();
     if ( !passwordCompare(pass, user.password) ) // 패스워드가 틀릴 경우 Forbidden
       throw new ExceptionApiUnauthorized();
