@@ -6,7 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RouteInfo } from '@nestjs/common/interfaces';
 import { request } from 'http';
 import _l from 'src/util/logger/log.util';
-import { isEmpty } from 'src/util/common/text.util';
+import { isEmpty, isURLMediaFile } from 'src/util/common/text.util';
 
 /**
  * ReqResLoggerMiddleware
@@ -30,8 +30,8 @@ export class ReqResLoggerMiddleware implements NestMiddleware {
     if(req.originalUrl == '/health') { // health check
       // health check만 짧게 찍기
       _l.log(`*** Health check Request ***`);
-    } else if (req.originalUrl == '/favicon.ico') { // favicon
-      _l.log(`Request favicon /favicon.ico`)
+    } else if (isURLMediaFile(req.originalUrl)) { // favicon
+      _l.log(`Request media ${req.originalUrl}`)
     } else if(req.originalUrl.includes('_next')) { // next 번들 파일들
       _l.log(`next js 관련 요청 ${req.originalUrl}`)
     } else { // 일반 nestjs 응답의 경우

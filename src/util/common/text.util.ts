@@ -383,3 +383,57 @@ export function snakeTextToCamel(text: string, useDataType: boolean = true) {
 export function replaceAll(str: string, searchText: string, replaceText: string) {
   return str.replace(`/${searchText}/gi`, replaceText);
 }
+
+/**
+ * url에서 확장자만 추려내는 함수
+ * @param _url 
+ * @returns 
+ */
+export function getURLExtension(_url: string): string
+{
+  let url=_url;
+  try
+  {
+    url = new URL(_url).pathname;
+  }
+  catch(e) // url로 변환하지 적합하지 않다면 이미 url의 pathname일 수 있음
+  {
+    url = _url;
+  }
+  let file = url.split('/').pop();
+  const ext: string[] = (file || "")?.split('.');
+  return ext.length>1?(ext.pop() || ""):"";
+}
+
+export function isURLMediaFile( _url: string): boolean
+{
+  try
+  {
+    const ext = getURLExtension(_url);
+    switch(ext?.toLowerCase())
+    {
+      case 'jpg':
+      case 'jpeg':
+      case 'webp':
+      case 'png':
+      case 'js':
+      case 'html':
+      case 'mp4':
+      case 'mkv':
+      case 'mpeg':
+      case 'gif':
+      case 'ico':
+      case 'css':
+        return true;
+      default:
+        return false;
+    }
+
+  }
+  catch(e)
+  {
+    _l.debug(e);
+
+  }
+  return false;
+}
