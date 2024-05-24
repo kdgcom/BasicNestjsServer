@@ -14,3 +14,17 @@ export class MemberRoleEntity extends EntityDefinition
     nMEM_ID!: number
 
 }
+
+@Entity('TAB_USER_ROLE')
+export class UserRoleEntity extends EntityDefinition
+{
+    @PrimaryColumn()
+    USER_ROLE_ID    !: number;
+
+    @Column()
+    ROLE    !: string;
+
+    @Column()
+    ACCOUNT_ID    !: number
+
+}

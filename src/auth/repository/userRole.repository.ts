@@ -7,10 +7,10 @@ import MasterRepository from "../../lib/definition/repository/master.repository"
 import { UpdateMemberProfileDTO } from "src/auth/dto/updateMemberProfile.dto";
 import { passwordEncrypt } from "src/util/common/text.util";
 import { MyConst } from "src/const/MyConst";
-import { MemberRoleEntity } from "../entity/role.entity";
+import { MemberRoleEntity, UserRoleEntity } from "../entity/role.entity";
 
 @Injectable()
-export class MemberRoleRepository extends MasterRepository<MemberRoleEntity>
+export class UserRoleRepository extends MasterRepository<UserRoleEntity>
 {
     // private repository: Repository<MemberRoleEntity>;
 
@@ -68,5 +68,15 @@ VALUES(:seq, :roleCode, :memID)
         }
     }
 
+    async getUserRoles(nMEM_ID: number)
+    {
+        const _sql = `
+SELECT LISTAGG(ROLE, ',') WITHIN GROUP(ORDER BY ROLE)
+FROM TAB_USER_ROLE WHERE ACCOUNT_ID=:nMEM_ID;
+        `;
+
+        return await this.doRawQuery(_sql, {nMEM_ID}, null);
+
+    }
 
 }

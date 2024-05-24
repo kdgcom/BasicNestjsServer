@@ -46,7 +46,7 @@ export default abstract class MasterRepository<T extends ObjectLiteral> extends 
      * @param options 
      * @returns 
      */
-    public async doRawQuery(sql: string, params: any, options: any): Promise<any>
+    public async doRawQuery(sql: string, params: any, options: any | null): Promise<any>
     {
         // let qr: QueryRunner | undefined = this.queryRunner;
         // if ( !qr )
@@ -69,7 +69,7 @@ export default abstract class MasterRepository<T extends ObjectLiteral> extends 
         return await this.doRawQueryWithManager(sql, params, options, this.manager);
     }
 
-    public async doRawQueryWithManager(sql: string, params: any, options: any, manager: EntityManager): Promise<any>
+    public async doRawQueryWithManager(sql: string, params: any, options: any | null, manager: EntityManager): Promise<any>
     {
         _l.log("doRawQuery : ", sql, params, options);
         // const connection = getConnection() || this.queryRunner.connection;
