@@ -204,7 +204,12 @@ export class PostDTO {
   let photo = instanceToInstance(photo);
   ```
 
-  - 
+- PickType
+```javascript
+export class CatRequestDto extends PickType(Cat, [ 'email', 'name', 'password', ] as const) {}
+```
+- OmitType
+-
 
 ## DB 기본 세팅(mysql)
 - 
