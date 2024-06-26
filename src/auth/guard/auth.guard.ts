@@ -28,7 +28,10 @@ import { ResponseCode } from '../../lib/definition/response/responseCode';
         // so that we can access it in our route handlers
         // request의 user에 payload를 심어 이후 사용가능하게 해 줌
         request['user'] = payload;
-      } catch {
+      } 
+      catch (e)
+      {
+        console.log("Auth Guard AT unauthorized : ", e);
         throw new BasicException(ResponseCode.UNAUTHORIZED);
       }
       return true;

@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard())
   @UseGuards(RoleGuard(RoleEnum.ADMIN))
   getHello(): string {
     return this.appService.getHello();
