@@ -315,6 +315,26 @@ finally
       - cookie에 set하는 방식으로 발행. httpOnly, secure를 이용하여 외부의 접근을 불허
     + <orange>RT를 이용한 AT의 재발급 과정</orange>
       - 만료된 AT를 이용한 api요청이 들어온다. (c-->s)
+      - AT가 expired되었음을 인식
+      - validate RT
+        * RT가 만료되면 Unauthorized 오류 리턴 (s-->c)
+        * RT가 valid하다면
+          + 기본 프로토콜에 accessToken을 리턴(Myconst에 등록, BasicResponse에서 처리)
+          ```json
+          { 
+            success: "true/false", 
+            error: str, 
+            statusCode: xxx, 
+            message: str, 
+            data: { }, 
+            accessToken: "eyJhbGciOiJIUzI1Ni.eyJ1c2Vybm.mNaNpFmTHTPfgVgwUptN",
+          }
+          ```
+
+<s> 
+취소선 적용
+    + <orange>RT를 이용한 AT의 재발급 과정</orange>
+      - 만료된 AT를 이용한 api요청이 들어온다. (c-->s)
       - Unauthorized 오류가 리턴된다. (s-->c)
       - 클라이언트는 자동으로 RT를 cookie에 태워 재발급 API를 요청한다. (c-->s)
       - 서버는 새 AT와 새 RT를 발급해 AT는 data로, RT는 쿠키에 set하여 답변한다. ( s-->c )
@@ -328,7 +348,7 @@ finally
   * <u>RT를 이용한 AT 재발행의 의무가 AT에게 있는 이유</u>
     + 여러 목적의 API를 같은 AT를 통해 사용할 때 모든 API가 auth권한이 있는건 아니기 때문
     + AT가 만료되면 클라이언트는 auth가 가능한 API에 RT를 이용하여 AT를 취득
-
+</s>
 
 ## DB 관련
 

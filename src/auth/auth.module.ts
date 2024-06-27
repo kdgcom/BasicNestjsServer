@@ -12,12 +12,12 @@ import { LocalStrategy } from './guard/local.strategy';
 @Module({
   imports: [
     ConfigModule.forRoot( { isGlobal: true }),
+    PassportModule.register({}),
     JwtModule.register({
       global: true,
       secret: MyConst.JWT_SECRET,
       signOptions: { expiresIn: MyConst.JWT_AT_EXPIREIN},
     }),
-    PassportModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -26,5 +26,9 @@ import { LocalStrategy } from './guard/local.strategy';
     MemberRepository,
     LocalStrategy
   ],
+  exports:[
+    PassportModule,
+    AuthService,
+  ]
 })
 export class AuthModule {}

@@ -6,6 +6,7 @@
 import { stat } from "fs";
 import { isEmpty } from "../../../util/common/text.util";
 import _l from "../../../util/logger/log.util";
+import { MyConst } from "src/const/MyConst";
 
 export default class BasicResponse {
 
@@ -82,13 +83,18 @@ export default class BasicResponse {
   toJSON(): Object {
     // 유효성 검사 해야함
 
-    return {
+    const _retObj: any = 
+    {
       success: this._success,
       statusCode: this._status,
       message: this._message,
       error: this._error,
       data: this._data,
     }
+    if ( MyConst.NEW_ACCESS_TOKEN.length>0 )
+      _retObj["accessToken"] = MyConst.NEW_ACCESS_TOKEN;
+
+    return _retObj;
   }
 
   private setSuccess(status: number): boolean | string {

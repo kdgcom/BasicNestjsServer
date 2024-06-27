@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JWTPayload } from './guard/payload.jwt';
 import { MyConst } from 'src/const/MyConst';
 import { ExceptionApiNotFound, ExceptionApiUnauthorized } from 'src/lib/definition/response/all.exception';
+import { bool } from 'aws-sdk/clients/signer';
 
 @Injectable()
 export class AuthService {
@@ -84,23 +85,24 @@ export class AuthService {
     // if ( !passwordCompare(sidto.passwd, user.password) ) // 패스워드가 틀릴 경우 Forbidden
     //   throw new ExceptionApiUnauthorized();
     
+    const data = await this.makeNewTokens(user.memID, user);
     // payload에 탑재하여 jwt로 변환 및 클라이언트로 리턴
-    const payloadObject = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
-    // const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID, user.level);
-    const payload = new JWTPayload(payloadObject);
-    const data = 
-    { 
-      // access_token: await this.jwtService.signAsync(payload) ,
-      accessToken: await payload.toJWTAT(),
-      refreshToken: await payload.toJWTRT(),
-    };
+    // const payloadObject = { id: user.armyCode, username: user.name, rank: user.rank, memID: user.memID };
+    // // const payload = new JWTPayload(user.armyCode, user.name, user.rank, user.memID, user.level);
+    // const payload = new JWTPayload(payloadObject);
+    // const data = 
+    // { 
+    //   // access_token: await this.jwtService.signAsync(payload) ,
+    //   accessToken: await payload.toJWTAT(),
+    //   refreshToken: await payload.toJWTRT(),
+    // };
 
-    // AT 및 RT 업데이트
-    const member = new UpdateMemberProfileDTO();
-    member.userID = user.id;
-    member.accessToken = data.accessToken;
-    member.refreshToken = data.refreshToken;
-    this.memberRepository.updateMemberProfile(member);
+    // // AT 및 RT 업데이트
+    // const member = new UpdateMemberProfileDTO();
+    // member.userID = user.id;
+    // member.accessToken = data.accessToken;
+    // member.refreshToken = data.refreshToken;
+    // this.memberRepository.updateMemberProfile(member);
     return { ret: new BasicResponse(ResponseCode.ACCEPTED).data(data), refreshToken: data.refreshToken };
   }
 
@@ -126,6 +128,36 @@ export class AuthService {
 
   }
 
+  async refreshATFromRT(rt: string)
+  {
+    let refreshToken = "";
+    try 
+    {
+      // RT validation
+      const rtPayload = await this.jwtService.verifyAsync(
+        rt,
+        {
+          secret: MyConst.JWT_SECRET
+        }
+      );
+      // 여기에 오면 valid 한 rt
+      // DB의 값과 확인
+      const _user = await this.memberRepository.findOneByMemID(rtPayload.memID);
+
+      if ( !_user ) // 이런 케이스는 존재할 수 없지만 일단 오류 처리. 대외적으로는 unauthorized로 나가도 될거라 봄
+        throw new BasicException(ResponseCode.WRONG_DATA);
+      const user = _user.toPlain();
+
+      const data = await this.makeNewTokens(rtPayload.memID, user, false);
+
+      return data.accessToken;
+    }
+    catch(e) 
+    {
+      throw new BasicException(ResponseCode.UNAUTHORIZED);
+    }
+  }
+
   async validateUser(username: string, pass: string): Promise<any> {
     const me = await this.memberRepository.findOneByID(username);
     _l.log("me : ", me);
@@ -136,4 +168,41 @@ export class AuthService {
     return result;
   }
 
+  /**
+   * 유저 정보로부터 accessToken 생성
+   * 새로 생성된 토큰은 사용자의 DB에 update된다.
+   * @param memID 
+   * @param _user DB로부터 전해 받은 계정 정보 일체. toPlain()을 수행한 결과를 넣어야 한다.
+   */
+  async makeNewTokens(memID: number, user: any, flagNewRT:boolean=true)
+  {
+    try
+    {
+    // at와 rt 새로 생성
+    const payloadObject = { id: user.armyCode, username: user.name, rank: user.rank, memID: memID };
+    const payload = new JWTPayload(payloadObject);
+    const data: any = 
+    { 
+      accessToken: await payload.toJWTAT(),
+    };
+
+    // AT 및 RT 업데이트
+    const member = new UpdateMemberProfileDTO();
+    member.userID = payloadObject.id;
+    member.accessToken = data.accessToken;
+    if ( flagNewRT )
+    {
+      data["refreshToken"] = await payload.toJWTRT();
+      member.refreshToken = data.refreshToken;        
+    }
+    this.memberRepository.updateMemberProfile(member);
+
+    return data;
+
+    }
+    catch(e)
+    {
+      throw new BasicException(ResponseCode.INTERNAL_SERVER_ERROR, "JWT 토큰을 생성할 수 없습니다.");
+    }
+  }
 }

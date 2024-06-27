@@ -53,6 +53,8 @@ export class MyConst
   // static DB_FIELD_MEM_UNIQUE = "sEMAIL";
   static DB_FIELD_MEM_ID = "nMEM_ID";
 
+  static NEW_ACCESS_TOKEN = "";
+
   // process.env를 통해 초기화 하고 싶은 내용이 있다면 반드시 여기 써줘야 함.
   static initialize()
   {
@@ -72,7 +74,7 @@ export class MyConst
     MyConst.DB_FIELD_MEM_UNIQUE = process.env.DB_FIELD_MEM_UNIQUE || MyConst.DB_FIELD_MEM_UNIQUE;
     MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
 
-    _l.info("MyConst was initialized. ");
+    console.log(MyConst);
 
     if ( this.checkMode() ) // production 모드일 경우 info 레벨에서만 로그가 찍히도록
     {
