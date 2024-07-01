@@ -7,6 +7,8 @@ import { stat } from "fs";
 import { isEmpty } from "../../../util/common/text.util";
 import _l from "../../../util/logger/log.util";
 import { MyConst } from "src/const/MyConst";
+import { NestFactory } from "@nestjs/core";
+import { RequestContext } from "src/lib/request.context";
 
 export default class BasicResponse {
 
@@ -16,7 +18,9 @@ export default class BasicResponse {
   private _message: string | null = null;
   private _data: any = {};
 
-  constructor(status?: number) {
+  constructor(
+    status?: number,
+  ) {
     if ( status )
         return this.status(status);
     else
@@ -91,8 +95,13 @@ export default class BasicResponse {
       error: this._error,
       data: this._data,
     }
-    if ( MyConst.NEW_ACCESS_TOKEN.length>0 )
-      _retObj["accessToken"] = MyConst.NEW_ACCESS_TOKEN;
+
+    const req = RequestContext.getCurrentRequest();
+    if ( req?.user?.accessToken )
+      _retObj["accessToken"] = req.user.accessToken;
+
+    // if ( MyConst.NEW_ACCESS_TOKEN.length>0 )
+    //   _retObj["accessToken"] = MyConst.NEW_ACCESS_TOKEN;
 
     return _retObj;
   }

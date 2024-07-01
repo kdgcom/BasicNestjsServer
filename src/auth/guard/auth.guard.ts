@@ -7,6 +7,7 @@ import BasicException from '../../lib/definition/response/basicException';
 import { ResponseCode } from '../../lib/definition/response/responseCode';
 import _l from 'src/util/logger/log.util';
 import { AuthService } from '../auth.service';
+import { RequestContext } from 'src/lib/request.context';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -70,6 +71,8 @@ export class AuthGuard implements CanActivate {
       else
         throw new BasicException(ResponseCode.UNAUTHORIZED);
     }
+
+    RequestContext.setCurrentRequest(request);
     return true;
   }
 

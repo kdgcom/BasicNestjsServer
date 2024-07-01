@@ -14,6 +14,7 @@ import { TestService } from './test.service';
 import { TestController } from './test.controller';
 import { RenderModule } from 'nest-next';
 import _Next from 'next';
+import { RequestContextMiddleware } from './lib/definition/middleware/request_context.mw';
 
 const get_db_options = () => 
 {
@@ -83,7 +84,12 @@ const get_db_options = () =>
     RenderModule.forRootAsync(_Next({}), { viewsDir: null }),
   ],
   controllers: [AppController],
-  providers: [AppService, TestService],
+  providers: [
+    AppService, 
+    TestService
+  ],
+  exports:[
+  ]
 })
 export class AppModule implements NestModule
 {
@@ -91,8 +97,11 @@ export class AppModule implements NestModule
 
   // for logger middle ware
   configure(consumer: MiddlewareConsumer) {
-    consumer
+    consumer  // 모든 req와 res에 대한 정보 출력
       .apply(ReqResLoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer  // 서버 접속 전체에 대한 글로벌 정보 저장용
+      .apply(RequestContextMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 

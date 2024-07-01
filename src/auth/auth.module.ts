@@ -24,7 +24,7 @@ import { LocalStrategy } from './guard/local.strategy';
     AuthService,
     MemberRoleRepository,
     MemberRepository,
-    LocalStrategy
+    LocalStrategy,
   ],
   exports:[
     PassportModule,

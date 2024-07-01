@@ -7,9 +7,9 @@
 curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!!"}' http://192.168.0.7:4000/auth/signin
 curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/signin
 
-# AT : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Iuq0gOumrOyekCIsIm1lbUlEIjoxLCJpYXQiOjE3MTk0NjEwMjcsImV4cCI6MTcxOTQ2MTA1NywibGV2ZWwiOjAsInJvbGUiOm51bGx9.yUAd1M0s0VxDLrhlL7VYpj-R8JMLn9lzjYKiTHOeVWc
-# RT : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxOTQ2MTAyNywiZXhwIjoxNzE5NTQ3NDI3LCJtZW1JRCI6MX0.kr8zw4AAreiJeR9n2sydAS05uweOcDHMC7HgeexEE5o
-curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Iuq0gOumrOyekCIsIm1lbUlEIjoxLCJpYXQiOjE3MTk0NjE0MzQsImV4cCI6MTcxOTQ2MTQ2NCwibGV2ZWwiOjAsInJvbGUiOm51bGx9.1aCvtxmQCMuvmoiWCO_iUNB9wRcVa_0ulG4CHl-g4Zs" --cookie "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxOTM4NzU1MiwiZXhwIjoxNzE5NDczOTUyLCJtZW1JRCI6MX0.MCmrkC5vDxcjXWXXEglGlHRSOrCCxzIAypGiQjxTBCU" http://192.168.0.7:4000/hello
+# AT : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Iuq0gOumrOyekCIsIm1lbUlEIjoxLCJpYXQiOjE3MTk3OTQ1MTMsImV4cCI6MTcxOTc5NDU0MywibGV2ZWwiOjAsInJvbGUiOm51bGx9.PznpxqYW3LOhQqes4d6gr3nad9r-cDlnQf74FKIiSUE
+# RT : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxOTc5NDUxMywiZXhwIjoxNzE5ODgwOTEzLCJtZW1JRCI6MX0.mtTFI6PQbNJoPPN7QEOmgaH1yZu5v_gUHtfu7dZO6n4
+curl -X GET -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Iuq0gOumrOyekCIsIm1lbUlEIjoxLCJpYXQiOjE3MTk4MTk2MzgsImV4cCI6MTcxOTgxOTY2OCwibGV2ZWwiOjAsInJvbGUiOm51bGx9.4KTG6mHUNaPhDEpHPSumm6JpALOe3kdRQj0nXTuf9fg" --cookie "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxOTc5NDUxMywiZXhwIjoxNzE5ODgwOTEzLCJtZW1JRCI6MX0.mtTFI6PQbNJoPPN7QEOmgaH1yZu5v_gUHtfu7dZO6n4" http://192.168.0.7:4000/hello
 
 # refresh token
 curl -X POST -H 'Content-Type: application/json' --cookie "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxMjg5ODkyOCwiZXhwIjoxNzEyODk4OTg4fQ.VurKRhFVNTqTtrAaE-Yd6DHcxMlNGDZg9FTcZv-kROU" http://192.168.0.7:4000/auth/regenerate
