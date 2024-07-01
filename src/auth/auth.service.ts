@@ -144,17 +144,21 @@ export class AuthService {
       // DB의 값과 확인
       const _user = await this.memberRepository.findOneByMemID(rtPayload.memID);
 
+_l.debug_("user : ", _user);
       if ( !_user ) // 이런 케이스는 존재할 수 없지만 일단 오류 처리. 대외적으로는 unauthorized로 나가도 될거라 봄
         throw new BasicException(ResponseCode.WRONG_DATA);
       const user = _user.toPlain();
 
       const data = await this.makeNewTokens(rtPayload.memID, user, false);
+_l.debug_("data : ", data);
 
       return data.accessToken;
     }
     catch(e) 
     {
+_l.debug_("exception : ", e);
       throw new BasicException(ResponseCode.UNAUTHORIZED);
+
     }
   }
 

@@ -39,7 +39,7 @@ export class AuthGuard implements CanActivate {
     {
       if ( e instanceof TokenExpiredError ) // AT가 expired되었을 때
       {
-        _l.debug_("RT 만료됨");
+        _l.debug_("AT 만료됨");
         const rt = request.cookies.refreshToken;
         let rtPayload: any = null;
         try
@@ -48,13 +48,24 @@ export class AuthGuard implements CanActivate {
         }
         catch(rtE)
         {
+          _l.debug_("RT 만료됨");
           if ( rtE instanceof TokenExpiredError ) // 쿠키로 온 RT마저 expired되었을 때
             throw new BasicException(ResponseCode.UNAUTHORIZED);
         }
         /// 여기로 오면 RT가 정상인 상황
         /// AT를 재발급하여 전역 변수에 등록한다. 이후 기본 프로토콜 리턴시 전역변수에 값이 있으면 클라에 보내준다.
         _l.log_("valid RT: ", rt, rtPayload);
-        MyConst.NEW_ACCESS_TOKEN = await this.authService.refreshATFromRT(rt);
+        // 정상 AT를 이용하여 다시 payload를 뽑아 내고 request.user에 등록한다.
+        const at = await this.authService.refreshATFromRT(rt);
+        const payload = await this.jwtService.verifyAsync(
+          at,
+          {
+            secret: MyConst.JWT_SECRET
+          }
+        );
+        payload.accessToken = at;
+        request['user'] = payload;
+        // MyConst.NEW_ACCESS_TOKEN = await this.authService.refreshATFromRT(rt);
       }
       else
         throw new BasicException(ResponseCode.UNAUTHORIZED);
