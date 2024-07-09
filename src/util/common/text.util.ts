@@ -7,6 +7,7 @@ import _l from '../logger/log.util';
 import BasicException from '../../lib/definition/response/basicException';
 import { ResponseCode } from '../../lib/definition/response/responseCode';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
+import { createCipheriv, randomBytes, scryptSync } from 'crypto';
 
 
 export function convertStringToJson(value: any): any {
@@ -436,4 +437,37 @@ export function isURLMediaFile( _url: string): boolean
 
   }
   return false;
+}
+
+export function currentDateTimeISOFormat()
+{
+  const currentDate = new Date();
+    
+  // 오프셋을 현재 시간에 적용
+  const offsetDate = new Date(currentDate.getTime() - currentDate.getTimezoneOffset() * 60000);
+  
+  return offsetDate.toISOString().split('.')[0].replace('T', ' ');
+}
+
+/**
+ * aes-256으로 암호화
+ * @param str 
+ * @returns 
+ */
+export async function aes256Encrypt( str: string)
+{
+  const iv = randomBytes(16);
+  const password = 'Password used to generate key';
+
+  // The key length is dependent on the algorithm.
+  // In this case for aes256, it is 32 bytes.
+  const key = (scryptSync(password, 'salt', 32)) as Buffer;
+  const cipher = createCipheriv('aes-256-ctr', key, iv);
+
+  const encryptedText = Buffer.concat([
+    cipher.update(str),
+    cipher.final(),
+  ]);
+
+  return encryptedText;
 }
