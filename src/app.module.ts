@@ -83,7 +83,7 @@ const get_db_options = () =>
     ),
     RenderModule.forRootAsync(_Next({}), { viewsDir: null }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, TestController],
   providers: [
     AppService, 
     TestService

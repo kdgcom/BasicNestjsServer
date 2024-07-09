@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { getStringToArray } from "src/util/common/text.util";
 import _l from "src/util/logger/log.util";
 import { __setLogLevel } from "../util/logger/log.util";
+import { createHash } from "crypto";
 
 export class MyConst 
 {
@@ -54,6 +55,10 @@ export class MyConst
   static DB_FIELD_MEM_ID = "nMEM_ID";
 
   static NEW_ACCESS_TOKEN = "";
+  
+  // 암호화 관련
+  static ENCRYPT_TEXT_PW = "NS-nest basic server encrypt text key"
+  static ENCRYPT_SECRET_KEY: Buffer | null = null;
 
   // process.env를 통해 초기화 하고 싶은 내용이 있다면 반드시 여기 써줘야 함.
   static initialize()
@@ -73,6 +78,9 @@ export class MyConst
 
     MyConst.DB_FIELD_MEM_UNIQUE = process.env.DB_FIELD_MEM_UNIQUE || MyConst.DB_FIELD_MEM_UNIQUE;
     MyConst.DB_FIELD_MEM_ID = "nMEM_ID";
+
+    MyConst.ENCRYPT_TEXT_PW = process.env.ENCRYPT_TEXT_PW || MyConst.ENCRYPT_TEXT_PW;
+    MyConst.ENCRYPT_SECRET_KEY = createHash('sha256').update(MyConst.ENCRYPT_TEXT_PW).digest();
 
     console.log(MyConst);
 
