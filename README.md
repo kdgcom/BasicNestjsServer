@@ -1,11 +1,11 @@
 <p align="center">
   <center>
-    <H1> VSTS Server v0.1.0 </H1>
+    <H1> Restful API Server v0.1.0 </H1>
   </center>
 </p>
 
 <p align="center">
-  VSTS 잠수함 가상 훈련 시스템 Rest API 서버
+  NestJS Rest API 서버
 </p>
 
 <style>
@@ -21,8 +21,10 @@ yellow { color: Yellow }
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) 기반 잠수함 가상 훈련 시스템의 http 서버
-(c) 한길CNC
+[Nest](https://github.com/nestjs/nest) 기반 API 서버 기본 세팅
+- Password/JWT authentication
+- mysql connectivity
+- ORM / transaction / common repository
 
 ## Installation
 
@@ -53,9 +55,6 @@ pnpm build
 
 - Author - [Hangil CNC](https://www.hangilcnc.com/)
 
-## License
-
-  저작권은 (주)한길씨앤씨에 있습니다.
 
 <br>
 <p align="center">
@@ -69,18 +68,15 @@ pnpm build
 # sample
 + curl -X POST -H 'Content-Type: application/json' -d '{"name":"bb"}' http://192.168.0.7:4000/test
 # login
-curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!!"}' http://192.168.0.7:4000/auth/signin
-curl -X POST -H 'Content-Type: application/json' -d '{"userID":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/signin
+curl -X POST -H 'Content-Type: application/json' -d '{"userID":"user", "passwd":"qwer1234!!"}' http://192.168.0.7:4000/auth/signin
+curl -X POST -H 'Content-Type: application/json' -d '{"userID":"user", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/signin
 # refresh token
 curl -X POST -H 'Content-Type: application/json' --cookie "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsImlhdCI6MTcxMjg5ODkyOCwiZXhwIjoxNzEyODk4OTg4fQ.VurKRhFVNTqTtrAaE-Yd6DHcxMlNGDZg9FTcZv-kROU" http://192.168.0.7:4000/auth/regenerate
 
-# Get user by armycode
-curl -X GET http://192.168.0.7:4000/auth/user/00-00000
-curl -X GET http://192.168.0.7:4000/auth/user2/00-00000
 # update member info - PW
-curl -X PATCH -H 'Content-Type: application/json' -d '{"armyCode":"00-00000", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/user
+curl -X PATCH -H 'Content-Type: application/json' -d '{"armyCode":"user", "passwd":"qwer1234!"}' http://192.168.0.7:4000/auth/user
 # update member role
-curl -X PATCH -H 'Content-Type: application/json' -d '{"userID":"00-00000", "role":"R_ADMIN;R_INST;R_TRAINEE"}' http://192.168.0.7:4000/auth/user
+curl -X PATCH -H 'Content-Type: application/json' -d '{"userID":"user", "role":"R_ADMIN;R_INST;R_TRAINEE"}' http://192.168.0.7:4000/auth/user
 #
 ```
 
@@ -352,8 +348,6 @@ finally
 
 ## DB 관련
 
-- ORACLE 19에서는 serviceName이 들어가 있어야 접속이 됨
-- ORACEL 23에서는 serviceName 없이 database만 있어도 접속이 됐음.
 - app.module.ts에서 logging 옵션을 true로 두면 모든 query에 대해 sql을 찍어볼 수 있다.
 
 
@@ -472,7 +466,7 @@ index aabdf486d1f24b704c5797c079505916879a9bc4..4cdd6ad8caa0cba456107f620b69de49
 - 에디터
   * VSCode : 1.89
 - Database
-  * Oracle : 19c(v19.9.1)
+  * Mysql
   * ERD 작성 프로그램 : DA# Modeler5 (5.0.10)
 - API 서버 관련
   * 기본 Framework : Nestjs v10.3.2
