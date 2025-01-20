@@ -1,11 +1,11 @@
 <p align="center">
   <center>
-    <H1> VSTS Server v0.1.0 </H1>
+    <H1> Basic NestJS Server v0.1.0 </H1>
   </center>
 </p>
 
 <p align="center">
-  VSTS 잠수함 가상 훈련 시스템 Rest API 서버
+  NestJS Rest API 서버
 </p>
 
 <style>
@@ -21,8 +21,7 @@ yellow { color: Yellow }
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) 기반 잠수함 가상 훈련 시스템의 http 서버
-(c) 한길CNC
+Basic NestJS Server v0.1
 
 ## Installation
 
@@ -50,11 +49,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Hangil CNC](https://www.hangilcnc.com/)
+- Author - 김도균
 
-## License
-
-  저작권은 (주)한길씨앤씨에 있습니다.
 
 <br>
 <p align="center">
@@ -246,12 +242,6 @@ finally
     + 여러 목적의 API를 같은 AT를 통해 사용할 때 모든 API가 auth권한이 있는건 아니기 때문
     + AT가 만료되면 클라이언트는 auth가 가능한 API에 RT를 이용하여 AT를 취득
 
-
-## DB 관련
-
-- ORACLE 19에서는 serviceName이 들어가 있어야 접속이 됨
-- ORACEL 23에서는 serviceName 없이 database만 있어도 접속이 됐음.
-- app.module.ts에서 logging 옵션을 true로 두면 모든 query에 대해 sql을 찍어볼 수 있다.
 
 
 ## Client IP
